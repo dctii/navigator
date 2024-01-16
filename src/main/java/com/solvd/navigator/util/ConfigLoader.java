@@ -1,6 +1,6 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
-import com.solvd.airport.exception.UnableToLoadConfigPropertiesException;
+import com.solvd.navigator.exception.UnableToLoadConfigPropertiesException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

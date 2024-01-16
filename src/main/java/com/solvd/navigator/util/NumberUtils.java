@@ -1,4 +1,4 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

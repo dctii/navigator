@@ -1,4 +1,4 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,7 @@ public final class ConfigConstants {
     public static final String DAO_CLASS_SUBSTRING = "DAO";
     public static final String MYBATIS_IMPL_SUFFIX = "MyBatisImpl";
     public static final String JDBC_IMPL_SUFFIX = "JDBCImpl";
-    public static final String DAO_PACKAGE = "com.solvd.airport.persistence.";
+    public static final String DAO_PACKAGE = "com.solvd.navigator.dao.";
     public static final String DAO_JDBC_IMPL_PACKAGE = DAO_PACKAGE + "jdbc" + StringConstants.FULL_STOP;
     public static final String DAO_MYBATIS_IMPL_PACKAGE = DAO_PACKAGE + "mybatis" + StringConstants.FULL_STOP;
 

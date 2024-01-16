@@ -1,4 +1,4 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -33,27 +33,6 @@ public class ScannerUtils {
         return input;
     }
 
-    public static String getAndCleanBookingNum(Scanner scanner, String prompt,
-                                          UnaryOperator<String> formatter) {
-        String input;
-        LOGGER.info("{}" + prompt + "{}", AnsiCodes.BLUE, AnsiCodes.RESET_ALL);
-        input = scanner.nextLine();
-        if (formatter != null) {
-            input = formatter.apply(input);
-        }
-        return input;
-    }
-
-    public static String getAndCleanPassportNum(Scanner scanner, String prompt,
-                                          UnaryOperator<String> formatter) {
-        String input;
-        LOGGER.info("{}" + prompt + "{}", AnsiCodes.BLUE, AnsiCodes.RESET_ALL);
-        input = scanner.nextLine();
-        if (formatter != null) {
-            input = formatter.apply(input);
-        }
-        return input;
-    }
 
     public static String getAndCheckInput(Scanner scanner, String prompt, Predicate<String> validator) {
         String input;
@@ -77,44 +56,6 @@ public class ScannerUtils {
         } while (validator != null && !validator.test(input));
         return input;
     }
-
-    public static String checkAndCleanStaffEmail(Scanner scanner, String prompt,
-                                            UnaryOperator<String> formatter,
-                                            Predicate<String> validator) {
-        String input;
-        do {
-            LOGGER.info("{}" + prompt + "{}", AnsiCodes.BLUE, AnsiCodes.RESET_ALL);
-            input = scanner.nextLine();
-            if (formatter != null) {
-                input = formatter.apply(input);
-            }
-        } while (validator != null && !validator.test(input));
-        return input;
-    }
-
-    public static String checkAndCleanCountryCode(Scanner scanner, String prompt,
-                                            UnaryOperator<String> formatter,
-                                            Predicate<String> stringValidator) {
-        String input;
-        boolean isValid;
-        do {
-            LOGGER.info("{}" + prompt + "{}", AnsiCodes.BLUE, AnsiCodes.RESET_ALL);
-            input = scanner.nextLine();
-            if (formatter != null) {
-                input = formatter.apply(input);
-            }
-            isValid = stringValidator != null
-                    && stringValidator.test(input)
-                    && SQLUtils.doesCountryCodeExist(input);
-            if (!isValid) {
-                LOGGER.info("Invalid country code. Please try again.");
-            }
-        } while (!isValid);
-        return input;
-    }
-
-
-
 
 
     public static Date getDateInput(Scanner scanner, String prompt, String datePattern) {

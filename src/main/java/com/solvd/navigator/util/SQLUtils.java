@@ -1,12 +1,8 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
-import com.solvd.airport.exception.InvalidDateFormatException;
-import com.solvd.airport.exception.UnsuccessfulAutoGenerationOfIdException;
-import com.solvd.airport.exception.UnsuccessfulStatementSetException;
-import com.solvd.airport.persistence.AirportDAO;
-import com.solvd.airport.persistence.CountryDAO;
-import com.solvd.airport.persistence.FlightDAO;
-import com.solvd.airport.persistence.GateDAO;
+import com.solvd.navigator.exception.InvalidDateFormatException;
+import com.solvd.navigator.exception.UnsuccessfulAutoGenerationOfIdException;
+import com.solvd.navigator.exception.UnsuccessfulStatementSetException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,7 +101,7 @@ public class SQLUtils {
 
     public static void setBigDecimalOrNull(PreparedStatement ps, int parameterIndex, BigDecimal value) {
         try {
-            
+
             if (value != null) {
                 ps.setBigDecimal(parameterIndex, value);
             } else {
@@ -132,64 +128,6 @@ public class SQLUtils {
         }
     }
 
-    public static void displayBoardingPassInfo(String bookingNumber, boolean hasBaggage) {
-        DBConnectionPool connectionPool = DBConnectionPool.getInstance();
-
-        final String GET_BOARDING_PASS_INFO_SQL =
-                "SELECT bp.boarding_group, bp.boarding_time, f.flight_code, g.gate_code" +
-                        (hasBaggage ? ", ba.baggage_code " : " ") +
-                        "FROM boarding_passes AS bp " +
-                        "JOIN check_ins AS ci ON bp.check_in_id = ci.check_in_id " +
-                        "JOIN bookings AS b ON ci.booking_id = b.booking_id " +
-                        "JOIN flights AS f ON b.flight_code = f.flight_code " +
-                        "JOIN gates AS g ON f.gate_id = g.gate_id" +
-                        (hasBaggage ? " LEFT JOIN baggage AS ba ON ci.check_in_id = ba.check_in_id " : " ") +
-                        "WHERE b.booking_number = ?";
-
-        try (Connection conn = connectionPool.getConnection();
-             PreparedStatement ps = conn.prepareStatement(GET_BOARDING_PASS_INFO_SQL)) {
-            ps.setString(1, bookingNumber);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    String boardingGroup = rs.getString("boarding_group");
-                    Timestamp boardingTime = rs.getTimestamp("boarding_time");
-                    String flightCode = rs.getString("flight_code");
-                    String gateCode = rs.getString("gate_code");
-                    String baggageInfo = hasBaggage ? rs.getString("baggage_code") : "No Baggage";
-
-                    LOGGER.info("\n\n=== Boarding Information ===\n" +
-                                    "Boarding Group: {}\n" +
-                                    "Boarding Time: {}\n" +
-                                    "Flight Code: {}\n" +
-                                    "Gate: {}\n" +
-                                    (hasBaggage ? "Baggage Code: {}" : "{}"),
-                            boardingGroup, boardingTime, flightCode, gateCode,
-                            baggageInfo + "\n"
-                    );
-                } else {
-                    LOGGER.info("No boarding information found for booking number: {}", bookingNumber);
-                }
-            }
-        } catch (SQLException e) {
-            LOGGER.error("Error fetching boarding pass information", e);
-        }
-    }
-
-
-    public static String determineBoardingGroup(String seatClass) {
-        seatClass = seatClass.toLowerCase();
-        switch (seatClass) {
-            case "first class":
-                return "Group A";
-            case "business":
-                return "Group B";
-            case "economy":
-                return "Group C";
-            default:
-                return "Unknown Group";
-        }
-    }
-
     public static java.sql.Timestamp toTimestamp(String datetimeString) {
         java.sql.Timestamp newTimestamp;
         try {
@@ -210,54 +148,6 @@ public class SQLUtils {
         } catch (ParseException e) {
             throw new InvalidDateFormatException("Invalid date format: " + e.getMessage());
         }
-    }
-
-    public static boolean doesCountryCodeExist(String countryCode) {
-        final CountryDAO countryDAO = DataAccessProvider.getCountryDAO();
-
-        boolean exists = countryDAO.doesCountryCodeExist(countryCode);
-
-        if (!exists) {
-            LOGGER.error("Country code doesn't exist in resource, please try another country.");
-        }
-
-        return exists;
-    }
-
-    public static boolean doesFlightExist(String flightCode) {
-        final FlightDAO flightDAO = DataAccessProvider.getFlightDAO();
-
-        boolean exists = flightDAO.doesFlightExist(flightCode);
-
-        if (!exists) {
-            LOGGER.error("Airport doesn't exist in resource, please try another.");
-        }
-
-        return exists;
-    }
-
-    public static boolean doesAirportExist(String airportCode) {
-        final AirportDAO airportDAO = DataAccessProvider.getAirportDAO();
-
-        boolean exists = airportDAO.doesAirportExist(airportCode);
-
-        if (!exists) {
-            LOGGER.error("Airport doesn't exist in resource, please try another.");
-        }
-
-        return exists;
-    }
-
-    public static boolean doesGateExist(String gateCode, String airportCode) {
-        final GateDAO gateDAO = DataAccessProvider.getGateDAO();
-
-        boolean exists = gateDAO.doesGateExist(gateCode, airportCode);
-
-        if (!exists) {
-            LOGGER.error("Gate doesn't exist in resource, please try another.");
-        }
-
-        return exists;
     }
 
     public static String qualifyColumnName(String tableName, String columnName) {

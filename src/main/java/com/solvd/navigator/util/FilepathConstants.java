@@ -1,6 +1,6 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
-import com.solvd.airport.exception.GetResourcesPathFailureException;
+import com.solvd.navigator.exception.GetResourcesPathFailureException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,19 +16,7 @@ public final class FilepathConstants {
 
     public static final String MYBATIS_XML_CONFIG_FILEPATH = "mybatis-config.xml";
 
-    public static final String DATA_FILEPATH = "data/";
-    public static final String OUR_AIRPORTS_CSV_DATA_FILEPATH = DATA_FILEPATH + "ourairports-airports-data.csv";
-
-    // use `gates.xml` with JAXB
-    public static final String GATES_XML = DATA_FILEPATH + "gates.xml";
-
-    // use `terminals.xml` and `airlineStaff.xml with StAX
-    public static final String TERMINALS_XML = DATA_FILEPATH + "terminals.xml";
-    public static final String AIRLINE_STAFF_XML = DATA_FILEPATH + "airlineStaff.xml";
-
-    // use `airlines.json` and `bookings.json` with Jackson
-    public static final String AIRLINES_JSON = DATA_FILEPATH + "airlines.json";
-    public static final String BOOKINGS_JSON = DATA_FILEPATH + "bookings.json";
+    public static final String DATA_DIR_IN_RESOURCES_FILEPATH = "data/";
 
 
     private static String getAbsolutePathOfResource() {

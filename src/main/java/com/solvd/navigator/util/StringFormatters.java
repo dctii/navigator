@@ -1,4 +1,4 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -226,33 +226,6 @@ public class StringFormatters {
                 + StringConstants.DASH_STRING + datetime.getDayOfMonth()
                 + StringConstants.DASH_STRING + datetime.getYear();
 
-    }
-
-    public static String toUSD(Number cost) {
-        /*
-            "USD Currency Formatting in Java"
-            https://stackoverflow.com/questions/3075743/usd-currency-formatting-in-java
-
-            "Class Locale: US"
-            https://docs.oracle.com/javase/8/docs/api/java/util/Locale.html#US
-        */
-        NumberFormat usdFormat = NumberFormat.getCurrencyInstance(Locale.US);
-        return usdFormat.format(cost);
-    }
-
-    public static String createBaggageCode(String flightCode, String destinationAirportCode, String bookingNumber) {
-        return StringUtils.joinWith(
-                StringConstants.DASH_STRING,
-                flightCode, destinationAirportCode, bookingNumber
-        );
-    }
-
-    public static String sanitizePhoneNumber(String phoneNumber) {
-        return phoneNumber
-                .replaceAll(StringConstants.SINGLE_WHITESPACE, StringConstants.EMPTY_STRING)
-                .replaceAll(StringConstants.DASH_STRING, StringConstants.EMPTY_STRING)
-                .replaceAll(Pattern.quote(StringConstants.OPENING_PARENTHESIS), StringConstants.EMPTY_STRING)
-                .replaceAll(Pattern.quote(StringConstants.CLOSING_PARENTHESIS), StringConstants.EMPTY_STRING);
     }
 
 

@@ -1,6 +1,6 @@
-package com.solvd.airport.util;
+package com.solvd.navigator.util;
 
-import com.solvd.airport.exception.SqlSessionFactoryInitFailureException;
+import com.solvd.navigator.exception.SqlSessionFactoryInitFailureException;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
