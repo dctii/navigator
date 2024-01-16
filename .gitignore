@@ -1,3 +1,10 @@
+### IntelliJ IDEA ###
+.idea/
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### Maven ###
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -15,3 +22,18 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+### Logs ###
+*.log
+/logs/
+
+### MISC ###
+*.class
+*.iml
+.prettierrc*

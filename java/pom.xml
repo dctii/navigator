@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.solvd.navigator</groupId>
+    <artifactId>navigator</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <!--   Project Package Name     -->
+        <self.groupId>com.solvd.navigator</self.groupId>
+
+        <!--   Java Properties     -->
+        <java.version>11</java.version>
+
+        <!--   org.apache Properties     -->
+        <apache.superGroupId>org.apache</apache.superGroupId>
+
+        <!--   Apache log4j Properties     -->
+        <log4j.affix>log4j</log4j.affix>
+        <log4j.groupId>${apache.superGroupId}.logging.${log4j.affix}</log4j.groupId>
+        <log4j.version>2.21.1</log4j.version>
+
+        <!--   Apache Commons Properties     -->
+        <apache-commons.affix>commons</apache-commons.affix>
+        <apache-commons.groupId>${apache.superGroupId}.${apache-commons.affix}
+        </apache-commons.groupId>
+        <apache-commons-lang3.version>3.12.0</apache-commons-lang3.version>
+        <apache-commons-text.version>1.11.0</apache-commons-text.version>
+
+        <!--   Apache Commons-IO Properties     -->
+        <apache-commons-io.version>2.15.0</apache-commons-io.version>
+
+        <!--   JOOQ Properties     -->
+        <jooq.affix>jooq</jooq.affix>
+        <jooq.groupId>org.${jooq.affix}</jooq.groupId>
+        <jooq.version>3.15.12</jooq.version>
+
+        <!--   MySQL Connector J Properties     -->
+        <mysql.affix>mysql</mysql.affix>
+        <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
+
+        <!--   MyBatis Properties     -->
+        <mybatis.affix>mybatis</mybatis.affix>
+        <mybatis.version>3.5.15</mybatis.version>
+
+        <!--   JAXB Properties     -->
+        <jaxb.affix>jaxb</jaxb.affix>
+        <jaxb.groupId>org.glassfish.${jaxb.affix}</jaxb.groupId>
+        <jaxb-core.version>4.0.4</jaxb-core.version>
+        <jaxb-runtime.version>4.0.4</jaxb-runtime.version>
+
+        <!--   Jackson Properties     -->
+        <jackson.affix>jackson</jackson.affix>
+        <jackson-core.groupId>com.fasterxml.${jackson.affix}.core</jackson-core.groupId>
+        <jacksoncore.version>2.16.1</jacksoncore.version>
+        <jackson-databind.version>2.16.1</jackson-databind.version>
+
+        <!--   maven Compiler Plugin Properties     -->
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+
+        <!--   exec-maven Plugin Properties     -->
+        <exec-maven-plugin.groupId>org.codehaus.mojo</exec-maven-plugin.groupId>
+        <exec-maven-plugin.artifactId>exec-maven-plugin</exec-maven-plugin.artifactId>
+        <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
+        <mainEntrypoint>${self.groupId}.Main</mainEntrypoint>
+        <baseDataLoaderEntrypoint>${self.groupId}.BaseDataLoader</baseDataLoaderEntrypoint>
+
+        <!--
+        To resolve these warning flags:
+             [WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent!
+             [WARNING] File encoding has not been set, using platform encoding UTF-8, i.e. build is platform dependent!
+         -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
+    </properties>
+
+    <build>
+
+        <pluginManagement>
+
+            <plugins>
+
+                <!-- https://maven.apache.org/plugins/maven-compiler-plugin/ -->
+                <plugin>
+                    <groupId>${apache.superGroupId}.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+
+                <!-- https://www.mojohaus.org/exec-maven-plugin/ -->
+                <plugin>
+                    <groupId>${exec-maven-plugin.groupId}</groupId>
+                    <artifactId>${exec-maven-plugin.artifactId}</artifactId>
+                    <version>${exec-maven-plugin.version}</version>
+                    <configuration>
+                        <mainClass>${mainEntrypoint}</mainClass>
+                        <systemProperties>
+                            <systemProperty>
+                                <key>${jooq.groupId}.no-tips</key>
+                                <value>true</value>
+                            </systemProperty>
+                            <systemProperty>
+                                <key>${jooq.groupId}.no-logo</key>
+                                <value>true</value>
+                            </systemProperty>
+                        </systemProperties>
+                    </configuration>
+                </plugin>
+            </plugins>
+
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>base-data-loader</id>
+            <build>
+                <plugins>
+
+                    <!-- https://www.mojohaus.org/exec-maven-plugin/ -->
+                    <plugin>
+                        <groupId>${exec-maven-plugin.groupId}</groupId>
+                        <artifactId>${exec-maven-plugin.artifactId}</artifactId>
+                        <version>${exec-maven-plugin.version}</version>
+                        <configuration>
+                            <mainClass>${baseDataLoaderEntrypoint}</mainClass>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>${jooq.groupId}.no-tips</key>
+                                    <value>true</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>${jooq.groupId}.no-logo</key>
+                                    <value>true</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
+    <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-api -->
+        <dependency>
+            <groupId>${log4j.groupId}</groupId>
+            <artifactId>${log4j.affix}-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <dependency>
+            <groupId>${log4j.groupId}</groupId>
+            <artifactId>${log4j.affix}-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3-->
+        <dependency>
+            <groupId>${apache-commons.groupId}</groupId>
+            <artifactId>${apache-commons.affix}-lang3</artifactId>
+            <version>${apache-commons-lang3.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+        <dependency>
+            <groupId>${apache-commons.affix}-io</groupId>
+            <artifactId>${apache-commons.affix}-io</artifactId>
+            <version>${apache-commons-io.version}</version>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/org.jooq/jooq -->
+        <dependency>
+            <groupId>${jooq.groupId}</groupId>
+            <artifactId>${jooq.affix}</artifactId>
+            <version>${jooq.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
+        <dependency>
+            <groupId>com.${mysql.affix}</groupId>
+            <artifactId>${mysql.affix}-connector-j</artifactId>
+            <version>${mysql-connector-j.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+        <dependency>
+            <groupId>org.${mybatis.affix}</groupId>
+            <artifactId>${mybatis.affix}</artifactId>
+            <version>${mybatis.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-core -->
+        <dependency>
+            <groupId>${jaxb.groupId}</groupId>
+            <artifactId>${jaxb.affix}-core</artifactId>
+            <version>${jaxb-core.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
+        <dependency>
+            <groupId>${jaxb.groupId}</groupId>
+            <artifactId>${jaxb.affix}-runtime</artifactId>
+            <version>${jaxb-runtime.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>${jackson-core.groupId}</groupId>
+            <artifactId>${jackson.affix}-core</artifactId>
+            <version>${jacksoncore.version}</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>${jackson-core.groupId}</groupId>
+            <artifactId>${jackson.affix}-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+
+    </dependencies>
+</project>
