@@ -1,1 +1,1 @@
-DROP DATABASE navigation;
+DROP DATABASE IF EXISTS navigation;

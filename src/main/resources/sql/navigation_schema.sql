@@ -75,7 +75,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `navigation`.`drivers` (
   `driver_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `employee_id` INT NULL,
+  `employee_id` INT UNSIGNED NULL,
   `vehicle_id` INT UNSIGNED NULL,
   PRIMARY KEY (`driver_id`),
   INDEX `fk_employee_driver_idx` (`employee_id` ASC) VISIBLE,
@@ -185,8 +185,3 @@ CREATE TABLE IF NOT EXISTS `navigation`.`order_items` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
