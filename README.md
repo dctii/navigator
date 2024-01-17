@@ -1,16 +1,83 @@
-# navigator
+# Navigator
+
+## Description
 
 A delivery driver needs the best paths to deliver packages. 4 fixed storages. 8 order cap.
 Destination points randomly assigned for orders.
 
+### Requirements
 
-**Dependencies**:
+1. 2 Cars, 4 storage warehouses, 8 orders per car, 8-hour working day, 1 mile or km is 10 minutes of
+   time of car driver
+2. Randomly generate coordinates (X,Y location) of storage warehouse points
+3. Randomly generate coordinates of order destination points
+4. Build route from storage to each destination point effectively through other points. The goal is
+   to deliver 8 orders in one ride effectively, that is by using the shortest path possible.
+5. Use _Factory_, _Builder_, _Listener_ design patterns in project
+6. Use JDBC or MyBatis to communicate with the MySQL database.
+7. Use GitHub to work as a team
+
+### Uses:
+
+- MySQL 8.0.35
+- MySQL Workbench 8.0.34
+- openjdk 11.0.21
+- Apache Maven 3.9.6
+
+### Dependencies
+
 - org.apache.logging.log4j/log4j-api v2.21.1
 - org.apache.logging.log4j/log4j-core v2.21.1
 - org.apache.commons/commons-lang3 v3.12.0
 - commons-io/commons-io v2.15.0
 - org.mybatis/mybatis v3.5.15
 - com.mysql/mysql-connector-j v8.2.0
-- org.jooq/jooq v3.15.12 
+- org.jooq/jooq v3.15.12
 - com.fasterxml.jackson.core/jackson-core v.2.16.1
 - com.fasterxml.jackson.core/jackson-databind v.2.16.1
+
+### Plugins
+
+- org.apache.maven.plugins/maven-compiler-plugin v3.11.0
+- org.codehaus.mojo/exec-maven-plugin v3.1.0
+
+
+## How to Run
+
+### Set up the Database Schema in MySQL
+
+Note: the database must be named `navigation`.
+
+```shell
+# 1. Drop `navigation` database in case it exists. Will be dropped if it exists.
+mysql -u {{username}} -p{{password}} < src/resources/sql/navigation_database_drop.sql
+
+# 2. Create `navigation` database.
+mysql -u {{username}} -p{{password}} < src/resources/sql/navigation_database_creation.sql
+
+# 3. Create `navigation` schema.
+mysql -u {{username}} -p{{password}} -D airport < src/resources/sql/navigation_schema.sql
+
+```
+
+
+### Run `BaseDataLoader.class`
+
+```shell
+# Clean install dependencies
+mvn clean install
+
+# Run the `base-data-loader` profile and load all of the data
+mvn exec:java -P base-data-loader
+```
+
+### Run `Main.class`
+
+```shell
+# Run `clean install`
+mvn clean install
+
+# Run the the primary profile to run the services
+mvn exec:java
+
+```
