@@ -2,8 +2,8 @@
 
 ## Description
 
-A delivery driver needs the best paths to deliver packages. 4 fixed storages. 8 order cap.
-Destination points randomly assigned for orders.
+Two drivers need to get packages from storage warehouses and deliver them as fast as possible in an
+8-hour work day.
 
 ### Requirements
 
@@ -41,7 +41,6 @@ Destination points randomly assigned for orders.
 - org.apache.maven.plugins/maven-compiler-plugin v3.11.0
 - org.codehaus.mojo/exec-maven-plugin v3.1.0
 
-
 ## How to Run
 
 ### Set up the Database Schema in MySQL
@@ -59,7 +58,6 @@ mysql -u {{username}} -p{{password}} < src/resources/sql/navigation_database_cre
 mysql -u {{username}} -p{{password}} -D airport < src/resources/sql/navigation_schema.sql
 
 ```
-
 
 ### Run `BaseDataLoader.class`
 
