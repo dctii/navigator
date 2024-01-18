@@ -1,11 +1,11 @@
 package com.solvd.navigator.bin;
 
-public class OrderRecipients {
+public class OrderRecipient {
     private int orderRecipientId;
     private int personId;
     private int locationId;
 
-    public OrderRecipients(int orderRecipientId, int personId, int locationId) {
+    public OrderRecipient(int orderRecipientId, int personId, int locationId) {
         this.orderRecipientId = orderRecipientId;
         this.personId = personId;
         this.locationId = locationId;

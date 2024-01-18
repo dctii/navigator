@@ -1,11 +1,11 @@
 package com.solvd.navigator.bin;
 
-public class Persons {
+public class Person {
     private int personId;
     private String firstName;
     private String lastName;
 
-    public Persons(int personId, String firstName, String lastName) {
+    public Person(int personId, String firstName, String lastName) {
         this.personId = personId;
         this.firstName = firstName;
         this.lastName = lastName;

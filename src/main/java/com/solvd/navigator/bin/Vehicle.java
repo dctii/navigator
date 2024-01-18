@@ -1,6 +1,6 @@
 package com.solvd.navigator.bin;
 
-public class Vehicles {
+public class Vehicle {
     private int vehicleId;
     private int year;
     private String make;
@@ -8,7 +8,7 @@ public class Vehicles {
     private String trimLevel;
     private String licensePlateNumber;
 
-    public Vehicles(int vehicleId, int year, String make, String model, String trimLevel, String licensePlateNumber) {
+    public Vehicle(int vehicleId, int year, String make, String model, String trimLevel, String licensePlateNumber) {
         this.vehicleId = vehicleId;
         this.year = year;
         this.make = make;

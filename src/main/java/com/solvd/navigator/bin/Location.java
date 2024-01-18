@@ -1,11 +1,11 @@
 package com.solvd.navigator.bin;
 
-public class Locations {
+public class Location {
     private int locationId;
     private float coordinateX;
     private float coordinateY;
 
-    public Locations(int locationId, float coordinateX, float coordinateY) {
+    public Location(int locationId, float coordinateX, float coordinateY) {
         this.locationId = locationId;
         this.coordinateX = coordinateX;
         this.coordinateY = coordinateY;

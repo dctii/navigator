@@ -1,6 +1,6 @@
 package com.solvd.navigator.bin;
 import java.sql.Timestamp;
-public class Orders {
+public class Order {
     private int orderId;
     private String orderNumber;
     private String orderStatusId;
@@ -10,7 +10,7 @@ public class Orders {
     private int orderRecipientId;
     private int driverId;
 
-    public Orders(int orderId, String orderNumber, String orderStatusId, Timestamp orderDate, Timestamp deliveryDate, int storageId, int orderRecipientId, int driverId) {
+    public Order(int orderId, String orderNumber, String orderStatusId, Timestamp orderDate, Timestamp deliveryDate, int storageId, int orderRecipientId, int driverId) {
         this.orderId = orderId;
         this.orderNumber = orderNumber;
         this.orderStatusId = orderStatusId;

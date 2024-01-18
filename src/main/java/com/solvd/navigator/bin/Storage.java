@@ -1,11 +1,11 @@
 package com.solvd.navigator.bin;
 
-public class Storages {
+public class Storage {
     private int storageId;
     private String name;
     private int locationId;
 
-    public Storages(int storageId, String name, int locationId) {
+    public Storage(int storageId, String name, int locationId) {
         this.storageId = storageId;
         this.name = name;
         this.locationId = locationId;
