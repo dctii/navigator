@@ -21,14 +21,25 @@ public class ExceptionUtils {
         final String NO_UTILITY_CLASS_INSTANTIATION_MESSAGE =
                 "This is a utility class and instances cannot be made of it.";
 
-        throw new UnsupportedOperationException(NO_UTILITY_CLASS_INSTANTIATION_MESSAGE);
+        preventClassInstantiation(NO_UTILITY_CLASS_INSTANTIATION_MESSAGE);
+    }
+
+    public static void preventFactoryInstantiation() {
+        final String NO_FACTORY_CLASS_INSTANTIATION_MESSAGE =
+                "This is a factory class and instances cannot be made of it.";
+
+        preventClassInstantiation(NO_FACTORY_CLASS_INSTANTIATION_MESSAGE);
     }
 
     public static void preventConstantsInstantiation() {
         final String NO_CONSTANTS_INSTANTIATION_MESSAGE =
                 "This is a constants class and instances cannot be made of it.";
 
-        throw new UnsupportedOperationException(NO_CONSTANTS_INSTANTIATION_MESSAGE);
+        preventClassInstantiation(NO_CONSTANTS_INSTANTIATION_MESSAGE);
+    }
+
+    public static void preventClassInstantiation(String instantiationNotAllowedMessage) {
+        throw new UnsupportedOperationException(instantiationNotAllowedMessage);
     }
 
 
