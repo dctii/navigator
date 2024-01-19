@@ -61,6 +61,26 @@ public class BooleanUtils {
         return Objects.equals(object1, object2);
     }
 
+    public static boolean areCoordinatesWithinRange(
+            Double[] coordinates,
+            Double[] coordinatesRange
+    ) {
+        if (coordinatesRange.length % 2 != 0) {
+            throw new IllegalArgumentException("coordinatesRange array must have an even length");
+        }
+
+        if (coordinates.length * 2 != coordinatesRange.length) {
+            throw new IllegalArgumentException("coordinates array length must be half of coordinatesRange array length");
+        }
+
+        return allMatchInArray(coordinates, value -> {
+            int i = Arrays.asList(coordinates).indexOf(value);
+            double min = Math.min(coordinatesRange[i], coordinatesRange[i + 1]);
+            double max = Math.max(coordinatesRange[i], coordinatesRange[i + 1]);
+            return value >= min && value <= max;
+        });
+    }
+
     public static <K, V> boolean containsKeyWithPredicate(Map<K, V> map, K key) {
         return map != null && map.containsKey(key);
     }
@@ -137,7 +157,6 @@ public class BooleanUtils {
     public static boolean areDoublesNan(Double... values) {
         return allMatchInArray(values, BooleanUtils::isDoubleNaN);
     }
-
 
 
     private BooleanUtils() {
