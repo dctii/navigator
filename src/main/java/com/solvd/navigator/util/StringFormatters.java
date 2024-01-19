@@ -4,14 +4,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Locale;
 import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class StringFormatters {
@@ -227,7 +224,6 @@ public class StringFormatters {
                 + StringConstants.DASH_STRING + datetime.getYear();
 
     }
-
 
 
     private StringFormatters() {
