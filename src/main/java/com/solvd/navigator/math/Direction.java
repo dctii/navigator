@@ -52,7 +52,6 @@ public class Direction extends Coordinate {
         }
     }
 
-    // Override toString
     @Override
     public String toString() {
         Class<?> currClass = Direction.class;
