@@ -1,6 +1,6 @@
 package com.solvd.navigator.math;
 
-import com.solvd.navigator.exception.InvalidPointException;
+import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.exception.InvalidVertexException;
 import com.solvd.navigator.exception.PointTypeIsNullException;
 import com.solvd.navigator.util.BooleanUtils;
@@ -13,17 +13,17 @@ public class Vertex {
 
     private String vertexId;
     private String vertexName;
-    private Point coordinates;
+    private Point point;
 
     public Vertex() {
     }
 
-    public Vertex(String vertexId, Point coordinates) {
+    public Vertex(String vertexId, Point point) {
         if (BooleanUtils.isBlankString(vertexId)) {
             throw new InvalidVertexException("Vertex identifier must not be null or empty.");
         }
         this.vertexId = vertexId;
-        this.coordinates = coordinates;
+        this.point = point;
     }
 
     public Vertex(String vertexId, double x, double y) {
@@ -31,16 +31,16 @@ public class Vertex {
             throw new InvalidVertexException("Vertex identifier must not be null or empty.");
         }
         this.vertexId = vertexId;
-        this.coordinates = new Point(x, y);
+        this.point = new Point(x, y);
     }
 
-    public Vertex(String vertexId, String name, Point coordinates) {
+    public Vertex(String vertexId, String name, Point point) {
         if (BooleanUtils.isBlankString(vertexId)) {
             throw new InvalidVertexException("Vertex identifier must not be null or empty.");
         }
         this.vertexId = vertexId;
         this.vertexName = name;
-        this.coordinates = coordinates;
+        this.point = point;
     }
 
     public Vertex(String vertexId, String name, double x, double y) {
@@ -49,7 +49,7 @@ public class Vertex {
         }
         this.vertexId = vertexId;
         this.vertexName = name;
-        this.coordinates = new Point(x, y);
+        this.point = new Point(x, y);
     }
 
     public Vertex(String vertexId) {
@@ -78,30 +78,34 @@ public class Vertex {
         this.vertexName = vertexName;
     }
 
-    public Point getCoordinates() {
-        return coordinates;
+    public Point getPoint() {
+        return point;
     }
 
     public String getCoordinatesString() {
-        if (coordinates != null) {
-            return coordinates.getCoordinatesString();
-        } else {
-            throw new InvalidPointException("To get coordinates string, this Vertex's 'Point coordinates' cannot be null");
+        if (point == null) {
+            throw new InvalidCoordinatesException("To get coordinates string, the 'Point' object in this Vertex cannot be null.");
         }
+
+        if (BooleanUtils.areDoublesNan(point.getX(), point.getY())) {
+            throw new InvalidCoordinatesException("To get coordinates string, the 'Point' object in this Vertex must have valid coordinates.");
+        }
+
+        return point.getCoordinatesString();
 
     }
 
-    public void setCoordinates(Point coordinates) {
+    public void setPoint(Point point) {
 
-        this.coordinates = coordinates;
+        this.point = point;
     }
 
     public void setCoordinates(double x, double y) {
-        if (coordinates != null) {
-            coordinates.setCoordinates(x, y);
+        if (point != null) {
+            point.setCoordinates(x, y);
         } else {
             final String POINT_TYPE_IS_NULL_EXCEPTION_MSG =
-                    "'Point coordinates' field of this Vertex cannot set coordinates 'x' and 'y' if null";
+                    "'Point point' field of this Vertex cannot set point 'x' and 'y' if null";
             LOGGER.error(POINT_TYPE_IS_NULL_EXCEPTION_MSG);
             throw new PointTypeIsNullException(POINT_TYPE_IS_NULL_EXCEPTION_MSG);
         }
@@ -128,7 +132,7 @@ public class Vertex {
         String[] fieldNames = {
                 "vertexId",
                 "vertexName",
-                "coordinates"
+                "point"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
