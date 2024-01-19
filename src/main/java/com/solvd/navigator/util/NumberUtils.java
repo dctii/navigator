@@ -30,6 +30,12 @@ public class NumberUtils {
         }
     }
 
+    public static double roundToScale(double number, int scale) {
+        BigDecimal bd = BigDecimal.valueOf(number);
+        bd = bd.setScale(scale, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
     public static BigDecimal ensureBigDecimal(Number value) {
         BigDecimal bigDecimalValue;
         if (value instanceof BigDecimal) {
