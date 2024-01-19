@@ -3,7 +3,10 @@ package com.solvd.navigator.math;
 import com.solvd.navigator.exception.InvalidAbscissaException;
 import com.solvd.navigator.exception.InvalidOrdinateException;
 import com.solvd.navigator.exception.InvalidPointException;
+import com.solvd.navigator.util.NumberUtils;
+import com.solvd.navigator.util.StringConstants;
 import com.solvd.navigator.util.StringFormatters;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,7 +32,7 @@ public class Point {
             throw new InvalidAbscissaException("Abscissa, 'x', out of valid range.");
         }
 
-        this.x = x;
+        this.x = NumberUtils.roundToScale(x, 2);
     }
 
     public double getY() {
@@ -41,7 +44,17 @@ public class Point {
             throw new InvalidOrdinateException("Ordinate, 'y', out of valid range.");
         }
 
-        this.y = y;
+        this.y = NumberUtils.roundToScale(y, 2);
+    }
+
+    public String getCoordinatesString() {
+        return StringFormatters.nestInCurlyBraces(
+                StringUtils.joinWith(
+                        StringConstants.COMMA_DELIMITER,
+                        this.x,
+                        this.y
+                )
+        );
     }
 
     public void setCoordinates(double x, double y) {
@@ -49,9 +62,11 @@ public class Point {
         if (x < 0 || y < 0) {
             throw new InvalidPointException("Coordinates out of valid range.");
         }
-        this.x = x;
-        this.y = y;
+
+        this.x = NumberUtils.roundToScale(x, 0);
+        this.y = NumberUtils.roundToScale(y, 0);
     }
+
 
     @Override
     public boolean equals(Object o) {
