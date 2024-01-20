@@ -3,17 +3,18 @@ import java.sql.Timestamp;
 public class Order {
     private int orderId;
     private String orderNumber;
-    private String orderStatusId;
+    private String orderStatus;
     private Timestamp orderDate;
     private Timestamp deliveryDate;
     private int storageId;
     private int orderRecipientId;
     private int driverId;
 
-    public Order(int orderId, String orderNumber, String orderStatusId, Timestamp orderDate, Timestamp deliveryDate, int storageId, int orderRecipientId, int driverId) {
+
+    public Order(int orderId, String orderNumber, String orderStatus, Timestamp orderDate, Timestamp deliveryDate, int storageId, int orderRecipientId, int driverId) {
         this.orderId = orderId;
         this.orderNumber = orderNumber;
-        this.orderStatusId = orderStatusId;
+        this.orderStatus = orderStatus;
         this.orderDate = orderDate;
         this.deliveryDate = deliveryDate;
         this.storageId = storageId;
@@ -37,12 +38,12 @@ public class Order {
         this.orderNumber = orderNumber;
     }
 
-    public String getOrderStatusId() {
-        return orderStatusId;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setOrderStatusId(String orderStatusId) {
-        this.orderStatusId = orderStatusId;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public Timestamp getOrderDate() {
@@ -87,10 +88,10 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Orders{" +
+        return "Order{" +
                "orderId=" + orderId +
                ", orderNumber='" + orderNumber + '\'' +
-               ", orderStatusId='" + orderStatusId + '\'' +
+               ", orderStatus='" + orderStatus + '\'' +
                ", orderDate=" + orderDate +
                ", deliveryDate=" + deliveryDate +
                ", storageId=" + storageId +
@@ -98,5 +99,4 @@ public class Order {
                ", driverId=" + driverId +
                '}';
     }
-
 }
