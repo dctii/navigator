@@ -11,9 +11,10 @@ import java.sql.SQLException;
 
 public class VehicleDAO {
 
-    public static final Logger LOGGER = (Logger) LogManager.getLogger(VehicleDAO.class);
+    private static final Logger LOGGER = (Logger) LogManager.getLogger(VehicleDAO.class);
     private static final String VehicleSQL = "INSERT INTO navigator.vehicle(vehicle_id,year,make,model,trim_level,license_plate_number) VALUES (?,?,?,?,?,?)";
     private Connection dbConnection;
+
     public void addVehicle(Vehicle vehicle) {
         try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
              PreparedStatement preparedStatement = dbConnection.prepareStatement(VehicleSQL)) {
@@ -23,10 +24,9 @@ public class VehicleDAO {
             preparedStatement.setString(4, vehicle.getModel());
             preparedStatement.setString(5, vehicle.getTrimLevel());
             preparedStatement.setString(6, vehicle.getLicensePlateNumber());
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        }
-        finally {
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
     }
