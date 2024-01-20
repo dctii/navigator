@@ -30,6 +30,26 @@ public class NumberUtils {
         }
     }
 
+    public static double roundToScale(double number, int scale) {
+        BigDecimal bd = BigDecimal.valueOf(number);
+        bd = bd.setScale(scale, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public static double roundToScale(int number, int scale) {
+        BigDecimal bd = BigDecimal.valueOf(number);
+        bd = bd.setScale(scale, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
+    public static double parseDoubleOrNaN(String s) {
+        try {
+            return Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            return Double.NaN;
+        }
+    }
+
     public static BigDecimal ensureBigDecimal(Number value) {
         BigDecimal bigDecimalValue;
         if (value instanceof BigDecimal) {

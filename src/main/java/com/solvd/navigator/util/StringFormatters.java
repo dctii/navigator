@@ -19,7 +19,7 @@ public class StringFormatters {
         int firstCharPosition = 1;
         int lastCharPosition = stringLength - 1;
 
-        if (BooleanUtils.isNotBlankOrEmptyString(string) && stringLength > 1) {
+        if (BooleanUtils.isNotBlankString(string) && stringLength > 1) {
 
             // returns the string without its first and last character
             return StringUtils
@@ -151,7 +151,7 @@ public class StringFormatters {
         if (fieldNames.length != 0) {
             // check if parentToString is empty after cleaning, if so, do not use delimiter
             String finalToStringBody;
-            if (BooleanUtils.isBlankOrEmptyString(parentToString)) {
+            if (BooleanUtils.isBlankString(parentToString)) {
                 finalToStringBody = fieldsString;
             } else {
                 finalToStringBody = parentToString
@@ -163,7 +163,7 @@ public class StringFormatters {
 
         } else {
 
-            if (BooleanUtils.isBlankOrEmptyString(parentToString)) {
+            if (BooleanUtils.isBlankString(parentToString)) {
                 return buildToString(currClass);
             } else {
                 return buildToString(currClass, parentToString);

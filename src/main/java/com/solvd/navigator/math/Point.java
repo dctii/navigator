@@ -1,81 +1,138 @@
 package com.solvd.navigator.math;
 
 import com.solvd.navigator.exception.InvalidAbscissaException;
+import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.exception.InvalidOrdinateException;
-import com.solvd.navigator.exception.InvalidPointException;
+import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class Point {
+public class Point extends Coordinate {
     private static final Logger LOGGER = LogManager.getLogger(Point.class);
-    private double x;
-    private double y;
+
+    private String pointLabel;
 
     public Point() {
+        super();
     }
 
     public Point(double x, double y) {
-        setCoordinates(x, y);
+        super(x, y);
     }
 
-    // Getters and Setters
-    public double getX() {
-        return x;
+    public Point(double x, double y, String pointLabel) {
+        super(x, y);
+
+        if (BooleanUtils.isBlankString(pointLabel)) {
+            LOGGER.error("String for 'pointLabel' cannot be empty or null to set");
+            throw new IllegalArgumentException("String for 'pointLabel' cannot be empty or null to set");
+        }
+
+        this.pointLabel = pointLabel;
     }
 
+    public Point(int x, int y) {
+        super(x, y);
+    }
+
+    public Point(int x, int y, String pointLabel) {
+        super(x, y);
+
+        if (BooleanUtils.isBlankString(pointLabel)) {
+            LOGGER.error("String for 'pointLabel' cannot be empty or null to set");
+            throw new IllegalArgumentException("String for 'pointLabel' cannot be empty or null to set");
+        }
+
+        this.pointLabel = pointLabel;
+    }
+
+    public Point(String xString, String yString) {
+        super(xString, yString);
+    }
+
+    public Point(String xString, String yString, String pointLabel) {
+        super(xString, yString);
+
+        if (BooleanUtils.isBlankString(pointLabel)) {
+            LOGGER.error("String for 'pointLabel' cannot be empty or null to set");
+            throw new IllegalArgumentException("String for 'pointLabel' cannot be empty or null to set");
+        }
+
+        this.pointLabel = pointLabel;
+    }
+
+    @Override
     public void setX(double x) {
         if (x < 0) {
-            throw new InvalidAbscissaException("Abscissa, 'x', out of valid range.");
+            throw new InvalidAbscissaException("Abscissa, 'x', out of valid range for Point.");
         }
-
-        this.x = x;
+        super.setX(x);
     }
 
-    public double getY() {
-        return y;
-    }
-
+    @Override
     public void setY(double y) {
         if (y < 0) {
-            throw new InvalidOrdinateException("Ordinate, 'y', out of valid range.");
+            throw new InvalidOrdinateException("Ordinate, 'y', out of valid range for this Point.");
         }
 
-        this.y = y;
+        super.setY(y);
     }
 
+    @Override
     public void setCoordinates(double x, double y) {
         // integers for 'x' and 'y' kept unsigned for the purposes of this project
         if (x < 0 || y < 0) {
-            throw new InvalidPointException("Coordinates out of valid range.");
+            throw new InvalidCoordinatesException("Coordinates out of valid range.");
         }
-        this.x = x;
-        this.y = y;
+
+        super.setCoordinates(x, y);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Point point = (Point) o;
-        return Double.compare(point.x, x) == 0 &&
-                Double.compare(point.y, y) == 0;
+    public void setCoordinates(int x, int y) {
+        if (x < 0 || y < 0) {
+            throw new InvalidCoordinatesException("Coordinates out of valid range.");
+        }
+
+        super.setCoordinates(x, y);
     }
 
     @Override
-    public int hashCode() {
-        return java.util.Objects.hash(x, y);
+    public void setCoordinates(String xString, String yString) {
+        try {
+            double x = Double.parseDouble(xString);
+            double y = Double.parseDouble(yString);
+
+            if (x < 0 || y < 0) {
+                throw new InvalidCoordinatesException("Coordinates out of valid range.");
+            }
+
+            super.setCoordinates(x, y);
+
+        } catch (NumberFormatException e) {
+            throw new InvalidCoordinatesException("Invalid format for coordinates.");
+        }
+    }
+
+    public String getPointLabel() {
+        return pointLabel;
+    }
+
+    public void setPointLabel(String pointLabel) {
+        this.pointLabel = pointLabel;
     }
 
     @Override
     public String toString() {
-        Class<?> currClass = Vertex.class;
+        Class<?> currClass = Point.class;
         String[] fieldNames = {
-                "x",
-                "y"
+                "pointLabel"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
         return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
+
+
 }
