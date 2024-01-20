@@ -135,7 +135,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `navigation`.`orders` (
   `order_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `order_number` VARCHAR(75) NULL,
-  `order_status_id` VARCHAR(45) NULL,
+  `order_status` VARCHAR(45) NULL,
   `order_date` DATETIME NULL,
   `delivery_date` DATETIME NULL,
   `storage_id` INT UNSIGNED NULL COMMENT 'The origin location of the order.',
