@@ -8,7 +8,9 @@ import com.solvd.navigator.exception.InvalidEdgeException;
 import com.solvd.navigator.exception.InvalidVertexException;
 import com.solvd.navigator.exception.VertexNotFoundException;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.StringConstants;
 import com.solvd.navigator.util.StringFormatters;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class WeightedGraph implements Graph {
+public class WeightedGraph implements IGraph {
     private static final Logger LOGGER = LogManager.getLogger(WeightedGraph.class);
     private final Map<String, Vertex> vertices;
     private final Map<String, List<Edge>> adjacencyList;
@@ -79,28 +81,47 @@ public class WeightedGraph implements Graph {
     }
 
 
-    @Override
     public void addVertex(String vertexId, String vertexName, Point coordinates) {
         Vertex newVertex = new Vertex(vertexId, vertexName, coordinates);
         addVertex(newVertex);
     }
 
-    @Override
     public void addVertex(String vertexId, String vertexName, double x, double y) {
         Vertex newVertex = new Vertex(vertexId, vertexName, x, y);
         addVertex(newVertex);
     }
 
-    @Override
     public void addVertex(String vertexId, Point coordinates) {
         Vertex newVertex = new Vertex(vertexId, coordinates);
         addVertex(new Vertex(vertexId, coordinates));
     }
 
-    @Override
     public void addVertex(String vertexId, double x, double y) {
         Vertex newVertex = new Vertex(vertexId, x, y);
         addVertex(newVertex);
+    }
+
+    @Override
+    public boolean removeVertex(String vertexId) {
+        if (BooleanUtils.isBlankString(vertexId)) {
+            LOGGER.error("Vertex ID must not be blank.");
+            return false;
+        }
+
+        Vertex vertex = vertices.get(vertexId);
+        if (BooleanUtils.isInvalidVertex(vertex)) {
+            LOGGER.warn("Cannot remove a vertex that does not exist.");
+            return false;
+        }
+        // removal of the edges associated with this vertex in other lists
+        adjacencyList.values().forEach(list -> list.removeIf(edge ->
+                edge.getVertex1().equals(vertex) || edge.getVertex2().equals(vertex)
+        ));
+
+        // remove the vertex
+        adjacencyList.remove(vertexId);
+        vertices.remove(vertexId);
+        return true;
     }
 
     @Override
@@ -189,30 +210,7 @@ public class WeightedGraph implements Graph {
         );
     }
 
-
-    public boolean removeVertex(String vertexId) {
-        if (BooleanUtils.isBlankString(vertexId)) {
-            LOGGER.error("Vertex ID must not be blank.");
-            return false;
-        }
-
-        Vertex vertex = vertices.get(vertexId);
-        if (vertex == null) {
-            LOGGER.warn("Cannot remove a vertex that does not exist.");
-            return false;
-        }
-        // removal of the edges associated with this vertex in other lists
-        adjacencyList.values().forEach(list -> list.removeIf(edge ->
-                edge.getVertex1().equals(vertex) || edge.getVertex2().equals(vertex)
-        ));
-
-        // remove the vertex
-        adjacencyList.remove(vertexId);
-        vertices.remove(vertexId);
-        return true;
-    }
-
-
+    @Override
     public boolean removeEdge(String vertexId1, String vertexId2) {
         if (BooleanUtils.areAnyStringsBlank(vertexId1, vertexId2)) {
             LOGGER.error("Vertex IDs must not be blank.");
@@ -259,6 +257,33 @@ public class WeightedGraph implements Graph {
             throw new VertexNotFoundException("Vertex does not exist.");
         }
         return new ArrayList<>(adjacencyList.get(vertexId));
+    }
+
+    @Override
+    public void printGraph() {
+        LOGGER.info("Printing Graph: ");
+        getVertices().forEach(vertexId -> {
+            Vertex vertex = getVertex(vertexId);
+            LOGGER.info("Vertex: " + vertexId + ", Coordinates: " + vertex.getCoordinatesString());
+
+            // shows all outgoing edges from this vertex
+            getEdges(vertexId).forEach(edge -> {
+                if (edge.getVertex1().equals(vertex)) {
+                    Vertex otherVertex = edge.getVertex2();
+                    String edgeString = "Edge " + edge.getEdgeId() + " to:";
+                    String weightString = StringFormatters.nestInParentheses("Weight: " + edge.getWeight());
+                    LOGGER.info(
+                            " -> " + StringUtils.joinWith(
+                                    StringConstants.SINGLE_WHITESPACE,
+                                    edgeString,
+                                    otherVertex.getVertexId(),
+                                    otherVertex.getCoordinatesString(),
+                                    weightString
+                            )
+                    );
+                }
+            });
+        });
     }
 
 
