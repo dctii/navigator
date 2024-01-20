@@ -8,65 +8,6 @@ import java.util.stream.IntStream;
 
 public class GraphUtils {
 
-    public static String calculateVertexId(int x, int y, int coordinateMax) {
-        int yShift = y * (coordinateMax + 1);
-        int xOffset = x + 1;
-        int vertexIndex = yShift + xOffset;
-
-        return String.format("V%d", vertexIndex);
-    }
-
-    public static void connectToNeighbors(
-            WeightedGraph graph,
-            double x,
-            double y,
-            double coordinateMax,
-            String vertexId
-    ) {
-        Direction[] directions = {
-                new Direction.Builder().x(-1.00).y(-1.00).build(), // diagonal left-down
-                new Direction.Builder().x(-1.00).y(0.00).build(),  // horizontal left
-                new Direction.Builder().x(-1.00).y(1.00).build(),  // diagonal left-up
-                new Direction.Builder().x(0.00).y(-1.00).build(),  // vertical down
-                new Direction.Builder().x(0.00).y(1.00).build(),   // vertical up
-                new Direction.Builder().x(1.00).y(-1.00).build(),  // diagonal right-down
-                new Direction.Builder().x(1.00).y(0.00).build(),   // horizontal right
-                new Direction.Builder().x(1.00).y(1.00).build()    // diagonal right-up
-        };
-
-        double minX, minY, maxX, maxY;
-        minX = minY = 0.0;
-        maxX = maxY = coordinateMax;
-
-        Double[] coordinatesRange = {minX, maxX, minY, maxY};
-
-        Arrays.stream(directions)
-                .map(direction -> {
-                    // calculate new relative coordinates
-                    double newX = x + direction.getX();
-                    double newY = y + direction.getY();
-                    return new Double[]{newX, newY};
-                })
-                .filter(newCoordinates -> {
-                    // check if the new coordinates are within the graph's bounds
-                    return BooleanUtils.areCoordinatesWithinRange(newCoordinates, coordinatesRange);
-                })
-                .map(newCoordinates -> {
-                    // generate a vertexId for the coordinates
-                    double newX = newCoordinates[0];
-                    double newY = newCoordinates[1];
-                    return calculateVertexId(
-                            (int) newX,
-                            (int) newY,
-                            (int) coordinateMax
-                    );
-                })
-                .forEach(neighborId -> {
-                    // add edges between the current vertex and its neighbor
-                    graph.addEdge(vertexId, neighborId, 1); // set weight to 1 for all
-                });
-    }
-
     public static WeightedGraph generateFixedPositionGraph(int coordinateMax) {
         WeightedGraph graph = new WeightedGraph();
 
@@ -138,6 +79,65 @@ public class GraphUtils {
                         })
         );
         return graph;
+    }
+
+    public static void connectToNeighbors(
+            WeightedGraph graph,
+            double x,
+            double y,
+            double coordinateMax,
+            String vertexId
+    ) {
+        Direction[] directions = {
+                new Direction.Builder().x(-1.00).y(-1.00).build(), // diagonal left-down
+                new Direction.Builder().x(-1.00).y(0.00).build(),  // horizontal left
+                new Direction.Builder().x(-1.00).y(1.00).build(),  // diagonal left-up
+                new Direction.Builder().x(0.00).y(-1.00).build(),  // vertical down
+                new Direction.Builder().x(0.00).y(1.00).build(),   // vertical up
+                new Direction.Builder().x(1.00).y(-1.00).build(),  // diagonal right-down
+                new Direction.Builder().x(1.00).y(0.00).build(),   // horizontal right
+                new Direction.Builder().x(1.00).y(1.00).build()    // diagonal right-up
+        };
+
+        double minX, minY, maxX, maxY;
+        minX = minY = 0.0;
+        maxX = maxY = coordinateMax;
+
+        Double[] coordinatesRange = {minX, maxX, minY, maxY};
+
+        Arrays.stream(directions)
+                .map(direction -> {
+                    // calculate new relative coordinates
+                    double newX = x + direction.getX();
+                    double newY = y + direction.getY();
+                    return new Double[]{newX, newY};
+                })
+                .filter(newCoordinates ->
+                        // check if the new coordinates are within the graph's bounds
+                        BooleanUtils.areCoordinatesWithinRange(newCoordinates, coordinatesRange)
+                )
+                .map(newCoordinates -> {
+                    // generate a vertexId for the coordinates
+                    double newX = newCoordinates[0];
+                    double newY = newCoordinates[1];
+                    return calculateVertexId(
+                            (int) newX,
+                            (int) newY,
+                            (int) coordinateMax
+                    );
+                })
+                .forEach(neighborId -> {
+                    // add edges between the current vertex and its neighbor
+                    graph.addEdge(vertexId, neighborId, 1); // set weight to 1 for all
+                });
+    }
+
+    public static String calculateVertexId(int x, int y, int coordinateMax) {
+        int yShift = y * (coordinateMax + 1);
+        int xOffset = x + 1;
+        int vertexIndex = yShift + xOffset;
+
+        return String.format("V%d", vertexIndex);
     }
 
 
