@@ -1,0 +1,18 @@
+[
+  {
+    "vehicleId": 1,
+    "year": 2022,
+    "make": "Ford",
+    "model": "E-Transit",
+    "trimLevel": "Cargo Van",
+    "licensePlateNumber": "DLIVRY1"
+  },
+  {
+    "vehicleId": 2,
+    "year": 2024,
+    "make": "Ram",
+    "model": "ProMaster 1500",
+    "trimLevel": "SLT",
+    "licensePlateNumber": "DLIVRY2"
+  }
+]
