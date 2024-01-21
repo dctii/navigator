@@ -89,14 +89,10 @@ public class GraphUtils {
             String vertexId
     ) {
         Direction[] directions = {
-                new Direction.Builder().x(-1.00).y(-1.00).build(), // diagonal left-down
                 new Direction.Builder().x(-1.00).y(0.00).build(),  // horizontal left
-                new Direction.Builder().x(-1.00).y(1.00).build(),  // diagonal left-up
                 new Direction.Builder().x(0.00).y(-1.00).build(),  // vertical down
                 new Direction.Builder().x(0.00).y(1.00).build(),   // vertical up
-                new Direction.Builder().x(1.00).y(-1.00).build(),  // diagonal right-down
-                new Direction.Builder().x(1.00).y(0.00).build(),   // horizontal right
-                new Direction.Builder().x(1.00).y(1.00).build()    // diagonal right-up
+                new Direction.Builder().x(1.00).y(0.00).build()   // horizontal right
         };
 
         double minX, minY, maxX, maxY;
