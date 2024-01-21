@@ -10,6 +10,7 @@ public class Driver {
         this.employeeId = builder.employeeId;
         this.vehicleId = builder.vehicleId;
     }
+
     public int getDriverId() {
         return driverId;
     }
@@ -49,3 +50,4 @@ public class Driver {
             return new Driver(this);
         }
     }
+}
