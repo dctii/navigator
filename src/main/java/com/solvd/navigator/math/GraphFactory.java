@@ -11,7 +11,7 @@ public class GraphFactory {
     private static final String INVALID_GRAPH_TYPE_MSG =
             "That GraphType does not exist. Types: GraphType.WEIGHTED_UNDIRECTED";
 
-    public static Graph createGraph(GraphType graphType) {
+    public static IGraph createGraph(GraphType graphType) {
         switch (graphType) {
             case WEIGHTED_UNDIRECTED:
                 return new WeightedGraph();
@@ -21,7 +21,7 @@ public class GraphFactory {
         }
     }
 
-    public static Graph createGraph(GraphType graphType, int coordinateMax) {
+    public static IGraph createGraph(GraphType graphType, int coordinateMax) {
         switch (graphType) {
             case WEIGHTED_UNDIRECTED:
                 return GraphUtils.generateFixedPositionGraph(coordinateMax);
