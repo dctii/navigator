@@ -1,4 +1,4 @@
-package com.solvd.navigator.dao;
+package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Vehicle;
 import com.solvd.navigator.util.DBConnectionPool;
