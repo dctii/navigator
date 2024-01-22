@@ -2,46 +2,51 @@ package com.solvd.navigator.dao;
 
 import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.util.DBConnectionPool;
+import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class LocationDAO implements AbstractDAO<Location> {
     private static final Logger LOGGER = (Logger) LogManager.getLogger(DriverDAO.class);
-    private static final String CREATE_LOCATION = "INSERT INTO locations (location_id, coordinate_x, coordinate_y)" + "VALUES (?,?,?)";
+    private static final String CREATE_LOCATION = "INSERT INTO locations (coordinate_x, coordinate_y)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM locations WHERE location_id = ?";
     private static final String UPDATE_QUERY = "UPDATE locations SET coordinate_x=?, coordinate_y=? WHERE location_id=?";
     private static final String DELETE_QUERY = "DELETE FROM locations WHERE location_id=?";
+    private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
-    private Connection dbConnection;
 
 
     @Override
     public int create(Location location) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(CREATE_LOCATION)) {
-            preparedStatement.setInt(1, location.getLocationId());
-            preparedStatement.setFloat(2, location.getCoordinateX());
-            preparedStatement.setFloat(3, location.getCoordinateY());
+        Connection dbConnection = connectionPool.getConnection();
+        int newLocationId = 0;
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(
+                     CREATE_LOCATION,
+                     Statement.RETURN_GENERATED_KEYS)
+        ) {
+            preparedStatement.setFloat(1, location.getCoordinateX());
+            preparedStatement.setFloat(2, location.getCoordinateY());
             LOGGER.info("Row inserted into DB");
-            return preparedStatement.executeUpdate();
+            SQLUtils.updateAndSetGeneratedId(preparedStatement, location::setLocationId);
         }
         catch (SQLException e) {
             throw new RuntimeException("Error adding location to the database",e);
         } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
+        return newLocationId;
     }
 
     @Override
     public Location getById(int locationId) {
+        Connection dbConnection = connectionPool.getConnection();
         Location location = null;
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_BY_ID_QUERY)) {
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_BY_ID_QUERY)
+        ) {
             preparedStatement.setInt(1, locationId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -64,8 +69,10 @@ public class LocationDAO implements AbstractDAO<Location> {
 
     @Override
     public void update(Location location) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_QUERY)) {
+        Connection dbConnection = connectionPool.getConnection();
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_QUERY)
+        ) {
             preparedStatement.setFloat(1, location.getCoordinateX());
             preparedStatement.setFloat(2, location.getCoordinateY());
             preparedStatement.setInt(3, location.getLocationId());
@@ -80,8 +87,10 @@ public class LocationDAO implements AbstractDAO<Location> {
 
     @Override
     public void delete(int locationId) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_QUERY)) {
+        Connection dbConnection = connectionPool.getConnection();
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_QUERY)
+        ) {
             preparedStatement.setInt(1, locationId);
             LOGGER.info("Row deleted from DB: Location ID - " + locationId);
             preparedStatement.executeUpdate();

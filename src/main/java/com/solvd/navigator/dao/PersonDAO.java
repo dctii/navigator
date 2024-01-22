@@ -2,46 +2,52 @@ package com.solvd.navigator.dao;
 
 import com.solvd.navigator.bin.Person;
 import com.solvd.navigator.util.DBConnectionPool;
+import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PersonDAO implements AbstractDAO<Person> {
     private static final Logger LOGGER = (Logger) LogManager.getLogger(PersonDAO.class);
 
-    private static final String CREATE_PERSON = "INSERT INTO persons (person_id, first_name, last_name)" + "VALUES (?,?,?)";
+    private static final String CREATE_PERSON = "INSERT INTO persons (first_name, last_name)" + "VALUES (?,?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM persons WHERE person_id = ?";
     private static final String UPDATE_QUERY = "UPDATE persons SET first_name=?, last_name=? WHERE person_id=?";
     private static final String DELETE_QUERY = "DELETE FROM persons WHERE person_id=?";
+    private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
-    private Connection dbConnection;
 
 
     @Override
     public int create(Person person) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(CREATE_PERSON)) {
+        Connection dbConnection = connectionPool.getConnection();
+        int newPersonId = 0;
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(
+                     CREATE_PERSON,
+                     Statement.RETURN_GENERATED_KEYS)
+        ) {
             preparedStatement.setInt(1, person.getPersonId());
             preparedStatement.setString(2, person.getFirstName());
             preparedStatement.setString(3,person.getLastName());
             LOGGER.info("Row inserted into db");
-            return preparedStatement.executeUpdate();
+            SQLUtils.updateAndSetGeneratedId(preparedStatement, person::setPersonId);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
+        return newPersonId;
     }
 
     @Override
     public Person getById(int personId) {
+        Connection dbConnection = connectionPool.getConnection();
         Person person = null;
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_BY_ID_QUERY)) {
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_BY_ID_QUERY)
+        ) {
             preparedStatement.setInt(1, personId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -64,8 +70,10 @@ public class PersonDAO implements AbstractDAO<Person> {
 
     @Override
     public void update(Person person) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_QUERY)) {
+        Connection dbConnection = connectionPool.getConnection();
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_QUERY)
+        ) {
             preparedStatement.setString(1, person.getFirstName());
             preparedStatement.setString(2, person.getLastName());
             preparedStatement.setInt(3, person.getPersonId());
@@ -80,8 +88,10 @@ public class PersonDAO implements AbstractDAO<Person> {
 
     @Override
     public void delete(int personId) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_QUERY)) {
+        Connection dbConnection = connectionPool.getConnection();
+        try (
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_QUERY)
+        ) {
             preparedStatement.setInt(1, personId);
             LOGGER.info("Row deleted from DB: Person ID - " + personId);
             preparedStatement.executeUpdate();

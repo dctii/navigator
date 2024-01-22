@@ -23,6 +23,7 @@ public class Driver {
         return vehicleId;
     }
 
+
     // Builder class
     public static class Builder {
         private int driverId;
