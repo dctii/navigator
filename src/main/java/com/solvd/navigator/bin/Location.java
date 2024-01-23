@@ -9,6 +9,10 @@ public class Location {
 
     }
 
+    public Location(int locationId) {
+        this.locationId = locationId;
+    }
+
     public Location(int locationId, float coordinateX, float coordinateY) {
         this.locationId = locationId;
         this.coordinateX = coordinateX;
