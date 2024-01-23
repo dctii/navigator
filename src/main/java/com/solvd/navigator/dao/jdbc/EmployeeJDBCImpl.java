@@ -33,7 +33,7 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
             preparedStatement.setString(1, employee.getRole());
             preparedStatement.setInt(2, employee.getPersonId());
             LOGGER.info("Row inserted into DB");
-            SQLUtils.updateAndSetGeneratedId(preparedStatement, employee::setEmployeeID);
+            SQLUtils.updateAndSetGeneratedId(preparedStatement, employee::setEmployeeId);
         } catch (SQLException e) {
             throw new RuntimeException("Error adding Employee to database.", e);
         } finally {
@@ -77,8 +77,8 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
         ) {
             preparedStatement.setString(1, employee.getRole());
             preparedStatement.setInt(2, employee.getPersonId());
-            preparedStatement.setInt(3, employee.getEmployeeID());
-            LOGGER.info("Row updated in DB: Employee ID - " + employee.getEmployeeID());
+            preparedStatement.setInt(3, employee.getEmployeeId());
+            LOGGER.info("Row updated in DB: Employee ID - " + employee.getEmployeeId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error updating employee in the database", e);
