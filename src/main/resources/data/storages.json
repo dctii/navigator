@@ -1,0 +1,22 @@
+[
+  {
+    "storageId": 1,
+    "name": "Warehouse Alpha",
+    "locationId": 28
+  },
+  {
+    "storageId": 2,
+    "name": "Warehouse Beta",
+    "locationId": 52
+  },
+  {
+    "storageId": 3,
+    "name": "Warehouse Gamma",
+    "locationId": 70
+  },
+  {
+    "storageId": 4,
+    "name": "Warehouse Delta",
+    "locationId": 88
+  }
+]
