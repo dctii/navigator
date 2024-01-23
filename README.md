@@ -69,6 +69,17 @@ mvn clean install
 mvn exec:java -P base-data-loader
 ```
 
+### Run `GraphTester.class`
+
+```shell
+# Run `clean install`
+mvn clean install
+
+# Run the the primary profile to run the services
+mvn exec:java -P graph-tester
+
+```
+
 ### Run `Main.class`
 
 ```shell
