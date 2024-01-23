@@ -1,0 +1,14 @@
+[
+  {
+    "itemId": 1,
+    "itemCode": "ITEM001",
+    "itemName": "USB-C Cable 12 ft",
+    "itemDescription": "Long, high quality USB-C cable"
+  },
+  {
+    "itemId": 2,
+    "itemCode": "ITEM002",
+    "itemName": "Hydro Flask Drinking Container 40 oz",
+    "itemDescription": "Long, high quality USB-C cable"
+  }
+]

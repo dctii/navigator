@@ -1,5 +1,9 @@
 package com.solvd.navigator.util;
 
+import com.solvd.navigator.dao.DriverDAO;
+import com.solvd.navigator.dao.EmployeeDAO;
+import com.solvd.navigator.dao.LocationDAO;
+import com.solvd.navigator.dao.PersonDAO;
 import com.solvd.navigator.exception.GetDaoFailureException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,6 +24,47 @@ public final class DataAccessProvider {
         );
         databaseImpl = config.getProperty(ConfigConstants.DATABASE_IMPLEMENTATION);
     }
+
+    public static DriverDAO getDriverDAO() {
+        return getDAO(DriverDAO.class);
+    }
+
+    public static EmployeeDAO getEmployeeDAO() {
+        return getDAO(EmployeeDAO.class);
+    }
+
+    public static LocationDAO getLocationDAO() {
+        return getDAO(LocationDAO.class);
+    }
+
+    /* TODO: OrderRecipientDAO not available yet, uncomment when it is
+        public static OrderRecipientDAO getOrderRecipientDAO() {
+            return getDAO(OrderRecipientDAO.class);
+        }
+     */
+
+    public static PersonDAO getPersonDAO() {
+        return getDAO(PersonDAO.class);
+    }
+
+    /* TODO: StorageDAO not available yet, uncomment when it is
+        public static StorageDAO getStorageDAO() {
+            return getDAO(StorageDAO.class);
+        }
+     */
+
+    /* TODO: VehicleDAO not implemented yet
+        public static VehicleDAO getVehicleDAO() {
+            return getDAO(VehicleDAO.class);
+        }
+     */
+
+    /* Will not be used
+        public static OrderItemDAO getOrderItemDAO() {
+            return getDAO(OrderItemDAO.class);
+        }
+     */
+
 
     public static <T> T getDAO(Class<T> daoInterface) {
         String implClassName = getImplClassName(daoInterface);

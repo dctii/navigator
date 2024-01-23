@@ -4,6 +4,9 @@ public class Person {
     private int personId;
     private String firstName;
     private String lastName;
+    public Person() {
+
+    }
 
     public Person(int personId, String firstName, String lastName) {
         this.personId = personId;

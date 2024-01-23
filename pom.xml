@@ -59,6 +59,11 @@
         <jacksoncore.version>2.16.1</jacksoncore.version>
         <jackson-databind.version>2.16.1</jackson-databind.version>
 
+        <!--   Java Faker Properties     -->
+        <javafaker.affix>javafaker</javafaker.affix>
+        <javafaker.groupId>com.github.${javafaker.affix}</javafaker.groupId>
+        <javafaker.version>1.0.2</javafaker.version>
+
         <!--   maven Compiler Plugin Properties     -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 
@@ -68,6 +73,7 @@
         <exec-maven-plugin.version>3.1.0</exec-maven-plugin.version>
         <mainEntrypoint>${self.groupId}.Main</mainEntrypoint>
         <baseDataLoaderEntrypoint>${self.groupId}.BaseDataLoader</baseDataLoaderEntrypoint>
+        <graphTesterEntrypoint>${self.groupId}.GraphTester</graphTesterEntrypoint>
 
         <!--
         To resolve these warning flags:
@@ -133,6 +139,35 @@
                         <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>${baseDataLoaderEntrypoint}</mainClass>
+                            <systemProperties>
+                                <systemProperty>
+                                    <key>${jooq.groupId}.no-tips</key>
+                                    <value>true</value>
+                                </systemProperty>
+                                <systemProperty>
+                                    <key>${jooq.groupId}.no-logo</key>
+                                    <value>true</value>
+                                </systemProperty>
+                            </systemProperties>
+                        </configuration>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>graph-tester</id>
+            <build>
+                <plugins>
+
+                    <!-- https://www.mojohaus.org/exec-maven-plugin/ -->
+                    <plugin>
+                        <groupId>${exec-maven-plugin.groupId}</groupId>
+                        <artifactId>${exec-maven-plugin.artifactId}</artifactId>
+                        <version>${exec-maven-plugin.version}</version>
+                        <configuration>
+                            <mainClass>${graphTesterEntrypoint}</mainClass>
                             <systemProperties>
                                 <systemProperty>
                                     <key>${jooq.groupId}.no-tips</key>
@@ -233,6 +268,14 @@
             <artifactId>${jackson.affix}-databind</artifactId>
             <version>${jackson-databind.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>${javafaker.groupId}</groupId>
+            <artifactId>${javafaker.affix}</artifactId>
+            <version>${javafaker.version}</version>
+        </dependency>
+
 
     </dependencies>
 </project>

@@ -17,6 +17,16 @@ public final class FilepathConstants {
     public static final String MYBATIS_XML_CONFIG_FILEPATH = "mybatis-config.xml";
 
     public static final String DATA_DIR_IN_RESOURCES_FILEPATH = "data/";
+    public static final String DRIVERS_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "drivers.json";
+    public static final String EMPLOYEES_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "employees.json";
+    public static final String ITEMS_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "items.json";
+    public static final String LOCATIONS_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "locations.json";
+    public static final String ORDER_ITEMS_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "orderItems.json";
+    public static final String ORDER_RECIPIENTS_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "orderRecipients.json";
+    public static final String ORDERS_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "orders.json";
+    public static final String PERSONS_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "persons.json";
+    public static final String STORAGES_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "storages.json";
+    public static final String VEHICLES_JSON = DATA_DIR_IN_RESOURCES_FILEPATH + "vehicles.json";
 
 
     private static String getAbsolutePathOfResource() {

@@ -9,6 +9,9 @@ public class Order {
     private int storageId;
     private int orderRecipientId;
     private int driverId;
+    public Order() {
+
+    }
 
 
     public Order(int orderId, String orderNumber, String orderStatus, Timestamp orderDate, Timestamp deliveryDate, int storageId, int orderRecipientId, int driverId) {

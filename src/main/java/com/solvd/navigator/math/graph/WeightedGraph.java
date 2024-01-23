@@ -1,4 +1,4 @@
-package com.solvd.navigator.math;
+package com.solvd.navigator.math.graph;
 
 
 import com.solvd.navigator.exception.DuplicateEdgeException;
@@ -125,26 +125,29 @@ public class WeightedGraph implements IGraph {
     }
 
     @Override
-    public void addEdge(String vertexId1, String vertexId2, int weight) {
+    public void addEdge(String vertexId1, String vertexId2, double distance) {
         if (BooleanUtils.areAnyStringsBlank(vertexId1, vertexId2)) {
-            LOGGER.error("Vertex IDs must not be blank.");
+            LOGGER.warn("Vertex IDs must not be blank.");
             throw new InvalidEdgeException("Vertex IDs must not be blank.");
         }
 
         if (!BooleanUtils.doAnyVerticesExist(this.vertices, vertexId1, vertexId2)) {
-            LOGGER.error("Cannot add an edge where one or both vertices do not exist.");
+            LOGGER.warn("Cannot add the edge {}-{} where one or both vertices do not exist.",
+                    vertexId1,
+                    vertexId2
+            );
             throw new InvalidEdgeException("Cannot add an edge where one or both vertices do not exist.");
         }
 
         if (BooleanUtils.edgeExists(vertexId1, vertexId2, this.adjacencyList)) {
-            LOGGER.warn("Edge between '" + vertexId1 + "' and '" + vertexId2 + "' already exists");
+            LOGGER.warn("Edge {}-{} already exists", vertexId1, vertexId2);
             throw new DuplicateEdgeException("Edge between '" + vertexId1 + "' and '" + vertexId2 + "' already exists");
         }
 
         Edge edge = new Edge(
                 vertices.get(vertexId1),
                 vertices.get(vertexId2),
-                weight
+                distance
         );
 
         adjacencyList.get(vertexId1).add(edge);
@@ -153,60 +156,60 @@ public class WeightedGraph implements IGraph {
     }
 
 
-    public void addEdge(Vertex vertex1, Vertex vertex2, int weight) {
+    public void addEdge(Vertex vertex1, Vertex vertex2, double distance) {
         if (!vertices.containsKey(vertex1.getVertexId())) {
             addVertex(vertex1);
         }
         if (!vertices.containsKey(vertex2.getVertexId())) {
             addVertex(vertex2);
         }
-        addEdge(vertex1.getVertexId(), vertex2.getVertexId(), weight);
+        addEdge(vertex1.getVertexId(), vertex2.getVertexId(), distance);
     }
 
     public void addEdge(String vertexId1, String vertexName1, Point coordinates1,
                         String vertexId2, String vertexName2, Point coordinates2,
-                        int weight) {
+                        double distance) {
         if (!vertices.containsKey(vertexId1)) {
             addVertex(vertexId1, vertexName1, coordinates1);
         }
         if (!vertices.containsKey(vertexId2)) {
             addVertex(vertexId2, vertexName2, coordinates2);
         }
-        addEdge(vertexId1, vertexId2, weight);
+        addEdge(vertexId1, vertexId2, distance);
     }
 
     public void addEdge(String vertexId1, String vertexName1, double x1, double y1,
                         String vertexId2, String vertexName2, double x2, double y2,
-                        int weight) {
+                        double distance) {
 
         Point coordinates1 = new Point(x1, y1);
         Point coordinates2 = new Point(x2, y2);
 
         addEdge(vertexId1, vertexName1, coordinates1,
                 vertexId2, vertexName2, coordinates2,
-                weight);
+                distance);
     }
 
     public void addEdge(String vertexId1, Point coordinates1,
                         String vertexId2, Point coordinates2,
-                        int weight) {
+                        double distance) {
         addEdge(
                 vertexId1, null, coordinates1,
                 vertexId2, null, coordinates2,
-                weight
+                distance
         );
     }
 
     public void addEdge(String vertexId1, double x1, double y1,
                         String vertexId2, double x2, double y2,
-                        int weight) {
+                        double distance) {
         Point coordinates1 = new Point(x1, y1);
         Point coordinates2 = new Point(x2, y2);
 
         addEdge(
                 vertexId1, null, coordinates1,
                 vertexId2, null, coordinates2,
-                weight
+                distance
         );
     }
 
@@ -242,7 +245,7 @@ public class WeightedGraph implements IGraph {
         return vertex;
     }
 
-    public Set<String> getVertices() {
+    public Set<String> getVertexIdsForGraph() {
         return adjacencyList.keySet();
     }
 
@@ -262,7 +265,7 @@ public class WeightedGraph implements IGraph {
     @Override
     public void printGraph() {
         LOGGER.info("Printing Graph: ");
-        getVertices().forEach(vertexId -> {
+        getVertexIdsForGraph().forEach(vertexId -> {
             Vertex vertex = getVertex(vertexId);
             LOGGER.info("Vertex: " + vertexId + ", Coordinates: " + vertex.getCoordinatesString());
 
@@ -271,14 +274,14 @@ public class WeightedGraph implements IGraph {
                 if (edge.getVertex1().equals(vertex)) {
                     Vertex otherVertex = edge.getVertex2();
                     String edgeString = "Edge " + edge.getEdgeId() + " to:";
-                    String weightString = StringFormatters.nestInParentheses("Weight: " + edge.getWeight());
+                    String distanceString = StringFormatters.nestInParentheses("Distance: " + edge.getDistance());
                     LOGGER.info(
                             " -> " + StringUtils.joinWith(
                                     StringConstants.SINGLE_WHITESPACE,
                                     edgeString,
                                     otherVertex.getVertexId(),
                                     otherVertex.getCoordinatesString(),
-                                    weightString
+                                    distanceString
                             )
                     );
                 }
