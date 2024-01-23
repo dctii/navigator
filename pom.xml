@@ -59,6 +59,11 @@
         <jacksoncore.version>2.16.1</jacksoncore.version>
         <jackson-databind.version>2.16.1</jackson-databind.version>
 
+        <!--   Java Faker Properties     -->
+        <javafaker.affix>javafaker</javafaker.affix>
+        <javafaker.groupId>com.github.${javafaker.affix}</javafaker.groupId>
+        <javafaker.version>1.0.2</javafaker.version>
+
         <!--   maven Compiler Plugin Properties     -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
 
@@ -263,6 +268,14 @@
             <artifactId>${jackson.affix}-databind</artifactId>
             <version>${jackson-databind.version}</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.github.javafaker/javafaker -->
+        <dependency>
+            <groupId>${javafaker.groupId}</groupId>
+            <artifactId>${javafaker.affix}</artifactId>
+            <version>${javafaker.version}</version>
+        </dependency>
+
 
     </dependencies>
 </project>
