@@ -24,15 +24,6 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
-
-/* TODO:
-    - need to implement the Floyd-Warshall Algorithm and find the most efficient route -- maybe ned to use the Travelling Salesman Problem
-        - use GraphUtils.mapLocationIdToVertexId which uses GraphUtils.findMatchingVertexId to map locationId to the map.
-        - need to see if need to populate FloydWarshallAlgorithm.class and RouteResult.class
-
-*/
-
-
 public class GraphTester {
     private static final Logger LOGGER = LogManager.getLogger(GraphTester.class);
 
