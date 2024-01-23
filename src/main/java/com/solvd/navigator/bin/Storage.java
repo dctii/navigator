@@ -4,6 +4,9 @@ public class Storage {
     private int storageId;
     private String name;
     private int locationId;
+    public Storage() {
+
+    }
 
     public Storage(int storageId, String name, int locationId) {
         this.storageId = storageId;
