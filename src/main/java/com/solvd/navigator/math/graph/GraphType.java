@@ -1,4 +1,4 @@
-package com.solvd.navigator.math;
+package com.solvd.navigator.math.graph;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

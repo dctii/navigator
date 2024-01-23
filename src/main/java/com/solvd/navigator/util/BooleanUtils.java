@@ -1,8 +1,8 @@
 package com.solvd.navigator.util;
 
-import com.solvd.navigator.math.Edge;
-import com.solvd.navigator.math.GraphType;
-import com.solvd.navigator.math.Vertex;
+import com.solvd.navigator.math.graph.Edge;
+import com.solvd.navigator.math.graph.GraphType;
+import com.solvd.navigator.math.graph.Vertex;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

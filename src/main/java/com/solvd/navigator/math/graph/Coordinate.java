@@ -1,4 +1,4 @@
-package com.solvd.navigator.math;
+package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.util.BooleanUtils;
