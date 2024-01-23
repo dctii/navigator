@@ -5,6 +5,10 @@ public class Location {
     private float coordinateX;
     private float coordinateY;
 
+    public Location() {
+
+    }
+
     public Location(int locationId, float coordinateX, float coordinateY) {
         this.locationId = locationId;
         this.coordinateX = coordinateX;

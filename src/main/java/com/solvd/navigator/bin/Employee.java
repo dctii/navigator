@@ -5,6 +5,10 @@ public class Employee {
     private String role;
     private int personId;
 
+    public Employee() {
+
+    }
+
 
     public Employee(int employeeID, String role, int personId) {
         this.employeeID = employeeID;

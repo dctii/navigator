@@ -5,6 +5,9 @@ public class OrderItem {
     private int itemQuantity;
     private int orderId;
     private int itemId;
+    public OrderItem() {
+
+    }
 
     public OrderItem(int orderItem, int itemQuantity, int orderId, int itemId) {
         this.orderItem = orderItem;

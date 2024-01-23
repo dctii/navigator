@@ -4,6 +4,9 @@ public class OrderRecipient {
     private int orderRecipientId;
     private int personId;
     private int locationId;
+    public OrderRecipient() {
+
+    }
 
     public OrderRecipient(int orderRecipientId, int personId, int locationId) {
         this.orderRecipientId = orderRecipientId;

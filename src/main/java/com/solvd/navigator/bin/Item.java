@@ -5,6 +5,9 @@ public class Item {
     private String itemCode;
     private String itemName;
     private String itemDescription;
+    public Item() {
+
+    }
 
     public Item(int itemId, String itemCode, String itemName, String itemDescription) {
         this.itemId = itemId;
