@@ -19,6 +19,15 @@
         <Logger name="com.solvd.navigator.BaseDataLoader" level="info" additivity="false">
             <AppenderRef ref="SimpleStdOut"/>
         </Logger>
+        <Logger name="com.solvd.navigator.GraphTester" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.navigator.math.util.RouteUtils" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.navigator.util.ScannerUtils" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
         <Logger name="com.solvd.navigator.service" level="info" additivity="false">
             <AppenderRef ref="SimpleStdOut"/>
         </Logger>

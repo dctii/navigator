@@ -1,4 +1,4 @@
-package com.solvd.navigator.math;
+package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidEdgeException;
 import com.solvd.navigator.exception.InvalidEdgeIdNameException;
@@ -16,7 +16,7 @@ public class Edge {
     String edgeId;
     private Vertex vertex1;
     private Vertex vertex2;
-    private int weight;
+    private double distance;
 
     public Edge() {
     }
@@ -32,14 +32,14 @@ public class Edge {
                 vertex1.getVertexId() + StringConstants.DASH_STRING + vertex2.getVertexId();
     }
 
-    public Edge(Vertex vertex1, Vertex vertex2, int weight) {
+    public Edge(Vertex vertex1, Vertex vertex2, double distance) {
         if (BooleanUtils.areInvalidVertices(vertex1, vertex2)) {
             throw new InvalidEdgeException("Both vertices must be non-null and have vertexIds to create an edge.");
         }
 
         this.vertex1 = vertex1;
         this.vertex2 = vertex2;
-        this.weight = weight;
+        this.distance = distance;
         this.edgeId =
                 vertex1.getVertexId() + StringConstants.DASH_STRING + vertex2.getVertexId();
     }
@@ -87,15 +87,15 @@ public class Edge {
         this.vertex2 = vertex2;
     }
 
-    public int getWeight() {
-        return weight;
+    public double getDistance() {
+        return distance;
     }
 
-    public void setWeight(int weight) {
-        if (weight < 0) {
+    public void setDistance(double distance) {
+        if (distance < 0) {
             throw new InvalidEdgeException("Weight must be non-negative.");
         }
-        this.weight = weight;
+        this.distance = distance;
     }
 
     public String getVertexId(int vertexNumber) {
@@ -140,7 +140,7 @@ public class Edge {
                 "edgeId",
                 "vertex1",
                 "vertex2",
-                "weight"
+                "distance"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);

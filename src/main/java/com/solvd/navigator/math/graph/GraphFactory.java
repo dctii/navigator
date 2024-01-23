@@ -1,6 +1,7 @@
-package com.solvd.navigator.math;
+package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidGraphTypeException;
+import com.solvd.navigator.math.util.GraphUtils;
 import com.solvd.navigator.util.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

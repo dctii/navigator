@@ -1,4 +1,4 @@
-package com.solvd.navigator.math;
+package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.exception.InvalidVertexException;
@@ -82,6 +82,24 @@ public class Vertex {
         return point;
     }
 
+    public void setPoint(Point point) {
+        this.point = point;
+    }
+
+    public double getX() {
+        if (point == null) {
+            throw new PointTypeIsNullException("To get 'X' coordinate, Point cannot be null");
+        }
+        return point.getX();
+    }
+
+    public double getY() {
+        if (point == null) {
+            throw new PointTypeIsNullException("To get 'Y' coordinate, Point cannot be null");
+        }
+        return point.getY();
+    }
+
     public String getCoordinatesString() {
         if (point == null) {
             throw new InvalidCoordinatesException("To get coordinates string, the 'Point' object in this Vertex cannot be null.");
@@ -93,11 +111,6 @@ public class Vertex {
 
         return point.getCoordinatesString();
 
-    }
-
-    public void setPoint(Point point) {
-
-        this.point = point;
     }
 
     public void setCoordinates(double x, double y) {
