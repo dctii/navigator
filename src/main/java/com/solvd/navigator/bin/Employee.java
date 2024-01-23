@@ -1,7 +1,7 @@
 package com.solvd.navigator.bin;
 
 public class Employee {
-    private int employeeID;
+    private int employeeId;
     private String role;
     private int personId;
 
@@ -10,18 +10,18 @@ public class Employee {
     }
 
 
-    public Employee(int employeeID, String role, int personId) {
-        this.employeeID = employeeID;
+    public Employee(int employeeId, String role, int personId) {
+        this.employeeId = employeeId;
         this.role = role;
         this.personId = personId;
     }
 
-    public int getEmployeeID() {
-        return employeeID;
+    public int getEmployeeId() {
+        return employeeId;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     public String getRole() {
@@ -43,7 +43,7 @@ public class Employee {
     @Override
     public String toString() {
         return "Employess{" +
-               "employeeID=" + employeeID +
+               "employeeID=" + employeeId +
                ", role='" + role + '\'' +
                ", personId=" + personId +
                '}';
