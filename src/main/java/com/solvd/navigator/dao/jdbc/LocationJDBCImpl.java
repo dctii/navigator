@@ -1,7 +1,6 @@
 package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Location;
-import com.solvd.navigator.dao.AbstractDAO;
 import com.solvd.navigator.dao.LocationDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
