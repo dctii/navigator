@@ -1,4 +1,4 @@
-package com.solvd.navigator.math;
+package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.util.NumberUtils;
 import com.solvd.navigator.util.StringFormatters;
@@ -6,43 +6,43 @@ import com.solvd.navigator.util.StringFormatters;
 public class Direction extends Coordinate {
 
     private Direction(Builder builder) {
-        super(builder.x, builder.y);
+        super(builder.dx, builder.dy);
     }
 
     public static class Builder {
-        private double x = Double.NaN;
-        private double y = Double.NaN;
+        private double dx = Double.NaN;
+        private double dy = Double.NaN;
 
         public Builder() {
         }
 
-        public Builder x(double x) {
-            this.x = x;
+        public Builder dx(double dx) {
+            this.dx = dx;
             return this;
         }
 
-        public Builder y(double y) {
-            this.y = y;
+        public Builder dy(double dy) {
+            this.dy = dy;
             return this;
         }
 
-        public Builder x(int x) {
-            this.x = x;
+        public Builder dx(int dx) {
+            this.dx = dx;
             return this;
         }
 
-        public Builder y(int y) {
-            this.y = y;
+        public Builder dy(int dy) {
+            this.dy = dy;
             return this;
         }
 
-        public Builder x(String xString) {
-            this.x = NumberUtils.parseDoubleOrNaN(xString);
+        public Builder dx(String dxString) {
+            this.dx = NumberUtils.parseDoubleOrNaN(dxString);
             return this;
         }
 
-        public Builder y(String yString) {
-            this.y = NumberUtils.parseDoubleOrNaN(yString);
+        public Builder dy(String dyString) {
+            this.dy = NumberUtils.parseDoubleOrNaN(dyString);
             return this;
         }
 
