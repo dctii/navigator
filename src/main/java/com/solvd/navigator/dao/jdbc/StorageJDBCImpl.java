@@ -32,7 +32,7 @@ public class StrorageJDBCImpl implements StorageDAO {
         } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
-       return 0;
+        return 0;
     }
 
     @Override
