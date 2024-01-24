@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Order;
 import com.solvd.navigator.util.DBConnectionPool;
+import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
 
@@ -9,45 +10,58 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class OrderJDBCImpl implements com.solvd.navigator.dao.OrderDAO {
     private static final Logger LOGGER = (Logger) LogManager.getLogger(OrderJDBCImpl.class);
-    private static final String CreateOrderSQL = "INSERT INTO navigator.order(order_id,order_number,order_status,order_date,delivery_date,storage_id,order_recipient,driver_id) VALUES (?,?,?,?,?,?,?,?)";
-    private static final String SelectOrderSQL = "SELECT * FROM orders WHERE order_id = ?";
-    private static final String UpdateOrderSQL = "UPDATE orders SET order_number = ? WHERE order_id = ?";
-    private static final String DeleteOrderSQL = "DELETE FROM orders WHERE order_id = ?";
-    private Connection dbConnection;
+    private static final String CREATE_ORDER_SQL = "INSERT INTO orders (order_number,order_status,order_date,delivery_date,storage_id,order_recipient,driver_id) VALUES (?,?,?,?,?,?,?)";
+    private static final String SELECT_ORDER_SQL = "SELECT * FROM orders WHERE order_id = ?";
+    private static final String UPDATE_ORDER_SQL = "UPDATE orders SET order_number = ?, order_status = ?, order_date = ?, delivery_date = ?, storage_id = ?, order_recipient = ?, driver_id = ? WHERE order_id = ?";
+    private static final String DELETE_ORDER_SQL = "DELETE FROM orders WHERE order_id = ?";
+    DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     public int create(Order order) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(CreateOrderSQL)) {
-            preparedStatement.setInt(1, order.getOrderId());
-            preparedStatement.setString(2, order.getOrderNumber());
-            preparedStatement.setString(3, order.getOrderStatus());
-            preparedStatement.setTimestamp(4, order.getOrderDate());
-            preparedStatement.setTimestamp(5, order.getDeliveryDate());
-            preparedStatement.setInt(6, order.getStorageId());
-            preparedStatement.setInt(7, order.getOrderRecipientId());
-            preparedStatement.setInt(8, order.getDriverId());
+        Connection dbConnection = connectionPool.getConnection();
 
+        int newOrderId = 0;
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(
+                        CREATE_ORDER_SQL,
+                        Statement.RETURN_GENERATED_KEYS
+                )
+        ) {
+
+            preparedStatement.setString(1, order.getOrderNumber());
+            preparedStatement.setString(2, order.getOrderStatus());
+            preparedStatement.setTimestamp(3, order.getOrderDate());
+            preparedStatement.setTimestamp(4, order.getDeliveryDate());
+            preparedStatement.setInt(5, order.getStorageId());
+            preparedStatement.setInt(6, order.getOrderRecipientId());
+            preparedStatement.setInt(7, order.getDriverId());
+
+            SQLUtils.updateAndSetGeneratedId(preparedStatement, order::setOrderId);
+
+            newOrderId = order.getOrderId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
-        return order.getOrderId();
+        return newOrderId;
     }
 
 
     @Override
     public Order getById(int orderId) {
+        Connection dbConnection = connectionPool.getConnection();
+
         Order order = null;
-        try (Connection dbconnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbconnection.prepareStatement(SelectOrderSQL)) {
-           preparedStatement.setInt(1, orderId);
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(SELECT_ORDER_SQL)) {
+            preparedStatement.setInt(1, orderId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    Order Order = new Order(
+                    order = new Order(
                             resultSet.getInt("order_id"),
                             resultSet.getString("order_number"),
                             resultSet.getString("order_status"),
@@ -61,37 +75,51 @@ public class OrderJDBCImpl implements com.solvd.navigator.dao.OrderDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
         }
         return order;
     }
 
     @Override
     public void update(Order order) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(UpdateOrderSQL)) {
-            preparedStatement.setInt(1, order.getOrderId());
-            preparedStatement.setInt(2, order.getOrderId());
+        Connection dbConnection = connectionPool.getConnection();
+
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_ORDER_SQL)
+        ) {
+            preparedStatement.setString(1, order.getOrderNumber());
+            preparedStatement.setString(2, order.getOrderStatus());
+            preparedStatement.setTimestamp(3, order.getOrderDate());
+            preparedStatement.setTimestamp(4, order.getDeliveryDate());
+            preparedStatement.setInt(5, order.getStorageId());
+            preparedStatement.setInt(6,order.getOrderRecipientId());
+            preparedStatement.setInt(7,order.getDriverId());
+            preparedStatement.setInt(8, order.getOrderId());
             preparedStatement.executeUpdate();
             LOGGER.info("ROW UPDATED IN DB");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
 
     }
 
     @Override
     public void delete(int orderId) {
-        try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(DeleteOrderSQL)) {
+        Connection dbConnection = connectionPool.getConnection();
+
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_ORDER_SQL)
+        ) {
             preparedStatement.setInt(1, orderId);
             preparedStatement.executeQuery();
             LOGGER.info("ROW DELETED FROM DB");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
 
     }
