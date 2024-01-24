@@ -295,8 +295,7 @@ public class WeightedGraph implements IGraph {
         Class<?> currClass = WeightedGraph.class;
         String[] fieldNames = {
                 "vertices",
-                "adjacencyList",
-                "shortestDistances"
+                "adjacencyList"
         };
 
         String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);

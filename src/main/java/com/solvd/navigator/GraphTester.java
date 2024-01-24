@@ -111,7 +111,7 @@ public class GraphTester {
                         IntStream.range(0, awaitingOrders.size())
                                 .forEach(i -> {
                                     Order orderToUpdate = awaitingOrders.get(i);
-                                    orderToUpdate.setOrderStatus(OrderConstants.ORDER_STATUS_DELIVERED);
+                                    orderToUpdate.setOrderStatus(OrderConstants.ORDER_STATUS_IN_TRANSIT);
                                     // update the specific order in the JSON file
                                     JacksonUtils.updateOrderInJsonById(FilepathConstants.ORDERS_JSON, orderToUpdate);
                                 });
