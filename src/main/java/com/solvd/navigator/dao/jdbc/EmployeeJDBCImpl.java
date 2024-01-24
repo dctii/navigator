@@ -29,8 +29,8 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
                         CREATE_EMPLOYEE,
                         Statement.RETURN_GENERATED_KEYS)
              ) {
-            preparedStatement.setString(1, employee.getRole());
-            preparedStatement.setInt(2, employee.getPersonId());
+            SQLUtils.setStringOrNull(preparedStatement,1, employee.getRole());
+            SQLUtils.setIntOrNull(preparedStatement,2, employee.getPersonId());
             LOGGER.info("Row inserted into DB");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, employee::setEmployeeId);
         } catch (SQLException e) {

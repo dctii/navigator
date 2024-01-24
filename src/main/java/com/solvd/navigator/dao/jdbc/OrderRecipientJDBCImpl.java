@@ -15,10 +15,10 @@ import java.util.logging.Logger;
 public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
 
     private static final Logger LOGGER = (Logger) LogManager.getLogger(OrderRecipientJDBCImpl.class);
-    private static final String CreateRecipientSQL = "INSERT INTO order_recipients(person_id,location_id) VALUES (?,?)";
-    private static final String SelectRecipientSQL = "SELECT * FROM order_recipients WHERE order_recipient_id = ?";
-    private static final String UpdateRecipientSQL = "UPDATE order_recipients SET person_id = ?, location_id = ? WHERE order_recipient_id = ?";
-    private static final String DeleteRecipientSQL = "DELETE FROM order_recipients WHERE order_recipient_id = ?";
+    private static final String CREATE_RECIPIENT_SQL= "INSERT INTO order_recipients(person_id,location_id) VALUES (?,?)";
+    private static final String SELECT_RECIPIENT_SQL = "SELECT * FROM order_recipients WHERE order_recipient_id = ?";
+    private static final String UPDATE_RECIPIENT_SQL = "UPDATE order_recipients SET person_id = ?, location_id = ? WHERE order_recipient_id = ?";
+    private static final String DELETE_RECIPIENT_SQL = "DELETE FROM order_recipients WHERE order_recipient_id = ?";
 
     DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
@@ -29,12 +29,12 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
         int orderRecipientId = 0;
         try (
                 PreparedStatement preparedStatement = dbConnection.prepareStatement(
-                        CreateRecipientSQL,
+                        CREATE_RECIPIENT_SQL,
                         PreparedStatement.RETURN_GENERATED_KEYS
                 )
         ) {
-            preparedStatement.setInt(1, orderRecipient.getPersonId());
-            preparedStatement.setInt(2, orderRecipient.getLocationId());
+            SQLUtils.setIntOrNull(preparedStatement,1, orderRecipient.getPersonId());
+            SQLUtils.setIntOrNull(preparedStatement,2, orderRecipient.getLocationId());
 
             SQLUtils.updateAndSetGeneratedId(preparedStatement, orderRecipient::setOrderRecipientId);
 
@@ -53,7 +53,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
 
         OrderRecipient orderRecipient = null;
         try (
-                PreparedStatement preparedStatement = dbConnection.prepareStatement(SelectRecipientSQL)
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(SELECT_RECIPIENT_SQL)
         ) {
             preparedStatement.setInt(1, orderRecipientId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -78,7 +78,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
         Connection dbConnection = connectionPool.getConnection();
 
         try (
-                PreparedStatement preparedStatement = dbConnection.prepareStatement(UpdateRecipientSQL)
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_RECIPIENT_SQL)
         ) {
             preparedStatement.setInt(1, orderRecipient.getPersonId());
             preparedStatement.setInt(2, orderRecipient.getLocationId());
@@ -97,7 +97,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
         Connection dbConnection = connectionPool.getConnection();
 
         try (
-                PreparedStatement preparedStatement = dbConnection.prepareStatement(DeleteRecipientSQL)
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_RECIPIENT_SQL)
         ) {
             preparedStatement.setInt(1, orderRecipientId);
             preparedStatement.executeUpdate();
