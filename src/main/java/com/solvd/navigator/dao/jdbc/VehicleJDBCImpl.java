@@ -37,7 +37,7 @@ public class VehicleJDBCImpl implements VehicleDAO {
         } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
-        return 0;
+        return vehicle.getVehicleId();
     }
 
     @Override

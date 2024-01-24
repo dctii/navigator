@@ -1,7 +1,6 @@
 package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Storage;
-import com.solvd.navigator.dao.AbstractDAO;
 import com.solvd.navigator.dao.StorageDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -12,9 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class StrorageJDBCImpl implements StorageDAO {
+public class StorageJDBCImpl implements StorageDAO {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(StrorageJDBCImpl.class);
+    private static final Logger LOGGER = (Logger) LogManager.getLogger(StorageJDBCImpl.class);
     private static final String CreateStorageSQL = "INERT INTO navigator.storages(storage_id,name,location_id) VALUES (?,?,?)";
     private static final String SelectStorageSQL = "SELECT * FROM storages WHERE storage_id = ?";
     private static final String UpdateStorageSQL = "UPDATE storages SET name = ? WHERE storage_id = ?";
@@ -32,7 +31,7 @@ public class StrorageJDBCImpl implements StorageDAO {
         } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
-       return 0;
+       return storage.getStorageId();
     }
 
     @Override
