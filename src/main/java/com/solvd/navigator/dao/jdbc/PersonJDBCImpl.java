@@ -12,7 +12,7 @@ import java.sql.*;
 public class PersonJDBCImpl implements PersonDAO {
     private static final Logger LOGGER = (Logger) LogManager.getLogger(PersonJDBCImpl.class);
 
-    private static final String CREATE_PERSON = "INSERT INTO persons (first_name, last_name)" + "VALUES (?,?,?)";
+    private static final String CREATE_PERSON = "INSERT INTO persons (first_name, last_name)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM persons WHERE person_id = ?";
     private static final String UPDATE_QUERY = "UPDATE persons SET first_name=?, last_name=? WHERE person_id=?";
     private static final String DELETE_QUERY = "DELETE FROM persons WHERE person_id=?";
@@ -29,9 +29,8 @@ public class PersonJDBCImpl implements PersonDAO {
                      CREATE_PERSON,
                      Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatement.setInt(1, person.getPersonId());
-            preparedStatement.setString(2, person.getFirstName());
-            preparedStatement.setString(3,person.getLastName());
+            preparedStatement.setString(1, person.getFirstName());
+            preparedStatement.setString(2,person.getLastName());
             LOGGER.info("Row inserted into db");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, person::setPersonId);
         } catch (SQLException e) {

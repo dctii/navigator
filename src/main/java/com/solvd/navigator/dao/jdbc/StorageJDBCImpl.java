@@ -1,7 +1,6 @@
 package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Storage;
-import com.solvd.navigator.dao.AbstractDAO;
 import com.solvd.navigator.dao.StorageDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import org.apache.logging.log4j.LogManager;
@@ -12,10 +11,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class StrorageJDBCImpl implements StorageDAO {
+public class StorageJDBCImpl implements StorageDAO {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(StrorageJDBCImpl.class);
-    private static final String CREATE_STORAGE_SQL = "INERT INTO navigator.storages(storage_id,name,location_id) VALUES (?,?,?)";
+    private static final Logger LOGGER = (Logger) LogManager.getLogger(StorageJDBCImpl.class);
+    private static final String CREATE_STORAGE_SQL = "INSERT INTO navigator.storages(storage_id,name,location_id) VALUES (?,?,?)";
     private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
     private static final String UPDATE_STORAGE_SQL = "UPDATE storages SET storage_id = ?, name = ?, location_id = ? WHERE storage_id = ?";
     private static final String DELETE_STORAGE_SQL = "DELETE FROM storages WHERE storage_id = ?";
