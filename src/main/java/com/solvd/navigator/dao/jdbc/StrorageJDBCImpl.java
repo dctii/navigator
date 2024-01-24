@@ -15,15 +15,15 @@ import java.sql.SQLException;
 public class StrorageJDBCImpl implements StorageDAO {
 
     private static final Logger LOGGER = (Logger) LogManager.getLogger(StrorageJDBCImpl.class);
-    private static final String CreateStorageSQL = "INERT INTO navigator.storages(storage_id,name,location_id) VALUES (?,?,?)";
-    private static final String SelectStorageSQL = "SELECT * FROM storages WHERE storage_id = ?";
-    private static final String UpdateStorageSQL = "UPDATE storages SET name = ? WHERE storage_id = ?";
-    private static final String DeleteStorageSQL = "DELETE FROM storages WHERE storage_id = ?";
+    private static final String CREATE_STORAGE_SQL = "INERT INTO navigator.storages(storage_id,name,location_id) VALUES (?,?,?)";
+    private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
+    private static final String UPDATE_STORAGE_SQL = "UPDATE storages SET storage_id = ?, name = ?, location_id = ? WHERE storage_id = ?";
+    private static final String DELETE_STORAGE_SQL = "DELETE FROM storages WHERE storage_id = ?";
     private Connection dbConnection;
 
     public int create(Storage storage) {
         try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(CreateStorageSQL)) {
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(CREATE_STORAGE_SQL)) {
             preparedStatement.setInt(1, storage.getStorageId());
             preparedStatement.setString(2, storage.getName());
             preparedStatement.setInt(3, storage.getLocationId());
@@ -39,7 +39,7 @@ public class StrorageJDBCImpl implements StorageDAO {
     public Storage getById(int storageId) {
         Storage storage = null;
         try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(SelectStorageSQL)) {
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(SELECT_STORAGE_SQL)) {
             preparedStatement.setInt(1, storageId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
@@ -60,9 +60,11 @@ public class StrorageJDBCImpl implements StorageDAO {
     @Override
     public void update(Storage storage) {
         try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(UpdateStorageSQL)) {
-            preparedStatement.setString(1, storage.getName());
-            preparedStatement.setInt(2, storage.getStorageId());
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_STORAGE_SQL)) {
+            preparedStatement.setInt(1, storage.getStorageId());
+            preparedStatement.setString(2, storage.getName());
+            preparedStatement.setInt(3, storage.getLocationId());
+            preparedStatement.setInt(4, storage.getStorageId());
             preparedStatement.executeUpdate();
             LOGGER.info("ROW updated in DB");
         } catch (SQLException e) {
@@ -75,7 +77,7 @@ public class StrorageJDBCImpl implements StorageDAO {
     @Override
     public void delete(int storageId) {
         try (Connection dbConnection = DBConnectionPool.getInstance().getConnection();
-             PreparedStatement preparedStatement = dbConnection.prepareStatement(DeleteStorageSQL)) {
+             PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_STORAGE_SQL)) {
             preparedStatement.setInt(1, storageId);
             preparedStatement.executeUpdate();
             LOGGER.info("ROW deleted from DB");
