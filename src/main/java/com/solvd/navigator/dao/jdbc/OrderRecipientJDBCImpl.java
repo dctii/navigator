@@ -32,7 +32,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
         } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
-        return 0;
+        return orderRecipient.getOrderRecipientId();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
             preparedStatement.setInt(1, orderRecipient.getLocationId());
             preparedStatement.setInt(2, orderRecipient.getOrderRecipientId());
             preparedStatement.executeUpdate();
-            LOGGER.info("ROW ipdated in DB");
+            LOGGER.info("ROW updated in DB");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {

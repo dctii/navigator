@@ -35,7 +35,7 @@ public class OrderJDBCImpl implements com.solvd.navigator.dao.OrderDAO {
         } finally {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
-        return 0;
+        return order.getOrderId();
     }
 
 
