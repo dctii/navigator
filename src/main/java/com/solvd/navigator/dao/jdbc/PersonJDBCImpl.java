@@ -29,8 +29,8 @@ public class PersonJDBCImpl implements PersonDAO {
                      CREATE_PERSON,
                      Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatement.setString(1, person.getFirstName());
-            preparedStatement.setString(2,person.getLastName());
+            SQLUtils.setStringOrNull(preparedStatement,1, person.getFirstName());
+            SQLUtils.setStringOrNull(preparedStatement,2,person.getLastName());
             LOGGER.info("Row inserted into db");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, person::setPersonId);
         } catch (SQLException e) {

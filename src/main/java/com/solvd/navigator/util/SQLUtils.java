@@ -127,6 +127,20 @@ public class SQLUtils {
             throw new UnsuccessfulStatementSetException("SQLException occurred while setting Integer value: " + e);
         }
     }
+    public static void setFloatOrNull(PreparedStatement ps, int parameterIndex, Float value) {
+        try {
+
+
+            if (value != null && value >= 0) {
+                ps.setFloat(parameterIndex, value);
+            } else {
+                ps.setNull(parameterIndex, Types.FLOAT);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("SQLException occurred while setting Float value: ", e);
+            throw new UnsuccessfulStatementSetException("SQLException occurred while setting Float value: " + e);
+        }
+    }
 
     public static java.sql.Timestamp toTimestamp(String datetimeString) {
         java.sql.Timestamp newTimestamp;

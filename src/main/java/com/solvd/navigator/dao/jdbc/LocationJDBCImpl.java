@@ -28,8 +28,8 @@ public class LocationJDBCImpl implements LocationDAO {
                      CREATE_LOCATION,
                      Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatement.setFloat(1, location.getCoordinateX());
-            preparedStatement.setFloat(2, location.getCoordinateY());
+            SQLUtils.setFloatOrNull(preparedStatement,1, location.getCoordinateX());
+            SQLUtils.setFloatOrNull(preparedStatement,2, location.getCoordinateY());
             LOGGER.info("Row inserted into DB");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, location::setLocationId);
         }

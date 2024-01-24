@@ -30,8 +30,8 @@ public class DriverJDBCImpl implements DriverDAO {
 
                 )
         ) {
-            preparedStatement.setInt(1, driver.getEmployeeId());
-            preparedStatement.setInt(2, driver.getVehicleId());
+            SQLUtils.setIntOrNull(preparedStatement,1, driver.getEmployeeId());
+            SQLUtils.setIntOrNull(preparedStatement,2, driver.getVehicleId());
             LOGGER.info("Row inserted into DB");
 
             // Create a new Builder and set the generated driverId

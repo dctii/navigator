@@ -60,11 +60,11 @@ public class VehicleJDBCImpl implements VehicleDAO {
 
              */
 
-            preparedStatement.setInt(1, vehicle.getYear());
-            preparedStatement.setString(2, vehicle.getMake());
-            preparedStatement.setString(3, vehicle.getModel());
-            preparedStatement.setString(4, vehicle.getTrimLevel());
-            preparedStatement.setString(5, vehicle.getLicensePlateNumber());
+            SQLUtils.setIntOrNull(preparedStatement,1, vehicle.getYear());
+            SQLUtils.setStringOrNull(preparedStatement,2, vehicle.getMake());
+            SQLUtils.setStringOrNull(preparedStatement,3, vehicle.getModel());
+            SQLUtils.setStringOrNull(preparedStatement,4, vehicle.getTrimLevel());
+            SQLUtils.setStringOrNull(preparedStatement,5, vehicle.getLicensePlateNumber());
 
             // Use this custom helper tool that was put in
             SQLUtils.updateAndSetGeneratedId(

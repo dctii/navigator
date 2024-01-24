@@ -31,13 +31,13 @@ public class OrderJDBCImpl implements com.solvd.navigator.dao.OrderDAO {
                 )
         ) {
 
-            preparedStatement.setString(1, order.getOrderNumber());
-            preparedStatement.setString(2, order.getOrderStatus());
-            preparedStatement.setTimestamp(3, order.getOrderDate());
-            preparedStatement.setTimestamp(4, order.getDeliveryDate());
-            preparedStatement.setInt(5, order.getStorageId());
-            preparedStatement.setInt(6, order.getOrderRecipientId());
-            preparedStatement.setInt(7, order.getDriverId());
+            SQLUtils.setStringOrNull(preparedStatement,1, order.getOrderNumber());
+            SQLUtils.setStringOrNull(preparedStatement,2, order.getOrderStatus());
+            SQLUtils.setTimestampOrNull(preparedStatement,3, order.getOrderDate());
+            SQLUtils.setTimestampOrNull(preparedStatement,4, order.getDeliveryDate());
+            SQLUtils.setIntOrNull(preparedStatement,5, order.getStorageId());
+            SQLUtils.setIntOrNull(preparedStatement,6, order.getOrderRecipientId());
+            SQLUtils.setIntOrNull(preparedStatement,7, order.getDriverId());
 
             SQLUtils.updateAndSetGeneratedId(preparedStatement, order::setOrderId);
 
