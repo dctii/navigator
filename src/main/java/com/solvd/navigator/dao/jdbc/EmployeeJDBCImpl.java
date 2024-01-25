@@ -5,14 +5,14 @@ import com.solvd.navigator.dao.EmployeeDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
 public class EmployeeJDBCImpl implements EmployeeDAO {
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(EmployeeJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(EmployeeJDBCImpl.class);
 
-    private static final String CREATE_EMPLOYEE = "INSERT INTO employees (role, person_id)" + "VALUES (?,?,?)";
+    private static final String CREATE_EMPLOYEE = "INSERT INTO employees (role, person_id)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM employees WHERE employee_id = ?";
     private static final String UPDATE_QUERY = "UPDATE employees SET role=?, person_id=? WHERE employee_id=?";
     private static final String DELETE_QUERY = "DELETE FROM employees WHERE employee_id=?";
@@ -29,10 +29,11 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
                         CREATE_EMPLOYEE,
                         Statement.RETURN_GENERATED_KEYS)
              ) {
-            preparedStatement.setString(1, employee.getRole());
-            preparedStatement.setInt(2, employee.getPersonId());
+            SQLUtils.setStringOrNull(preparedStatement,1, employee.getRole());
+            SQLUtils.setIntOrNull(preparedStatement,2, employee.getPersonId());
             LOGGER.info("Row inserted into DB");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, employee::setEmployeeId);
+            newEmployeeId= employee.getEmployeeId();
         } catch (SQLException e) {
             throw new RuntimeException("Error adding Employee to database.", e);
         } finally {

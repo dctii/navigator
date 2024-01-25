@@ -5,12 +5,12 @@ import com.solvd.navigator.dao.LocationDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
 public class LocationJDBCImpl implements LocationDAO {
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(DriverJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(DriverJDBCImpl.class);
     private static final String CREATE_LOCATION = "INSERT INTO locations (coordinate_x, coordinate_y)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM locations WHERE location_id = ?";
     private static final String UPDATE_QUERY = "UPDATE locations SET coordinate_x=?, coordinate_y=? WHERE location_id=?";
@@ -28,10 +28,11 @@ public class LocationJDBCImpl implements LocationDAO {
                      CREATE_LOCATION,
                      Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatement.setFloat(1, location.getCoordinateX());
-            preparedStatement.setFloat(2, location.getCoordinateY());
+            SQLUtils.setFloatOrNull(preparedStatement,1, location.getCoordinateX());
+            SQLUtils.setFloatOrNull(preparedStatement,2, location.getCoordinateY());
             LOGGER.info("Row inserted into DB");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, location::setLocationId);
+            newLocationId = location.getLocationId();
         }
         catch (SQLException e) {
             throw new RuntimeException("Error adding location to the database",e);

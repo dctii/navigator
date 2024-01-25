@@ -5,14 +5,14 @@ import com.solvd.navigator.dao.PersonDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
 public class PersonJDBCImpl implements PersonDAO {
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(PersonJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(PersonJDBCImpl.class);
 
-    private static final String CREATE_PERSON = "INSERT INTO persons (first_name, last_name)" + "VALUES (?,?,?)";
+    private static final String CREATE_PERSON = "INSERT INTO persons (first_name, last_name)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM persons WHERE person_id = ?";
     private static final String UPDATE_QUERY = "UPDATE persons SET first_name=?, last_name=? WHERE person_id=?";
     private static final String DELETE_QUERY = "DELETE FROM persons WHERE person_id=?";
@@ -29,11 +29,11 @@ public class PersonJDBCImpl implements PersonDAO {
                      CREATE_PERSON,
                      Statement.RETURN_GENERATED_KEYS)
         ) {
-            preparedStatement.setInt(1, person.getPersonId());
-            preparedStatement.setString(2, person.getFirstName());
-            preparedStatement.setString(3,person.getLastName());
+            SQLUtils.setStringOrNull(preparedStatement,1, person.getFirstName());
+            SQLUtils.setStringOrNull(preparedStatement,2,person.getLastName());
             LOGGER.info("Row inserted into db");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, person::setPersonId);
+            newPersonId = person.getPersonId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
