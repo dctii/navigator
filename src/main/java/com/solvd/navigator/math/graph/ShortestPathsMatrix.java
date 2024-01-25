@@ -1,12 +1,16 @@
 package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.math.util.GraphUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringFormatters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ShortestPathsMatrix {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.SHORTEST_PATHS_MATRIX);
     private double[][] shortestDistances;
     private Map<String, Integer> vertexIdToIndexMap; // mapping from vertex ID to index in the matrix
     private Map<Integer, Integer> locationToVertexIndexMap;
@@ -98,7 +102,7 @@ public class ShortestPathsMatrix {
 
     @Override
     public String toString() {
-        Class<?> currClass = Vertex.class;
+        Class<?> currClass = ClassConstants.SHORTEST_PATHS_MATRIX;
         String[] fieldNames = {
                 "shortestDistances",
                 "vertexIdToIndexMap",

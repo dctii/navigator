@@ -2,12 +2,16 @@ package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.NumberUtils;
 import com.solvd.navigator.util.StringConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public abstract class Coordinate {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.COORDINATE);
     private double x;
     private double y;
 
@@ -95,7 +99,7 @@ public abstract class Coordinate {
 
     @Override
     public String toString() {
-        Class<?> currClass = Coordinate.class;
+        Class<?> currClass = ClassConstants.COORDINATE;
         String[] fieldNames = {
                 "x",
                 "y"

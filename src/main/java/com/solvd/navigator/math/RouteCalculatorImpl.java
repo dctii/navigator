@@ -5,6 +5,8 @@ import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.math.graph.ShortestPathsMatrix;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.math.util.RouteUtils;
+import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.StringFormatters;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,5 +144,19 @@ public class RouteCalculatorImpl implements RouteCalculator {
 
     public void setLocations(List<Location> locations) {
         this.locations = locations;
+    }
+
+    @Override
+    public String toString() {
+        Class<?> currClass = ClassConstants.ROUTE_CALCULATOR_IMPL;
+        String[] fieldNames = {
+                "shortestPathsMatrix",
+                "storages",
+                "locations"
+
+        };
+
+        String fieldsString = StringFormatters.buildFieldsString(this, fieldNames);
+        return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }

@@ -1,10 +1,14 @@
 package com.solvd.navigator.math.util;
 
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public final class OrderConstants {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ORDER_CONSTANTS);
     public static final List<Integer> ALL_STORAGE_WAREHOUSE_IDS = List.of(1, 2, 3, 4);
     public static final String ORDER_STATUS_AWAITING_DELIVERY = "Awaiting Delivery";
     public static final String ORDER_STATUS_IN_TRANSIT = "In Transit";

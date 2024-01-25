@@ -5,13 +5,14 @@ import com.solvd.navigator.exception.InvalidEdgeIdNameException;
 import com.solvd.navigator.exception.InvalidVertexException;
 import com.solvd.navigator.exception.InvalidVertexTargetException;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Edge {
-    private static final Logger LOGGER = LogManager.getLogger(Edge.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.EDGE);
 
     String edgeId;
     private Vertex vertex1;
@@ -135,7 +136,7 @@ public class Edge {
 
     @Override
     public String toString() {
-        Class<?> currClass = Edge.class;
+        Class<?> currClass = ClassConstants.EDGE;
         String[] fieldNames = {
                 "edgeId",
                 "vertex1",

@@ -5,6 +5,7 @@ import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.math.graph.ShortestPathsMatrix;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +20,7 @@ import java.util.stream.IntStream;
 
 public class RouteUtils {
 
-    private static final Logger LOGGER = LogManager.getLogger(RouteUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ROUTE_UTILS);
 
     public static List<Location> findFastestRoute(
             Location startingLocation,
