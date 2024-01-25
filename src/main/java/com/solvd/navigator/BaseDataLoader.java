@@ -1,11 +1,17 @@
 package com.solvd.navigator;
 
 
+import com.solvd.navigator.bin.Location;
+import com.solvd.navigator.math.util.JsonDataStore;
 import com.solvd.navigator.util.AnsiCodes;
+import com.solvd.navigator.util.FilepathConstants;
+import com.solvd.navigator.util.LoadUtils;
 import com.solvd.navigator.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class BaseDataLoader {
@@ -14,6 +20,16 @@ public class BaseDataLoader {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
+
+        List<Location> currentAvailableLocations = new ArrayList<>(JsonDataStore.allAvailableLocations);
+
+        LOGGER.info(
+                "{}Current Amount of Available Locations: {}{}",
+                AnsiCodes.YELLOW,
+                currentAvailableLocations.size(),
+                AnsiCodes.RESET_ALL
+        );
+
         while (true) {
             LOGGER.info(StringConstants.NEWLINE);
 
@@ -39,61 +55,105 @@ public class BaseDataLoader {
 
             switch (choice) {
                 case 1:
-                    // Loading should be done in this order:
-//                    LoaderUtils.loadLocationsData(FilepathConstants.LOCATIONS_JSON);
+                    // Loading should be done in the order that each LoadUtils.* method is in below in 'case 1':
+                    LoadUtils.loadLocationsData(FilepathConstants.LOCATIONS_JSON);
                     LOGGER.info(StringConstants.NEWLINE);
-//                    LoaderUtils.loadStoragesData(FilepathConstants.LOCATIONS_JSON);
+
+                    currentAvailableLocations =
+                            LoadUtils.loadStoragesData(FilepathConstants.STORAGES_JSON, currentAvailableLocations);
+
+                    LOGGER.info(
+                            "{}Current Amount of Available Locations: {}{}",
+                            AnsiCodes.YELLOW,
+                            currentAvailableLocations.size(),
+                            AnsiCodes.RESET_ALL
+                    );
+
                     LOGGER.info(StringConstants.NEWLINE);
-                    // Generate with javafaker
-//                    LoaderUtils.loadPersonsData();
+
+                    // generate first and last name with javafaker
+                    LoadUtils.loadPersonsData();
                     LOGGER.info(StringConstants.NEWLINE);
+
                     // Employees must be personId=1 and personId=2
-//                    LoaderUtils.loadEmployeesData(FilepathConstants.EMPLOYEES_JSON);
+                    LoadUtils.loadEmployeesData(FilepathConstants.EMPLOYEES_JSON);
                     LOGGER.info(StringConstants.NEWLINE);
-//                    LoaderUtils.loadVehiclesData(FilepathConstants.VEHICLES_JSON);
+
+                    LoadUtils.loadVehiclesData(FilepathConstants.VEHICLES_JSON);
                     LOGGER.info(StringConstants.NEWLINE);
+
                     // driver are employeeId=1 and employeeId=2; and vehicleId=1 and vehicleId=2
-//                    LoaderUtils.loadDriversData(FilepathConstants.DRIVERS_JSON);
+                    LoadUtils.loadDriversData(FilepathConstants.DRIVERS_JSON);
                     LOGGER.info(StringConstants.NEWLINE);
-                    // Generate, map on to persons
+
+                    // generate, map on to persons
                     // order recipients must be all personId > 2
-//                    LoaderUtils.loadOrderRecipientsData();
+
+                    currentAvailableLocations =
+                            LoadUtils.loadOrderRecipientsData(currentAvailableLocations);
+
+                    LOGGER.info(
+                            "{}Current Amount of Available Locations: {}{}",
+                            AnsiCodes.YELLOW,
+                            currentAvailableLocations.size(),
+                            AnsiCodes.RESET_ALL
+                    );
+
                     LOGGER.info(StringConstants.NEWLINE);
-                    // Generate, map on to generated order recipients
-//                    LoaderUtils.loadOrdersData();
+
+                    // generate 960 (number or orders per storage) * 4 (number of storages), map on to generated order recipients
+                    LoadUtils.loadOrdersData();
                     break;
                 case 2:
                     LOGGER.info("Uploading Locations...");
-//                    LoaderUtils.loadLocationsData(FilepathConstants.LOCATIONS_JSON);
+                    LoadUtils.loadLocationsData(FilepathConstants.LOCATIONS_JSON);
                     break;
                 case 3:
                     LOGGER.info("Uploading Storages...");
-//                    LoaderUtils.loadStoragesData(FilepathConstants.LOCATIONS_JSON);
+                    currentAvailableLocations =
+                            LoadUtils.loadStoragesData(
+                                    FilepathConstants.STORAGES_JSON,
+                                    currentAvailableLocations
+                            );
+
+                    LOGGER.info(
+                            "{}Current Amount of Available Locations: {}{}",
+                            AnsiCodes.YELLOW,
+                            currentAvailableLocations.size(),
+                            AnsiCodes.RESET_ALL
+                    );
                     break;
                 case 4:
                     LOGGER.info("Uploading Persons...");
-                    // 'airports.csv' (2024/01/07) from https://ourairports.com/data/
-//                    LoaderUtils.loadPersonsData();
+                    LoadUtils.loadPersonsData();
                     break;
                 case 5:
                     LOGGER.info("Uploading Employees...");
-//                    LoaderUtils.loadEmployeesData(FilepathConstants.EMPLOYEES_JSON);
+                    LoadUtils.loadEmployeesData(FilepathConstants.EMPLOYEES_JSON);
                     break;
                 case 6:
                     LOGGER.info("Uploading Vehicles...");
-//                    LoaderUtils.loadVehiclesData(FilepathConstants.VEHICLES_JSON);
+                    LoadUtils.loadVehiclesData(FilepathConstants.VEHICLES_JSON);
                     break;
                 case 7:
                     LOGGER.info("Uploading Drivers...");
-//                    LoaderUtils.loadDriversData(FilepathConstants.DRIVERS_JSON);
+                    LoadUtils.loadDriversData(FilepathConstants.DRIVERS_JSON);
                     break;
                 case 8:
                     LOGGER.info("Uploading Order Recipients...");
-//                    LoaderUtils.loadOrderRecipientsData();
+                    currentAvailableLocations =
+                            LoadUtils.loadOrderRecipientsData(currentAvailableLocations);
+
+                    LOGGER.info(
+                            "{}Current Amount of Available Locations: {}{}",
+                            AnsiCodes.YELLOW,
+                            currentAvailableLocations.size(),
+                            AnsiCodes.RESET_ALL
+                    );
                     break;
                 case 9:
                     LOGGER.info("Uploading Orders...");
-//                    LoaderUtils.loadOrdersData();
+                    LoadUtils.loadOrdersData();
                     break;
                 case 0:
                     LOGGER.info("Exiting...");
