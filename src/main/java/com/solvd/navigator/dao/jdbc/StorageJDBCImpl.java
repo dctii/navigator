@@ -96,7 +96,7 @@ public class StorageJDBCImpl implements StorageDAO {
     @Override
     public Storage getStorageByLocationId(int locationId) {
         Connection dbConnection = connectionPool.getConnection();
-        Storage storageAtLocation = new Storage();
+        Storage storageAtLocation = null;
         try (
                 PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_STORAGE_BY_LOCATION_ID)
                 ) {
@@ -104,7 +104,7 @@ public class StorageJDBCImpl implements StorageDAO {
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
-                    Storage storage = new Storage(
+                     storageAtLocation = new Storage(
                             resultSet.getInt("storage_id"),
                             resultSet.getString("name"),
                             resultSet.getInt("location_id")
