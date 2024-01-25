@@ -14,9 +14,9 @@ import java.sql.Statement;
 
 public class OrderJDBCImpl implements com.solvd.navigator.dao.OrderDAO {
     private static final Logger LOGGER = LogManager.getLogger(OrderJDBCImpl.class);
-    private static final String CREATE_ORDER_SQL = "INSERT INTO orders (order_number,order_status,order_date,delivery_date,storage_id,order_recipient,driver_id) VALUES (?,?,?,?,?,?,?)";
+    private static final String CREATE_ORDER_SQL = "INSERT INTO orders (order_number,order_status,order_date,delivery_date,storage_id,order_recipient_id,driver_id) VALUES (?,?,?,?,?,?,?)";
     private static final String SELECT_ORDER_SQL = "SELECT * FROM orders WHERE order_id = ?";
-    private static final String UPDATE_ORDER_SQL = "UPDATE orders SET order_number = ?, order_status = ?, order_date = ?, delivery_date = ?, storage_id = ?, order_recipient = ?, driver_id = ? WHERE order_id = ?";
+    private static final String UPDATE_ORDER_SQL = "UPDATE orders SET order_number = ?, order_status = ?, order_date = ?, delivery_date = ?, storage_id = ?, order_recipient_id = ?, driver_id = ? WHERE order_id = ?";
     private static final String DELETE_ORDER_SQL = "DELETE FROM orders WHERE order_id = ?";
     DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
