@@ -14,6 +14,8 @@ public interface OrderDAO extends AbstractDAO<Order> {
 
     List<Order> getAllAwaitingOrdersByStorageId(int storageId);
 
+    List<Order> getLimitedAwaitingOrdersByStorageId(int storageId, int orderLimit);
+
     @Override
    void update(Order order) ;
 
