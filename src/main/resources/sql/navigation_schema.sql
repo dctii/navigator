@@ -142,17 +142,17 @@ CREATE TABLE IF NOT EXISTS `navigation`.`orders` (
   `order_recipient_id` INT UNSIGNED NULL COMMENT 'The destination location of the order.',
   `driver_id` INT UNSIGNED NULL,
   PRIMARY KEY (`order_id`),
-  INDEX `fk_storage_order_idx` (`order_recipient_id` ASC) VISIBLE,
-  INDEX `fk_order_order_recipient_idx` (`storage_id` ASC) VISIBLE,
+  INDEX `fk_order_recipient_order_idx` (`order_recipient_id` ASC) VISIBLE,
+  INDEX `fk_storage_order_idx` (`storage_id` ASC) VISIBLE,
   INDEX `fk_driver_order_idx` (`driver_id` ASC) VISIBLE,
-  CONSTRAINT `fk_storage_order`
+  CONSTRAINT `fk_order_recipient_order`
     FOREIGN KEY (`order_recipient_id`)
-    REFERENCES `navigation`.`storages` (`storage_id`)
+    REFERENCES `navigation`.`order_recipients` (`order_recipient_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_order_recipient_order`
+  CONSTRAINT `fk_storage_order`
     FOREIGN KEY (`storage_id`)
-    REFERENCES `navigation`.`order_recipients` (`order_recipient_id`)
+    REFERENCES `navigation`.`storages` (`storage_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_driver_order`
