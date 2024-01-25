@@ -40,7 +40,7 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error adding Employee to database.", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return newEmployeeId;
     }
@@ -67,7 +67,7 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error getting employee from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return employee;
     }
@@ -113,7 +113,7 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error updating employee in the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 
@@ -130,7 +130,7 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting employee from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 }

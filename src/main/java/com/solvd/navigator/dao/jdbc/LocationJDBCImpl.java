@@ -37,7 +37,7 @@ public class LocationJDBCImpl implements LocationDAO {
         catch (SQLException e) {
             throw new RuntimeException("Error adding location to the database",e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return newLocationId;
     }
@@ -64,7 +64,7 @@ public class LocationJDBCImpl implements LocationDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error getting location from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return location;
     }
@@ -83,7 +83,7 @@ public class LocationJDBCImpl implements LocationDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error updating location in the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 
@@ -99,7 +99,7 @@ public class LocationJDBCImpl implements LocationDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting location from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 }

@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
@@ -18,6 +20,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
     private static final Logger LOGGER = LogManager.getLogger(OrderRecipientJDBCImpl.class);
     private static final String CREATE_RECIPIENT_SQL= "INSERT INTO order_recipients(person_id,location_id) VALUES (?,?)";
     private static final String SELECT_RECIPIENT_SQL = "SELECT * FROM order_recipients WHERE order_recipient_id = ?";
+    private static final String GET_ALL_QUERY = "SELECT * FROM order_recipients";
     private static final String UPDATE_RECIPIENT_SQL = "UPDATE order_recipients SET person_id = ?, location_id = ? WHERE order_recipient_id = ?";
     private static final String DELETE_RECIPIENT_SQL = "DELETE FROM order_recipients WHERE order_recipient_id = ?";
 
@@ -72,6 +75,32 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
             connectionPool.releaseConnection(dbConnection);
         }
         return orderRecipient;
+    }
+
+    public List<OrderRecipient> getAll() {
+        Connection dbConnection = connectionPool.getConnection();
+        List<OrderRecipient> allOrderRecipients = new ArrayList<>();
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_ALL_QUERY)
+                ) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    OrderRecipient orderRecipient = new OrderRecipient(
+                            resultSet.getInt("order_recipient_id"),
+                            resultSet.getInt("person_id"),
+                            resultSet.getInt("location_id")
+                    );
+                    allOrderRecipients.add(orderRecipient);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
+        }
+        return allOrderRecipients;
     }
 
     @Override

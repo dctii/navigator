@@ -17,6 +17,7 @@ public class StorageJDBCImpl implements StorageDAO {
     private static final String CREATE_STORAGE_SQL = "INSERT INTO storages(name,location_id) VALUES (?,?)";
     private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
     private static final String GET_ALL_QUERY = "SELECT * FROM storages";
+    private static final String AWAITING_DELIVERY_QUERY = "SELECT * FROM orders WHERE storage_id = ? AND order_status = 'Awaiting Delivery'";
     private static final String UPDATE_STORAGE_SQL = "UPDATE storages SET storage_id = ?, name = ?, location_id = ? WHERE storage_id = ?";
     private static final String DELETE_STORAGE_SQL = "DELETE FROM storages WHERE storage_id = ?";
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
@@ -37,7 +38,7 @@ public class StorageJDBCImpl implements StorageDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return newStorageId;
     }
@@ -86,11 +87,39 @@ public class StorageJDBCImpl implements StorageDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error getting storage from the database",e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return  allStorages;
 
     }
+
+    public List<Storage> getAllAwaitingOrdersByStorageId(int storageId) {
+        Connection dbConnection = connectionPool.getConnection();
+        List<Storage> storagesWithAwaitingOrders = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(AWAITING_DELIVERY_QUERY)) {
+            preparedStatement.setInt(1, storageId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // If an order is found, create a Storage object and add it to the list
+                    Storage storage = new Storage(
+                            resultSet.getInt("storage_id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("location_id")
+                    );
+                    storagesWithAwaitingOrders.add(storage);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting storages with awaiting orders from the database", e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
+        }
+
+        return storagesWithAwaitingOrders;
+    }
+
 
     @Override
     public void update(Storage storage) {
@@ -107,7 +136,7 @@ public class StorageJDBCImpl implements StorageDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 
@@ -123,7 +152,7 @@ public class StorageJDBCImpl implements StorageDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 }
