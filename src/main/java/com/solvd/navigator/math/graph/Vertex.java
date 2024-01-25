@@ -4,12 +4,13 @@ import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.exception.InvalidVertexException;
 import com.solvd.navigator.exception.PointTypeIsNullException;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Vertex {
-    private static final Logger LOGGER = LogManager.getLogger(Vertex.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.VERTEX);
 
     private String vertexId;
     private String vertexName;
@@ -141,7 +142,7 @@ public class Vertex {
 
     @Override
     public String toString() {
-        Class<?> currClass = Vertex.class;
+        Class<?> currClass = ClassConstants.VERTEX;
         String[] fieldNames = {
                 "vertexId",
                 "vertexName",

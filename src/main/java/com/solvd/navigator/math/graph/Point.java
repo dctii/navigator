@@ -4,12 +4,13 @@ import com.solvd.navigator.exception.InvalidAbscissaException;
 import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.exception.InvalidOrdinateException;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Point extends Coordinate {
-    private static final Logger LOGGER = LogManager.getLogger(Point.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.POINT);
 
     private String pointLabel;
 
@@ -125,7 +126,7 @@ public class Point extends Coordinate {
 
     @Override
     public String toString() {
-        Class<?> currClass = Point.class;
+        Class<?> currClass = ClassConstants.POINT;
         String[] fieldNames = {
                 "pointLabel"
         };

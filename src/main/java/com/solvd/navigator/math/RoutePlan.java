@@ -5,6 +5,7 @@ import com.solvd.navigator.exception.InvalidRouteCalculator;
 import com.solvd.navigator.exception.RouteNeedsLocationsException;
 import com.solvd.navigator.math.util.OrderConstants;
 import com.solvd.navigator.math.util.RouteUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +15,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class RoutePlan {
-    private static final Logger LOGGER = LogManager.getLogger(RoutePlan.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ROUTE_PLAN);
     private final UUID id;
     private Location originLocation;
     private List<Location> deliveryLocations;
@@ -173,7 +174,7 @@ public class RoutePlan {
 
     @Override
     public String toString() {
-        Class<?> currClass = RoutePlan.class;
+        Class<?> currClass = ClassConstants.ROUTE_PLAN;
         String[] fieldNames = {
                 "id",
                 "originLocation",

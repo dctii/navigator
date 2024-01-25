@@ -55,6 +55,10 @@ public final class ClassConstants {
     // java.util
     public static final Class<List> JAVA_UTIL_LIST = List.class;
 
+    // com.solvd.navigator
+    public static final Class<com.solvd.navigator.BaseDataLoader> BASE_DATA_LOADER_ENTRYPOINT = com.solvd.navigator.BaseDataLoader.class;
+    public static final Class<com.solvd.navigator.GraphTester> GRAPH_TESTER_ENTRYPOINT = com.solvd.navigator.GraphTester.class;
+    public static final Class<com.solvd.navigator.Main> MAIN_ENTRYPOINT = com.solvd.navigator.Main.class;
 
     // com.solvd.navigator.bin
     public static final Class<Driver> DRIVER = Driver.class;

@@ -9,14 +9,18 @@ import com.solvd.navigator.bin.Person;
 import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.bin.Vehicle;
 import com.solvd.navigator.math.graph.GraphConstants;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.FilepathConstants;
 import com.solvd.navigator.util.JacksonUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class JsonDataStore {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.JSON_DATA_STORE);
     public static List<Driver> allDrivers =
             JacksonUtils.extractItems(FilepathConstants.DRIVERS_JSON, Driver.class);
 
