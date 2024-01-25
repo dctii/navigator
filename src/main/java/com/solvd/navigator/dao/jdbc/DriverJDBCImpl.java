@@ -5,13 +5,13 @@ import com.solvd.navigator.dao.DriverDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
 
 public class DriverJDBCImpl implements DriverDAO {
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(DriverJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(DriverJDBCImpl.class);
     private static final String CREATE_DRIVER = "INSERT INTO drivers (employee_id,vehicle_id)" + "VALUES (?,?)";
     private static final String GET_BY_ID  = "SELECT * From drivers Where driver_id = ?";
     private static final String UPDATE_QUERY  = "UPDATE drivers SET employee_id=?, vehicle_id=? WHERE driver_id=?";

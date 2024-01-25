@@ -5,13 +5,13 @@ import com.solvd.navigator.dao.StorageDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
 public class StorageJDBCImpl implements StorageDAO {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(StorageJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(StorageJDBCImpl.class);
     private static final String CREATE_STORAGE_SQL = "INSERT INTO navigator.storages(storage_id,name,location_id) VALUES (?,?,?)";
     private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
     private static final String UPDATE_STORAGE_SQL = "UPDATE storages SET storage_id = ?, name = ?, location_id = ? WHERE storage_id = ?";

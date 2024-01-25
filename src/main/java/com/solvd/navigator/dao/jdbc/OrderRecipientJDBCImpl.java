@@ -5,16 +5,17 @@ import com.solvd.navigator.dao.OrderRecipientDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
+
 
 public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(OrderRecipientJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(OrderRecipientJDBCImpl.class);
     private static final String CREATE_RECIPIENT_SQL= "INSERT INTO order_recipients(person_id,location_id) VALUES (?,?)";
     private static final String SELECT_RECIPIENT_SQL = "SELECT * FROM order_recipients WHERE order_recipient_id = ?";
     private static final String UPDATE_RECIPIENT_SQL = "UPDATE order_recipients SET person_id = ?, location_id = ? WHERE order_recipient_id = ?";
