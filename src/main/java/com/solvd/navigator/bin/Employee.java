@@ -42,8 +42,8 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employess{" +
-               "employeeID=" + employeeId +
+        return "Employees{" +
+               "employeeId=" + employeeId +
                ", role='" + role + '\'' +
                ", personId=" + personId +
                '}';
