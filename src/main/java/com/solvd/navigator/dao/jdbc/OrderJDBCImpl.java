@@ -21,6 +21,7 @@ public class OrderJDBCImpl implements OrderDAO {
     private static final String CREATE_ORDER_SQL = "INSERT INTO orders (order_number,order_status,order_date,delivery_date,storage_id,order_recipient_id,driver_id) VALUES (?,?,?,?,?,?,?)";
     private static final String SELECT_ORDER_SQL = "SELECT * FROM orders WHERE order_id = ?";
     private static final String AWAITING_DELIVERY_QUERY = "SELECT * FROM orders WHERE storage_id = ? AND order_status = 'Awaiting Delivery'";
+    private static final String LIMIT_AWAITING_DELIVERY_QUERY = "SELECT * FROM orders WHERE storage_id = ? AND order_status = 'Awaiting Delivery' LIMIT ?";
     private static final String UPDATE_ORDER_SQL = "UPDATE orders SET order_number = ?, order_status = ?, order_date = ?, delivery_date = ?, storage_id = ?, order_recipient_id = ?, driver_id = ? WHERE order_id = ?";
     private static final String DELETE_ORDER_SQL = "DELETE FROM orders WHERE order_id = ?";
     DBConnectionPool connectionPool = DBConnectionPool.getInstance();
@@ -91,6 +92,40 @@ public class OrderJDBCImpl implements OrderDAO {
 
         try (PreparedStatement preparedStatement = dbConnection.prepareStatement(AWAITING_DELIVERY_QUERY)) {
             preparedStatement.setInt(1, storageId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // If an order is found, create a Storage object and add it to the list
+                    Order awaitingOrder = new Order(
+                            resultSet.getInt("order_id"),
+                            resultSet.getString("order_number"),
+                            resultSet.getString("order_status"),
+                            resultSet.getTimestamp("order_date"),
+                            resultSet.getTimestamp("delivery_date"),
+                            resultSet.getInt("storage_id"),
+                            resultSet.getInt("order_recipient_id"),
+                            resultSet.getInt("driver_id")
+                    );
+                    awaitingOrdersOfTargetStorage.add(awaitingOrder);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting storages with awaiting orders from the database", e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
+        }
+
+        return awaitingOrdersOfTargetStorage;
+    }
+
+
+    public List<Order> getLimitedAwaitingOrdersByStorageId(int storageId, int orderLimit) {
+        Connection dbConnection = connectionPool.getConnection();
+        List<Order> awaitingOrdersOfTargetStorage = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = dbConnection.prepareStatement(LIMIT_AWAITING_DELIVERY_QUERY)) {
+            preparedStatement.setInt(1, storageId);
+            preparedStatement.setInt(2, orderLimit);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {
