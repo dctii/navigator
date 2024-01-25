@@ -12,7 +12,6 @@ public interface StorageDAO extends AbstractDAO<Storage> {
     Storage getById(int storageId);
 
     List<Storage> getAll();
-    List<Storage> getAllAwaitingOrdersByStorageId();
 
     @Override
     void update(Storage storage);
