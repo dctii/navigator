@@ -28,7 +28,7 @@ public final class GraphConstants {
                     .flatMap(Set::stream)
                     .collect(Collectors.toUnmodifiableSet());
 
-    public static final int[] EXCLUDED_LOCATION_IDS = {
+    public static final Set<Integer> EXCLUDED_LOCATION_IDS = Set.of(
             // RIVER
             31, 32, 33, 34, 36, 37, 38, 39, 40,
             // BIG_BUILDING_ONE
@@ -36,7 +36,7 @@ public final class GraphConstants {
             // BIG_BUILDING_TWO
             56, 57, 66, 67
 
-    };
+    ); // 17 in total
 
 
     private GraphConstants() {

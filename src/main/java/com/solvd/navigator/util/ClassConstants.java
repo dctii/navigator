@@ -24,6 +24,7 @@ import com.solvd.navigator.dao.jdbc.LocationJDBCImpl;
 import com.solvd.navigator.dao.jdbc.OrderJDBCImpl;
 import com.solvd.navigator.dao.jdbc.OrderRecipientJDBCImpl;
 import com.solvd.navigator.dao.jdbc.PersonJDBCImpl;
+import com.solvd.navigator.dao.jdbc.StorageJDBCImpl;
 import com.solvd.navigator.dao.jdbc.VehicleJDBCImpl;
 import com.solvd.navigator.math.RouteCalculator;
 import com.solvd.navigator.math.RouteCalculatorImpl;
@@ -92,8 +93,7 @@ public final class ClassConstants {
     public static final Class<OrderRecipientJDBCImpl> ORDER_RECIPIENT_JDBC_IMPL = OrderRecipientJDBCImpl.class;
     public static final Class<PersonJDBCImpl> PERSON_JDBC_IMPL = PersonJDBCImpl.class;
 
-//    TODO: Has incorrect name currently
-    //    public static final Class<StorageJDBCImpl> STORAGE_JDBC_IMPL = StorageJDBCImpl.class;
+    public static final Class<StorageJDBCImpl> STORAGE_JDBC_IMPL = StorageJDBCImpl.class;
 
     public static final Class<VehicleJDBCImpl> VEHICLE_JDBC_IMPL = VehicleJDBCImpl.class;
 
@@ -136,10 +136,11 @@ public final class ClassConstants {
     public static final Class<ConfigConstants> CONFIG_CONSTANTS = ConfigConstants.class;
     public static final Class<ConfigLoader> CONFIG_LOADER = ConfigLoader.class;
     public static final Class<ExceptionUtils> EXCEPTION_UTILS = ExceptionUtils.class;
-    public static final Class<DAOFactory> DATA_ACCESS_PROVIDER = DAOFactory.class;
+    public static final Class<DAOFactory> DAO_FACTORY = DAOFactory.class;
     public static final Class<DBConnectionPool> DB_CONNECTION_POOL = DBConnectionPool.class;
     public static final Class<FilepathConstants> FILEPATH_CONSTANTS = FilepathConstants.class;
     public static final Class<JacksonUtils> JACKSON_UTILS = JacksonUtils.class;
+    public static final Class<LoadUtils> LOAD_UTILS = LoadUtils.class;
     public static final Class<MyBatisUtils> MYBATIS_UTILS = MyBatisUtils.class;
     public static final Class<NumberUtils> NUMBER_UTILS = NumberUtils.class;
     public static final Class<ReflectionUtils> REFLECTION_UTILS = ReflectionUtils.class;
