@@ -12,7 +12,7 @@ public interface OrderDAO extends AbstractDAO<Order> {
     @Override
     Order getById(int OrderId) ;
 
-    List<Order> getAllAwaitingOrdersByStorageId();
+    List<Order> getAllAwaitingOrdersByStorageId(int storageId);
 
     @Override
    void update(Order order) ;
