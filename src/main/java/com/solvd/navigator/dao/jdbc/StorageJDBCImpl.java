@@ -17,6 +17,7 @@ public class StorageJDBCImpl implements StorageDAO {
     private static final String CREATE_STORAGE_SQL = "INSERT INTO storages(name,location_id) VALUES (?,?)";
     private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
     private static final String GET_ALL_QUERY = "SELECT * FROM storages";
+    private static final String GET_STORAGE_BY_LOCATION_ID = "SELECT * FROM storages WHERE location_id = ?";
     private static final String UPDATE_STORAGE_SQL = "UPDATE storages SET storage_id = ?, name = ?, location_id = ? WHERE storage_id = ?";
     private static final String DELETE_STORAGE_SQL = "DELETE FROM storages WHERE storage_id = ?";
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
@@ -92,7 +93,32 @@ public class StorageJDBCImpl implements StorageDAO {
 
     }
 
+    @Override
+    public Storage getStorageByLocationId(int locationId) {
+        Connection dbConnection = connectionPool.getConnection();
+        Storage storageAtLocation = null;
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_STORAGE_BY_LOCATION_ID)
+                ) {
+            preparedStatement.setInt(1, locationId);
 
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                     storageAtLocation = new Storage(
+                            resultSet.getInt("storage_id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("location_id")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
+        }
+        return storageAtLocation;
+    }
 
 
     @Override
