@@ -32,6 +32,7 @@ public class LocationJDBCImpl implements LocationDAO {
             SQLUtils.setFloatOrNull(preparedStatement,2, location.getCoordinateY());
             LOGGER.info("Row inserted into DB");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, location::setLocationId);
+            newLocationId = location.getLocationId();
         }
         catch (SQLException e) {
             throw new RuntimeException("Error adding location to the database",e);

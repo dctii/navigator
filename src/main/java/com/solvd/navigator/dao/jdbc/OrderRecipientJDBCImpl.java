@@ -27,7 +27,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
     public int create(OrderRecipient orderRecipient) {
         Connection dbConnection = connectionPool.getConnection();
 
-        int orderRecipientId = 0;
+        int newOrderRecipientId = 0;
         try (
                 PreparedStatement preparedStatement = dbConnection.prepareStatement(
                         CREATE_RECIPIENT_SQL,
@@ -39,13 +39,13 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
 
             SQLUtils.updateAndSetGeneratedId(preparedStatement, orderRecipient::setOrderRecipientId);
 
-            orderRecipientId = orderRecipient.getOrderRecipientId();
+            newOrderRecipientId = orderRecipient.getOrderRecipientId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
             connectionPool.releaseConnection(dbConnection);
         }
-        return orderRecipientId;
+        return newOrderRecipientId;
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.sql.*;
 public class StorageJDBCImpl implements StorageDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(StorageJDBCImpl.class);
-    private static final String CREATE_STORAGE_SQL = "INSERT INTO storages(storage_id,name,location_id) VALUES (?,?,?)";
+    private static final String CREATE_STORAGE_SQL = "INSERT INTO storages(name,location_id) VALUES (?,?)";
     private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
     private static final String UPDATE_STORAGE_SQL = "UPDATE storages SET storage_id = ?, name = ?, location_id = ? WHERE storage_id = ?";
     private static final String DELETE_STORAGE_SQL = "DELETE FROM storages WHERE storage_id = ?";
@@ -21,14 +21,16 @@ public class StorageJDBCImpl implements StorageDAO {
     public int create(Storage storage) {
         Connection dbConnection = connectionPool.getConnection();
         int newStorageId = 0;
+
         try (
              PreparedStatement preparedStatement = dbConnection.prepareStatement(
                      CREATE_STORAGE_SQL,
                      Statement.RETURN_GENERATED_KEYS)
         ) {
-            SQLUtils.setIntOrNull(preparedStatement,1, storage.getStorageId());
-            SQLUtils.setStringOrNull(preparedStatement,2, storage.getName());
-            SQLUtils.setIntOrNull(preparedStatement,3, storage.getLocationId());
+            SQLUtils.setStringOrNull(preparedStatement,1, storage.getName());
+            SQLUtils.setIntOrNull(preparedStatement,2, storage.getLocationId());
+            SQLUtils.updateAndSetGeneratedId(preparedStatement, storage::setStorageId);
+            newStorageId = storage.getStorageId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
