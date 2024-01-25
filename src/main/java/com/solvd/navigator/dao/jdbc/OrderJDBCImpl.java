@@ -40,7 +40,6 @@ public class OrderJDBCImpl implements com.solvd.navigator.dao.OrderDAO {
             SQLUtils.setIntOrNull(preparedStatement,7, order.getDriverId());
 
             SQLUtils.updateAndSetGeneratedId(preparedStatement, order::setOrderId);
-
             newOrderId = order.getOrderId();
         } catch (SQLException e) {
             throw new RuntimeException(e);

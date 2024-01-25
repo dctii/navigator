@@ -33,6 +33,7 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
             SQLUtils.setIntOrNull(preparedStatement,2, employee.getPersonId());
             LOGGER.info("Row inserted into DB");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, employee::setEmployeeId);
+            newEmployeeId= employee.getEmployeeId();
         } catch (SQLException e) {
             throw new RuntimeException("Error adding Employee to database.", e);
         } finally {

@@ -33,6 +33,7 @@ public class PersonJDBCImpl implements PersonDAO {
             SQLUtils.setStringOrNull(preparedStatement,2,person.getLastName());
             LOGGER.info("Row inserted into db");
             SQLUtils.updateAndSetGeneratedId(preparedStatement, person::setPersonId);
+            newPersonId = person.getPersonId();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
