@@ -8,12 +8,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeJDBCImpl implements EmployeeDAO {
     private static final Logger LOGGER = LogManager.getLogger(EmployeeJDBCImpl.class);
 
     private static final String CREATE_EMPLOYEE = "INSERT INTO employees (role, person_id)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM employees WHERE employee_id = ?";
+    private static final String GET_ALL_QUERY = "SELECT * FROM employees";
     private static final String UPDATE_QUERY = "UPDATE employees SET role=?, person_id=? WHERE employee_id=?";
     private static final String DELETE_QUERY = "DELETE FROM employees WHERE employee_id=?";
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
@@ -67,6 +70,33 @@ public class EmployeeJDBCImpl implements EmployeeDAO {
             DBConnectionPool.getInstance().releaseConnection(dbConnection);
         }
         return employee;
+    }
+
+    public List<Employee> getAll() {
+        Connection dbConnection = connectionPool.getConnection();
+        List<Employee> allEmployees = new ArrayList<>();
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_ALL_QUERY)
+        ) {
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // If a record is found, create an Employee object
+                    Employee employee = new Employee(
+                            resultSet.getInt("employee_id"),
+                            resultSet.getString("role"),
+                            resultSet.getInt("person_id")
+                    );
+                    allEmployees.add(employee);
+
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting employee from the database", e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
+        }
+        return allEmployees;
     }
 
     @Override

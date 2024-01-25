@@ -1,6 +1,7 @@
 package com.solvd.navigator.dao;
 
 import com.solvd.navigator.bin.Employee;
+import java.util.List;
 
 public interface EmployeeDAO extends AbstractDAO<Employee>{
     @Override
@@ -8,6 +9,8 @@ public interface EmployeeDAO extends AbstractDAO<Employee>{
 
     @Override
     Employee getById(int id);
+
+    List<Employee> getAll();
 
     @Override
     void update(Employee employee);
