@@ -9,13 +9,13 @@ import java.util.Properties;
 
 public final class DAOFactory {
 
-    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DATA_ACCESS_PROVIDER);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DAO_FACTORY);
     private static final String databaseImpl;
 
 
     static {
         Properties config = ConfigLoader.loadProperties(
-                ClassConstants.DATA_ACCESS_PROVIDER,
+                ClassConstants.DAO_FACTORY,
                 ConfigConstants.CONFIG_PROPS_FILE_NAME
         );
         databaseImpl = config.getProperty(ConfigConstants.DATABASE_IMPLEMENTATION);

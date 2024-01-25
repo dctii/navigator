@@ -55,7 +55,7 @@ mysql -u {{username}} -p{{password}} < src/resources/sql/navigation_database_dro
 mysql -u {{username}} -p{{password}} < src/resources/sql/navigation_database_creation.sql
 
 # 3. Create `navigation` schema.
-mysql -u {{username}} -p{{password}} -D airport < src/resources/sql/navigation_schema.sql
+mysql -u {{username}} -p{{password}} -D navigation < src/resources/sql/navigation_schema.sql
 
 ```
 
@@ -67,6 +67,28 @@ mvn clean install
 
 # Run the `base-data-loader` profile and load all of the data
 mvn exec:java -P base-data-loader
+
+
+# The menu will load after executing
+# After you've reset the database and have a fresh schema, select [1] to load all of the necessary data.
+# Doing the other options must be done in order if you want it to upload 
+#   successfully because they depend on each other
+=== Airport Base Data Loading Tools: ===
+[0] Exit
+[1] Execute all 'Load' options
+[2] Load Locations Data
+[3] Load Storages Data
+[4] Load Persons Data
+[5] Load Employees Data
+[6] Load Vehicles Data
+[7] Load Drivers Data
+[8] Load OrderRecipients Data
+[9] Load Orders Data
+
+Enter your choice:
+0
+
+
 ```
 
 ### Run `GraphTester.class`
