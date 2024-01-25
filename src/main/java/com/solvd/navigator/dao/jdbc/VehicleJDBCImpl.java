@@ -5,7 +5,7 @@ import com.solvd.navigator.dao.VehicleDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,12 +15,12 @@ import java.sql.Statement;
 
 public class VehicleJDBCImpl implements VehicleDAO {
 
-    private static final Logger LOGGER = (Logger) LogManager.getLogger(VehicleJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(VehicleJDBCImpl.class);
 
-    private static final String CreateVehicleSQL = "INSERT INTO vehicles(year,make,model,trim_level,license_plate_number) VALUES (?,?,?,?,?)";
-    private static final String SelectVehicleSQL = "SELECT * FROM vehicles WHERE vehicle_id = ?";
-    private static final String UpdateVehicleSQL = "UPDATE vehicles SET year = ?, make = ?, model = ?, trim_level = ?, license_plate_number = ? WHERE vehicle_id = ?";
-    private static final String DeleteVehicleSQL = "DELETE FROM vehicles WHERE vehicle_id = ?";
+    private static final String CREATE_VEHICLE_SQL = "INSERT INTO vehicles(year,make,model,trim_level,license_plate_number) VALUES (?,?,?,?,?)";
+    private static final String SELECT_VEHICLE_SQL = "SELECT * FROM vehicles WHERE vehicle_id = ?";
+    private static final String UPDATE_VEHICLE_SQL = "UPDATE vehicles SET year = ?, make = ?, model = ?, trim_level = ?, license_plate_number = ? WHERE vehicle_id = ?";
+    private static final String DELETE_VEHICLE_SQL = "DELETE FROM vehicles WHERE vehicle_id = ?";
 
     // Put the connection pool up here. All the queries below will use it, so we are able to instantiate it once for this class.
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
@@ -34,7 +34,7 @@ public class VehicleJDBCImpl implements VehicleDAO {
         int newVehicleId = 0;
         try (
                 PreparedStatement preparedStatement = dbConnection.prepareStatement(
-                        CreateVehicleSQL,
+                        CREATE_VEHICLE_SQL,
                         // the primary key 'vehicle_id` is auto-incremented, so it will be automatically generated
                         // so you need to make sure to put this 'Statement.RETURN_GENERATED_KEYS' as the 2nd argument of prepareStatement()
                         Statement.RETURN_GENERATED_KEYS
@@ -90,7 +90,7 @@ public class VehicleJDBCImpl implements VehicleDAO {
 
         Vehicle vehicle = null;
         try (
-                PreparedStatement preparedStatement = dbConnection.prepareStatement(SelectVehicleSQL)
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(SELECT_VEHICLE_SQL)
         ) {
             preparedStatement.setInt(1, vehicleId);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -119,7 +119,7 @@ public class VehicleJDBCImpl implements VehicleDAO {
         Connection dbConnection = connectionPool.getConnection();
 
         try (
-                PreparedStatement preparedStatement = dbConnection.prepareStatement(UpdateVehicleSQL)
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_VEHICLE_SQL)
         ) {
             preparedStatement.setInt(1, vehicle.getYear());
             preparedStatement.setString(2, vehicle.getMake());
@@ -141,7 +141,7 @@ public class VehicleJDBCImpl implements VehicleDAO {
         Connection dbConnection = connectionPool.getConnection();
 
         try (
-                PreparedStatement preparedStatement = dbConnection.prepareStatement(DeleteVehicleSQL)
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(DELETE_VEHICLE_SQL)
         ) {
             preparedStatement.setInt(1, vehicleId);
             preparedStatement.executeUpdate();
