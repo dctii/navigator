@@ -1,12 +1,16 @@
 package com.solvd.navigator.math.graph;
 
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class GraphConstants {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.GRAPH_CONSTANTS);
     public static final int COORDINATE_MAX = 9; // determines `n`, so if '9', then graph will be a 10x10 table
     public static final Set<Point> RIVER = Set.of(
             new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3),
