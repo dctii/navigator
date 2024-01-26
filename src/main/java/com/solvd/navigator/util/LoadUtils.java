@@ -27,12 +27,67 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.IntStream;
 
 public class LoadUtils {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.LOAD_UTILS);
+
+    public static final String LOCATIONS_JSON_KEY = "locations";
+    public static final String STORAGES_JSON_KEY = "storages";
+    public static final String EMPLOYEES_JSON_KEY = "employees";
+    public static final String VEHICLES_JSON_KEY = "vehicles";
+    public static final String DRIVERS_JSON_KEY = "drivers";
+
+    public static void loadAllData(List<Location> currentAvailableLocations) {
+        final Map<String, String> jsonFilepathMap = Map.of(
+                LOCATIONS_JSON_KEY, FilepathConstants.LOCATIONS_JSON,
+                STORAGES_JSON_KEY, FilepathConstants.STORAGES_JSON,
+                EMPLOYEES_JSON_KEY, FilepathConstants.EMPLOYEES_JSON,
+                VEHICLES_JSON_KEY, FilepathConstants.VEHICLES_JSON,
+                DRIVERS_JSON_KEY, FilepathConstants.DRIVERS_JSON
+        );
+
+        loadAllData(jsonFilepathMap, currentAvailableLocations);
+
+    }
+
+    public static void loadAllData(Map<String, String> jsonFilepathMap, List<Location> currentAvailableLocations) {
+        loadLocationsData(jsonFilepathMap.get(LOCATIONS_JSON_KEY));
+
+        currentAvailableLocations =
+                loadStoragesData(jsonFilepathMap.get(STORAGES_JSON_KEY), currentAvailableLocations);
+
+        LOGGER.info(
+                "{}Current Amount of Available Locations: {}{}",
+                AnsiCodes.YELLOW,
+                currentAvailableLocations.size(),
+                AnsiCodes.RESET_ALL
+        );
+
+        loadPersonsData();
+
+        loadEmployeesData(jsonFilepathMap.get(EMPLOYEES_JSON_KEY));
+
+        loadVehiclesData(jsonFilepathMap.get(VEHICLES_JSON_KEY));
+
+        loadDriversData(jsonFilepathMap.get(DRIVERS_JSON_KEY));
+
+        currentAvailableLocations =
+                loadOrderRecipientsData(currentAvailableLocations);
+
+        LOGGER.info(
+                "{}Current Amount of Available Locations: {}{}",
+                AnsiCodes.YELLOW,
+                currentAvailableLocations.size(),
+                AnsiCodes.RESET_ALL
+        );
+
+        LoadUtils.loadOrdersData();
+
+    }
 
     public static void loadLocationsData(String jsonFilepath) {
         final LocationDAO locationDAO = DAOFactory.createDAO(ClassConstants.LOCATION_DAO);

@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -84,10 +83,9 @@ public class JacksonUtils {
     }
 
     public static Storage getRandomStorage(List<Storage> storages) {
-        Random random = new Random();
-        int randomIndex = random.nextInt(storages.size()); // Generate a random index
-        return storages.get(randomIndex); // Get the storage at the random index
+        return CollectionUtils.getRandomItemFromList(storages);
     }
+
 
 
     public static Storage getStorageByLocationId(int locationId, List<Storage> storages) {
