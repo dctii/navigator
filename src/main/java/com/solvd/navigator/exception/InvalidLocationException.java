@@ -1,6 +1,7 @@
 package com.solvd.navigator.exception;
-public class InvalidLocationException {
-    public static void main(String[] args) {
-        
+
+public class InvalidLocationException extends RuntimeException {
+    public InvalidLocationException(String message) {
+        super(message);
     }
 }
