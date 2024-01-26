@@ -145,12 +145,10 @@ public final class ClassConstants {
     public static final Class<FilepathConstants> FILEPATH_CONSTANTS = FilepathConstants.class;
     public static final Class<JacksonUtils> JACKSON_UTILS = JacksonUtils.class;
     public static final Class<LoadUtils> LOAD_UTILS = LoadUtils.class;
-    public static final Class<MyBatisUtils> MYBATIS_UTILS = MyBatisUtils.class;
     public static final Class<NumberUtils> NUMBER_UTILS = NumberUtils.class;
     public static final Class<ReflectionUtils> REFLECTION_UTILS = ReflectionUtils.class;
     public static final Class<RegExpConstants> REG_EXP_CONSTANTS = RegExpConstants.class;
     public static final Class<ScannerUtils> SCANNER_UTILS = ScannerUtils.class;
-    public static final Class<SQLConstants> SQL_CONSTANTS = SQLConstants.class;
     public static final Class<SQLUtils> SQL_UTILS = SQLUtils.class;
     public static final Class<StringConstants> STRING_CONSTANTS = StringConstants.class;
     public static final Class<StringFormatters> STRING_FORMATTERS = StringFormatters.class;

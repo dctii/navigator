@@ -104,8 +104,8 @@ public class BigDecimalUtils {
             throw new IllegalArgumentException(ILLEGAL_ARGUMENT_EXCEPTION_MESSAGE);
         }
 
-        BigDecimal leftOperand = NumberUtils.ensureBigDecimal(values[0]);
-        BigDecimal rightOperand = NumberUtils.ensureBigDecimal(values[1]);
+        BigDecimal leftOperand = ensureBigDecimal(values[0]);
+        BigDecimal rightOperand = ensureBigDecimal(values[1]);
 
         switch (operationType.toLowerCase()) {
             case StringConstants.ADD_STRING:
@@ -155,6 +155,16 @@ public class BigDecimalUtils {
                 .skip(1)
                 .map(value -> BigDecimal.valueOf(value.doubleValue()))
                 .reduce(initialValue, arithmeticOperation);
+    }
+
+    public static BigDecimal ensureBigDecimal(Number value) {
+        BigDecimal bigDecimalValue;
+        if (value instanceof BigDecimal) {
+            bigDecimalValue = (BigDecimal) value;
+        } else {
+            bigDecimalValue = BigDecimal.valueOf(value.doubleValue());
+        }
+        return bigDecimalValue;
     }
 
     private BigDecimalUtils() {
