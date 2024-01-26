@@ -3,6 +3,8 @@ package com.solvd.navigator.dao;
 import com.solvd.navigator.bin.OrderRecipient;
 import com.solvd.navigator.bin.Vehicle;
 
+import java.util.List;
+
 public interface OrderRecipientDAO extends AbstractDAO<OrderRecipient> {
 
     @Override
@@ -10,6 +12,7 @@ public interface OrderRecipientDAO extends AbstractDAO<OrderRecipient> {
 
     @Override
     OrderRecipient getById(int orderRecipientId);
+    List<OrderRecipient> getAll();
 
     @Override
     void update(OrderRecipient orderRecipient);

@@ -2,9 +2,11 @@ package com.solvd.navigator.math.util;
 
 import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.bin.Storage;
+import com.solvd.navigator.exception.StorageLocationNotFoundException;
 import com.solvd.navigator.math.graph.ShortestPathsMatrix;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +21,7 @@ import java.util.stream.IntStream;
 
 public class RouteUtils {
 
-    private static final Logger LOGGER = LogManager.getLogger(RouteUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ROUTE_UTILS);
 
     public static List<Location> findFastestRoute(
             Location startingLocation,
@@ -34,6 +36,7 @@ public class RouteUtils {
         Set<Integer> visitedLocationIds = new HashSet<>();
 
         int currentLocationId = startingLocation.getLocationId();
+
         fastRoute.add(startingLocation);
         visitedLocationIds.add(currentLocationId);
 
@@ -53,19 +56,31 @@ public class RouteUtils {
                 }
             }
 
+            /* 2024-01JAN-25
+                Bug resolved by adding the `break`. Was not able to exit loop
+                whenever a duplicate location (order destination) was in the
+                same locationsForRoute list.
+            */
             if (closestLocation != null) {
                 visitedLocationIds.add(closestLocation.getLocationId());
                 fastRoute.add(closestLocation);
                 currentLocationId = closestLocation.getLocationId();
+            } else {
+                // if null, there was/were duplicate locations for the order, so break
+                break;
             }
         }
 
-        // Find the nearest storage location after completing all deliveries
+        // find the nearest storage location
         Location lastDeliveryLocation = fastRoute.get(fastRoute.size() - 1);
         Location nearestStorageLocation = findNearestStorageLocation(lastDeliveryLocation, storages, matrix);
 
         if (nearestStorageLocation != null) {
             fastRoute.add(nearestStorageLocation);
+        } else {
+            final String CANNOT_FIND_STORAGE_EXCEPTION_MSG = "Unable to find nearby storage location.";
+            LOGGER.error(CANNOT_FIND_STORAGE_EXCEPTION_MSG);
+            throw new StorageLocationNotFoundException(CANNOT_FIND_STORAGE_EXCEPTION_MSG);
         }
 
         return fastRoute;

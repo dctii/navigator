@@ -8,12 +8,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StorageJDBCImpl implements StorageDAO {
 
     private static final Logger LOGGER = LogManager.getLogger(StorageJDBCImpl.class);
     private static final String CREATE_STORAGE_SQL = "INSERT INTO storages(name,location_id) VALUES (?,?)";
     private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
+    private static final String GET_ALL_QUERY = "SELECT * FROM storages";
+    private static final String GET_STORAGE_BY_LOCATION_ID = "SELECT * FROM storages WHERE location_id = ?";
     private static final String UPDATE_STORAGE_SQL = "UPDATE storages SET storage_id = ?, name = ?, location_id = ? WHERE storage_id = ?";
     private static final String DELETE_STORAGE_SQL = "DELETE FROM storages WHERE storage_id = ?";
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
@@ -34,7 +38,7 @@ public class StorageJDBCImpl implements StorageDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return newStorageId;
     }
@@ -62,6 +66,60 @@ public class StorageJDBCImpl implements StorageDAO {
 
         return storage;
     }
+    public List<Storage> getAll() {
+        Connection dbConnection = connectionPool.getConnection();
+        List<Storage> allStorages = new ArrayList<>();
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_ALL_QUERY)
+                ) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    // If a record is found, create an Storage object
+                    Storage storage = new Storage(
+                            resultSet.getInt("storage_id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("location_id")
+                    );
+                    allStorages.add(storage);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error getting storage from the database",e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
+        }
+        return  allStorages;
+
+    }
+
+    @Override
+    public Storage getStorageByLocationId(int locationId) {
+        Connection dbConnection = connectionPool.getConnection();
+        Storage storageAtLocation = null;
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_STORAGE_BY_LOCATION_ID)
+                ) {
+            preparedStatement.setInt(1, locationId);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                     storageAtLocation = new Storage(
+                            resultSet.getInt("storage_id"),
+                            resultSet.getString("name"),
+                            resultSet.getInt("location_id")
+                    );
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
+        }
+        return storageAtLocation;
+    }
+
 
     @Override
     public void update(Storage storage) {
@@ -78,7 +136,7 @@ public class StorageJDBCImpl implements StorageDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 
@@ -94,7 +152,7 @@ public class StorageJDBCImpl implements StorageDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 }

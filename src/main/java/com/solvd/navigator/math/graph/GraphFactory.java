@@ -2,12 +2,13 @@ package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidGraphTypeException;
 import com.solvd.navigator.math.util.GraphUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class GraphFactory {
-    private static final Logger LOGGER = LogManager.getLogger(GraphFactory.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.GRAPH_FACTORY);
 
     private static final String INVALID_GRAPH_TYPE_MSG =
             "That GraphType does not exist. Types: GraphType.WEIGHTED_UNDIRECTED";
@@ -31,7 +32,6 @@ public class GraphFactory {
                 throw new InvalidGraphTypeException(INVALID_GRAPH_TYPE_MSG);
         }
     }
-
 
     private GraphFactory() {
         ExceptionUtils.preventFactoryInstantiation();

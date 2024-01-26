@@ -19,8 +19,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Random;
+import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class JacksonUtils {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.JACKSON_UTILS);
@@ -28,6 +29,7 @@ public class JacksonUtils {
     public static <T> List<T> extractItems(String resourcePath, Class<T> clazz) {
         return parseJson(resourcePath, clazz);
     }
+
 
     public static <T> List<T> parseJson(String resourcePath, Class<T> clazz) {
         ObjectMapper mapper = new ObjectMapper();
@@ -81,10 +83,9 @@ public class JacksonUtils {
     }
 
     public static Storage getRandomStorage(List<Storage> storages) {
-        Random random = new Random();
-        int randomIndex = random.nextInt(storages.size()); // Generate a random index
-        return storages.get(randomIndex); // Get the storage at the random index
+        return CollectionUtils.getRandomItemFromList(storages);
     }
+
 
 
     public static Storage getStorageByLocationId(int locationId, List<Storage> storages) {
@@ -170,19 +171,50 @@ public class JacksonUtils {
             List<Order> orders = mapper.readValue(jsonFile, new TypeReference<List<Order>>() {
             });
 
-            // Find and update the specific order
-            for (int i = 0; i < orders.size(); i++) {
-                if (orders.get(i).getOrderId() == updatedOrder.getOrderId()) {
-                    orders.set(i, updatedOrder);
-                    break;
-                }
-            }
+            // find and update the specific order
+            IntStream.range(0, orders.size())
+                    .filter(i ->
+                            orders.get(i).getOrderId() == updatedOrder.getOrderId()
+                    )
+                    .findFirst()
+                    .ifPresent(i -> orders.set(i, updatedOrder));
 
             // Write the updated list back to the file
             mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, orders);
         } catch (IOException e) {
             LOGGER.error("Error updating order in file: " + filepath, e);
             throw new WriteToJsonFailureException("Error updating order in file: " + filepath + e);
+        }
+    }
+
+    public static void updateStoragesWithLocations(String filepath, List<Storage> storages) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat(StringConstants.TIMESTAMP_PATTERN));
+
+        try {
+            // read the existing storages from the JSON file
+            File jsonFile = new File(FilepathConstants.RESOURCES_ABSOLUTE_PATH + filepath);
+            List<Storage> currentStorages = mapper.readValue(jsonFile, new TypeReference<List<Storage>>() {
+            });
+
+            // create a map to make storages easier to look for
+            Map<Integer, Storage> storageMap = currentStorages.stream()
+                    .collect(Collectors.toMap(Storage::getStorageId, storage -> storage));
+
+            storages.stream()
+                    .forEach(storage -> {
+                        Storage currentStorage = storageMap.get(storage.getStorageId());
+                        if (currentStorage != null) {
+                            currentStorage.setLocationId(storage.getLocationId());
+                        }
+                    });
+
+
+            // Write the updated list back to the JSON file
+            mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, currentStorages);
+        } catch (IOException e) {
+            LOGGER.error("Error updating storages in file: " + filepath, e);
+            throw new WriteToJsonFailureException("Error updating storages in file: " + filepath + e);
         }
     }
 

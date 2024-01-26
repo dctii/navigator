@@ -37,7 +37,7 @@ public class PersonJDBCImpl implements PersonDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return newPersonId;
     }
@@ -64,7 +64,7 @@ public class PersonJDBCImpl implements PersonDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error getting person from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return person;
     }
@@ -83,7 +83,7 @@ public class PersonJDBCImpl implements PersonDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error updating person in the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 
@@ -99,7 +99,7 @@ public class PersonJDBCImpl implements PersonDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting person from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 }

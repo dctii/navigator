@@ -8,12 +8,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DriverJDBCImpl implements DriverDAO {
     private static final Logger LOGGER = LogManager.getLogger(DriverJDBCImpl.class);
     private static final String CREATE_DRIVER = "INSERT INTO drivers (employee_id,vehicle_id)" + "VALUES (?,?)";
     private static final String GET_BY_ID  = "SELECT * From drivers Where driver_id = ?";
+    private static final String GET_ALL_QUERY= "SELECT * From drivers";
     private static final String UPDATE_QUERY  = "UPDATE drivers SET employee_id=?, vehicle_id=? WHERE driver_id=?";
     private static final String DELETE_QUERY  = "DELETE FROM drivers WHERE driver_id=?";
     private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
@@ -83,6 +86,31 @@ public class DriverJDBCImpl implements DriverDAO {
         return driver;
     }
 
+    public List<Driver> getAll() {
+        Connection dbConnection = connectionPool.getConnection();
+        List<Driver> allDrivers = new ArrayList<>();
+        try (
+                PreparedStatement preparedStatement = dbConnection.prepareStatement(GET_ALL_QUERY)
+                ) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    Driver.Builder builder = new Driver.Builder()
+                            .setDriverId(resultSet.getInt("driver_id"))
+                            .setEmployeeId(resultSet.getInt("employee_id"))
+                            .setVehicleId(resultSet.getInt("vehicle_id"));
+                    Driver driver = builder.build();
+                    allDrivers.add(driver);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+        }
+        return allDrivers;
+    }
+
     @Override
     public void update(Driver driver) {
         Connection dbConnection = connectionPool.getConnection();
@@ -97,7 +125,7 @@ public class DriverJDBCImpl implements DriverDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error updating driver in the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 
@@ -113,7 +141,7 @@ public class DriverJDBCImpl implements DriverDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error deleting driver from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
     }
 }

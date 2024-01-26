@@ -1,6 +1,7 @@
 package com.solvd.navigator.exception;
-public class NoMoreAssignableLocationsException {
-    public static void main(String[] args) {
-        
+
+public class NoMoreAssignableLocationsException extends RuntimeException {
+    public NoMoreAssignableLocationsException(String message) {
+        super(message);
     }
 }

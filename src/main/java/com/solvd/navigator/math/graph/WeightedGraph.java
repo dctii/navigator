@@ -8,6 +8,7 @@ import com.solvd.navigator.exception.InvalidEdgeException;
 import com.solvd.navigator.exception.InvalidVertexException;
 import com.solvd.navigator.exception.VertexNotFoundException;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class WeightedGraph implements IGraph {
-    private static final Logger LOGGER = LogManager.getLogger(WeightedGraph.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.WEIGHTED_GRAPH);
     private final Map<String, Vertex> vertices;
     private final Map<String, List<Edge>> adjacencyList;
 
@@ -292,7 +293,7 @@ public class WeightedGraph implements IGraph {
 
     @Override
     public String toString() {
-        Class<?> currClass = WeightedGraph.class;
+        Class<?> currClass = ClassConstants.WEIGHTED_GRAPH;
         String[] fieldNames = {
                 "vertices",
                 "adjacencyList"

@@ -7,6 +7,7 @@ import com.solvd.navigator.math.graph.Point;
 import com.solvd.navigator.math.graph.Vertex;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.util.BooleanUtils;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GraphUtils {
-    private static final Logger LOGGER = LogManager.getLogger(GraphUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.GRAPH_UTILS);
 
     public static WeightedGraph generateFixedPositionGraph(int coordinateMax) {
         WeightedGraph graph = new WeightedGraph();
