@@ -160,18 +160,18 @@ public class OrderJDBCImpl implements OrderDAO {
         try (
                 PreparedStatement preparedStatement = dbConnection.prepareStatement(UPDATE_ORDER_SQL)
         ) {
-            preparedStatement.setString(1, order.getOrderNumber());
-            preparedStatement.setString(2, order.getOrderStatus());
-            preparedStatement.setTimestamp(3, order.getOrderDate());
-            preparedStatement.setTimestamp(4, order.getDeliveryDate());
-            preparedStatement.setInt(5, order.getStorageId());
-            preparedStatement.setInt(6,order.getOrderRecipientId());
-            preparedStatement.setInt(7,order.getDriverId());
-            preparedStatement.setInt(8, order.getOrderId());
+            SQLUtils.setStringOrNull(preparedStatement,1, order.getOrderNumber());
+            SQLUtils.setStringOrNull(preparedStatement,2, order.getOrderStatus());
+            SQLUtils.setTimestampOrNull(preparedStatement,3, order.getOrderDate());
+            SQLUtils.setTimestampOrNull(preparedStatement,4, order.getDeliveryDate());
+            SQLUtils.setIntOrNull(preparedStatement,5, order.getStorageId());
+            SQLUtils.setIntOrNull(preparedStatement,6,order.getOrderRecipientId());
+            SQLUtils.setIntOrNull(preparedStatement,7,order.getDriverId() == 0 ? null : order.getOrderId());
+            SQLUtils.setIntOrNull(preparedStatement,8, order.getOrderId());
             preparedStatement.executeUpdate();
             LOGGER.info("ROW UPDATED IN DB");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error updating order",e);
         } finally {
             connectionPool.releaseConnection(dbConnection);
         }
