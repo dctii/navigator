@@ -1,7 +1,6 @@
 package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Order;
-import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.dao.OrderDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
@@ -166,7 +165,7 @@ public class OrderJDBCImpl implements OrderDAO {
             SQLUtils.setTimestampOrNull(preparedStatement,4, order.getDeliveryDate());
             SQLUtils.setIntOrNull(preparedStatement,5, order.getStorageId());
             SQLUtils.setIntOrNull(preparedStatement,6,order.getOrderRecipientId());
-            SQLUtils.setIntOrNull(preparedStatement,7,order.getDriverId() == 0 ? null : order.getOrderId());
+            SQLUtils.setIntOrNull(preparedStatement,7,order.getDriverId() == 0 ? null : order.getDriverId());
             SQLUtils.setIntOrNull(preparedStatement,8, order.getOrderId());
             preparedStatement.executeUpdate();
             LOGGER.info("ROW UPDATED IN DB");
