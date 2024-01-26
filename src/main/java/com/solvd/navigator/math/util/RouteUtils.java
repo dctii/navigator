@@ -147,6 +147,36 @@ public class RouteUtils {
                 .build();
     }
 
+    public static double getDistanceBetweenLocations(
+            ShortestPathsMatrix matrix,
+            Location locationFrom,
+            Location locationTo
+    ) {
+        return getDistanceBetweenLocations(
+                matrix,
+                locationFrom.getLocationId(),
+                locationTo.getLocationId()
+        );
+    }
+
+    public static double getDistanceBetweenLocations(
+            ShortestPathsMatrix matrix,
+            int fromLocationId,
+            int toLocationId
+    ) {
+        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationToVertexIndexMap();
+        double[][] shortestDistances = matrix.getShortestDistances();
+
+        int fromLocationIndex = locationToVertexIndexMap.getOrDefault(fromLocationId, -1);
+        int toLocationIndex = locationToVertexIndexMap.getOrDefault(toLocationId, -1);
+
+        if (fromLocationIndex == -1 || toLocationIndex == -1) {
+            throw new IllegalArgumentException("One or both location IDs not found in the shortest path matrix");
+        }
+
+        return shortestDistances[fromLocationIndex][toLocationIndex];
+    }
+
     public static void printRoute(List<Location> route) {
         if (BooleanUtils.isEmptyOrNullCollection(route)) {
             LOGGER.info("No route available.");

@@ -146,6 +146,21 @@ public class RouteCalculatorImpl implements RouteCalculator {
         this.locations = locations;
     }
 
+    public double getDistanceBetweenLocations(Location locationFrom, Location locationTo) {
+        return getDistanceBetweenLocations(
+                locationFrom.getLocationId(),
+                locationTo.getLocationId()
+        );
+    }
+
+    public double getDistanceBetweenLocations(int locationFromId, int locationToId) {
+        return RouteUtils.getDistanceBetweenLocations(
+                this.shortestPathsMatrix,
+                locationFromId,
+                locationToId
+        );
+    }
+
     @Override
     public String toString() {
         Class<?> currClass = ClassConstants.ROUTE_CALCULATOR_IMPL;
