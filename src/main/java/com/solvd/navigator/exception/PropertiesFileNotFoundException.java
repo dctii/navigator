@@ -1,7 +1,7 @@
 package com.solvd.navigator.exception;
 
-public class PropertiesFileUnloadableException extends RuntimeException {
-    public PropertiesFileUnloadableException(String message) {
+public class PropertiesFileNotFoundException extends RuntimeException {
+    public PropertiesFileNotFoundException(String message) {
         super(message);
     }
 }
