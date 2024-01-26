@@ -3,14 +3,10 @@ package com.solvd.navigator.util;
 import com.solvd.navigator.exception.InvalidDateFormatException;
 import com.solvd.navigator.exception.UnsuccessfulAutoGenerationOfIdException;
 import com.solvd.navigator.exception.UnsuccessfulStatementSetException;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jooq.Condition;
-import org.jooq.impl.DSL;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,10 +14,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.function.IntConsumer;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 
 public class SQLUtils {
@@ -163,29 +156,6 @@ public class SQLUtils {
             throw new InvalidDateFormatException("Invalid date format: " + e.getMessage());
         }
     }
-
-    public static String qualifyColumnName(String tableName, String columnName) {
-        return StringUtils.joinWith(StringConstants.FULL_STOP, tableName.strip(), columnName.strip());
-    }
-
-    public static String qualifyTableWithWildcard(String tableName) {
-        return qualifyColumnName(tableName, SQLConstants.WILDCARD);
-    }
-
-    public static List<?> createPlaceholders(int numberOfPlaceholders) {
-        return IntStream.range(0, numberOfPlaceholders)
-                .mapToObj(SQLConstants.VALUE_PLACEHOLDERS)
-                .collect(Collectors.toList());
-    }
-
-    public static Condition eqFields(String columnName1, String columnName2) {
-        return DSL.field(columnName1).eq(DSL.field(columnName2));
-    }
-
-    public static Condition eqPlaceholder(String columnName) {
-        return DSL.field(columnName).eq(SQLConstants.PLACEHOLDER);
-    }
-
 
     private SQLUtils() {
         ExceptionUtils.preventUtilityInstantiation();

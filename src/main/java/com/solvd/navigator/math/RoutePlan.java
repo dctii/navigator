@@ -105,6 +105,22 @@ public class RoutePlan {
         RouteUtils.printRoute(route);
     }
 
+    public double getDistanceBetweenLocations(
+            RouteCalculator routeCalculator,
+            Location locationFrom,
+            Location locationTo
+    ) {
+        return routeCalculator.getDistanceBetweenLocations(locationFrom, locationTo);
+    }
+
+    public double getDistanceBetweenLocations(
+            RouteCalculator routeCalculator,
+            int locationFromId,
+            int locationToId
+    ) {
+        return routeCalculator.getDistanceBetweenLocations(locationFromId, locationToId);
+    }
+
     // Getter for id
     public UUID getId() {
         return id;

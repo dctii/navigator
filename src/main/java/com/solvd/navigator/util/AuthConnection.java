@@ -42,7 +42,9 @@ public class AuthConnection {
     @Override
     public String toString() {
         Class<?> currClass = ClassConstants.AUTH_CONNECTION;
-        String[] fieldNames = {};
+        String[] fieldNames = {
+                "authConnection"
+        };
 
         String fieldsString =
                 StringFormatters.buildFieldsString(this, fieldNames);

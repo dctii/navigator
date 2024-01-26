@@ -31,7 +31,6 @@ public final class DAOFactory {
             Class<T> daoClass,
             String implementationSuffix
     ) {
-        String daoInterfaceSimpleName = daoClass.getSimpleName();
         String implClassName = getImplClassName(daoClass, implementationSuffix);
 
         try {
