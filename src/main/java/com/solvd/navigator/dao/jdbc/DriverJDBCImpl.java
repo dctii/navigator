@@ -52,7 +52,7 @@ public class DriverJDBCImpl implements DriverDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error adding driver to the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
 
         return newDriverId;
@@ -81,7 +81,7 @@ public class DriverJDBCImpl implements DriverDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error getting driver from the database", e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return driver;
     }
@@ -106,7 +106,7 @@ public class DriverJDBCImpl implements DriverDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } finally {
-            DBConnectionPool.getInstance().releaseConnection(dbConnection);
+            connectionPool.releaseConnection(dbConnection);
         }
         return allDrivers;
     }
