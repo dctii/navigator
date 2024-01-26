@@ -50,16 +50,6 @@ public class NumberUtils {
         }
     }
 
-    public static BigDecimal ensureBigDecimal(Number value) {
-        BigDecimal bigDecimalValue;
-        if (value instanceof BigDecimal) {
-            bigDecimalValue = (BigDecimal) value;
-        } else {
-            bigDecimalValue = BigDecimal.valueOf(value.doubleValue());
-        }
-        return bigDecimalValue;
-    }
-
 
     private NumberUtils() {
         ExceptionUtils.preventUtilityInstantiation();

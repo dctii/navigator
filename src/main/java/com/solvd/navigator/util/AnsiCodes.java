@@ -19,6 +19,11 @@ public final class AnsiCodes {
         return wrapAnsiStyleCode(STYLE.getCode());
     }
 
+    /*
+    Example output:
+        wrapAnsiStyleCode("31") --> "\u001b[31m"
+     */
+
     private static String wrapAnsiStyleCode(String STYLE_CODE) {
         return StringUtils.join(
                 StringConstants.ESCAPE_SEQUENCE,

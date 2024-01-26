@@ -26,6 +26,9 @@ import java.util.stream.IntStream;
 public class JacksonUtils {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.JACKSON_UTILS);
 
+    /*
+        Generic methods
+    */
     public static <T> List<T> extractItems(String resourcePath, Class<T> clazz) {
         return parseJson(resourcePath, clazz);
     }
@@ -75,6 +78,10 @@ public class JacksonUtils {
         }
     }
 
+    /*
+        Spec methods for storages.json
+    */
+
     public static Storage getStorageById(int storageId, List<Storage> storages) {
         return storages.stream()
                 .filter(storage -> storage.getStorageId() == storageId)
@@ -87,13 +94,51 @@ public class JacksonUtils {
     }
 
 
-
     public static Storage getStorageByLocationId(int locationId, List<Storage> storages) {
         return storages.stream()
                 .filter(storage -> storage.getLocationId() == locationId)
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Target storage not found"));
     }
+
+    public static void updateStoragesWithLocations(String filepath, List<Storage> storages) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setDateFormat(new SimpleDateFormat(StringConstants.TIMESTAMP_PATTERN));
+
+        try {
+            // read the existing storages from the JSON file
+            File jsonFile = new File(FilepathConstants.RESOURCES_ABSOLUTE_PATH + filepath);
+            List<Storage> currentStorages = mapper.readValue(jsonFile, new TypeReference<List<Storage>>() {
+            });
+
+            // create a map to make storages easier to look for
+            Map<Integer, Storage> storageMap = currentStorages.stream()
+                    .collect(Collectors.toMap(
+                                    Storage::getStorageId,
+                                    storage -> storage
+                            )
+                    );
+
+            storages.stream()
+                    .forEach(storage -> {
+                        Storage currentStorage = storageMap.get(storage.getStorageId());
+                        if (currentStorage != null) {
+                            currentStorage.setLocationId(storage.getLocationId());
+                        }
+                    });
+
+
+            // Write the updated list back to the JSON file
+            mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, currentStorages);
+        } catch (IOException e) {
+            LOGGER.error("Error updating storages in file: " + filepath, e);
+            throw new WriteToJsonFailureException("Error updating storages in file: " + filepath + e);
+        }
+    }
+
+    /*
+        Methods for locations.json
+    */
 
 
     private static List<Location> getListOfOrderLocations(
@@ -129,6 +174,10 @@ public class JacksonUtils {
         return getLocationById(storage.getLocationId(), locations);
     }
 
+    /*
+        Methods for orderRecipients.json
+    */
+
     private static OrderRecipient getOrderRecipientById(int orderRecipientId, List<OrderRecipient> orderRecipients) {
         return orderRecipients.stream()
                 .filter(orderRecipient -> orderRecipient.getOrderRecipientId() == orderRecipientId)
@@ -136,6 +185,7 @@ public class JacksonUtils {
                 .orElseThrow(() -> new RuntimeException("Order recipient not found"));
     }
 
+    // uses orders to get locations from order recipients
     public static List<Location> extractAwaitingOrderLocationsForRoute(
             Storage targetStorage,
             List<Order> filteredOrders,
@@ -147,6 +197,10 @@ public class JacksonUtils {
         // Use getListOfOrderLocations to get the list of locations
         return getListOfOrderLocations(filteredOrders, orderRecipients, allLocations);
     }
+
+    /*
+        Methods for orders.json
+    */
 
     public static List<Order> getAwaitingOrdersFromStorage(List<Order> allOrders, Storage targetStorage, int orderLimit) {
         int targetStorageId = targetStorage.getStorageId();
@@ -184,37 +238,6 @@ public class JacksonUtils {
         } catch (IOException e) {
             LOGGER.error("Error updating order in file: " + filepath, e);
             throw new WriteToJsonFailureException("Error updating order in file: " + filepath + e);
-        }
-    }
-
-    public static void updateStoragesWithLocations(String filepath, List<Storage> storages) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setDateFormat(new SimpleDateFormat(StringConstants.TIMESTAMP_PATTERN));
-
-        try {
-            // read the existing storages from the JSON file
-            File jsonFile = new File(FilepathConstants.RESOURCES_ABSOLUTE_PATH + filepath);
-            List<Storage> currentStorages = mapper.readValue(jsonFile, new TypeReference<List<Storage>>() {
-            });
-
-            // create a map to make storages easier to look for
-            Map<Integer, Storage> storageMap = currentStorages.stream()
-                    .collect(Collectors.toMap(Storage::getStorageId, storage -> storage));
-
-            storages.stream()
-                    .forEach(storage -> {
-                        Storage currentStorage = storageMap.get(storage.getStorageId());
-                        if (currentStorage != null) {
-                            currentStorage.setLocationId(storage.getLocationId());
-                        }
-                    });
-
-
-            // Write the updated list back to the JSON file
-            mapper.writerWithDefaultPrettyPrinter().writeValue(jsonFile, currentStorages);
-        } catch (IOException e) {
-            LOGGER.error("Error updating storages in file: " + filepath, e);
-            throw new WriteToJsonFailureException("Error updating storages in file: " + filepath + e);
         }
     }
 
