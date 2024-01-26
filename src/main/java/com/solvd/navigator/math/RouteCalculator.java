@@ -19,4 +19,8 @@ public interface RouteCalculator {
 
     double calculateTotalDistance(List<Location> route);
 
+    double getDistanceBetweenLocations(Location locationFrom, Location locationTo);
+
+    double getDistanceBetweenLocations(int locationFromId, int locationToId);
+
 }
