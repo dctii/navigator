@@ -2,6 +2,7 @@ package com.solvd.navigator.math.util;
 
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
+import com.solvd.navigator.util.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -26,8 +27,11 @@ public final class OrderConstants {
     public static final int TOTAL_NUMBER_OF_ORDER_RECIPIENTS =
             TOTAL_NUMBER_OF_PERSONS - TOTAL_NUMBER_OF_DRIVERS;
 
-    public static final int TOTAL_NUMBER_OF_ORDERS_PER_WAREHOUSE = 960;
-    public static final int TOTAL_NUMBER_OF_ORDERS = 960 * ALL_STORAGE_WAREHOUSE_IDS.size();
+    public static final int TOTAL_NUMBER_OF_ORDERS_PER_WAREHOUSE = 1000;
+    public static final int TOTAL_NUMBER_OF_ORDERS = TOTAL_NUMBER_OF_ORDERS_PER_WAREHOUSE * ALL_STORAGE_WAREHOUSE_IDS.size();
+
+    public static final double MAX_WORK_HOURS = 8.0;
+    public static final double MAX_WORK_HOURS_IN_MINUTES = NumberUtils.roundToScale(MAX_WORK_HOURS * 60, 2);
 
 
     private OrderConstants() {
