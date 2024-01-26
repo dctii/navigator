@@ -1,7 +1,6 @@
 package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Order;
-import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.dao.OrderDAO;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
