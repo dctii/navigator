@@ -1,6 +1,7 @@
 package com.solvd.navigator.math.util;
 
 import com.solvd.navigator.bin.Location;
+import com.solvd.navigator.exception.InvalidVertexException;
 import com.solvd.navigator.math.graph.Direction;
 import com.solvd.navigator.math.graph.GraphConstants;
 import com.solvd.navigator.math.graph.Point;
@@ -9,13 +10,12 @@ import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
+import com.solvd.navigator.util.StringConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GraphUtils {
@@ -154,17 +154,8 @@ public class GraphUtils {
         return String.format("V%d", vertexIndex);
     }
 
-    public static Map<Integer, String> mapLocationIdsToVertexIds(List<Location> locations, WeightedGraph graph) {
-        return locations.stream()
-                .filter(location -> findMatchingVertexId(location, graph) != null) // filter out locations without matching vertex IDs
-                .collect(Collectors.toMap(
-                        Location::getLocationId, // key mapper
-                        location -> findMatchingVertexId(location, graph) // value mapper
-                ));
-    }
 
-
-    public static String findMatchingVertexId(Location location, WeightedGraph graph) {
+    public static String findVertexIdByLocationId(Location location, WeightedGraph graph) {
         return graph.getVertexIdsForGraph().stream()
                 .map(graph::getVertex) // get vertex objects by vertexId
                 .filter(vertex ->
@@ -174,129 +165,6 @@ public class GraphUtils {
                 .findAny()
                 .map(Vertex::getVertexId)
                 .orElse(null); // return null if no match is found
-    }
-
-    public static Map<Integer, Integer> createLocationToVertexIndexMap(
-            Map<Integer, String> locationIdToVertexIdMap,
-            WeightedGraph graph
-    ) {
-        return locationIdToVertexIdMap.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> getVertexIndex(
-                                entry.getValue(),
-                                graph.getVertexIdsForGraph().toArray(new String[0])
-                        )
-                ));
-    }
-
-    public static Map<String, Integer> createVertexIdToIndexMap(WeightedGraph graph) {
-        return graph.getVertexIdsForGraph().stream()
-                .collect(Collectors.toMap(
-                        vertexId -> vertexId,
-                        vertexId -> getVertexIndex(
-                                vertexId,
-                                graph.getVertexIdsForGraph().toArray(new String[0])
-                        )
-                ));
-    }
-
-
-    /*
-        Floyd-Warshall Algorithm
-        https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
-    */
-    public static double[][] executeFloydWarshall(WeightedGraph graph) {
-        int totalVertices = graph.getVertexIdsForGraph().size();
-        double[][] shortestDistances = new double[totalVertices][totalVertices];
-        int[][] nextVertex = new int[totalVertices][totalVertices];
-        String[] vertexIds = graph.getVertexIdsForGraph().toArray(new String[0]);
-
-        initializeDistancesAndPaths(shortestDistances, nextVertex, totalVertices);
-        fillDistancesFromEdges(graph, shortestDistances, nextVertex, vertexIds);
-        applyFloydWarshall(shortestDistances, nextVertex, totalVertices);
-
-        return shortestDistances;
-    }
-
-    private static void initializeDistancesAndPaths(double[][] distances, int[][] next, int totalVertices) {
-        IntStream.range(0, totalVertices).forEach(initialIndex -> {
-            IntStream.range(0, totalVertices).forEach(terminalIndex -> {
-                if (initialIndex == terminalIndex) {
-                    distances[initialIndex][terminalIndex] = 0;
-                } else {
-                    distances[initialIndex][terminalIndex] = Double.POSITIVE_INFINITY;
-                }
-                next[initialIndex][terminalIndex] = -1; // no next vertex if same
-            });
-        });
-
-
-//        for (int initialIndex = 0; initialIndex < totalVertices; initialIndex++) {
-//            for (int terminalIndex = 0; terminalIndex < totalVertices; terminalIndex++) {
-//                // no path at the start, do this
-//                if (initialIndex == terminalIndex) {
-//                    distances[initialIndex][terminalIndex] = 0;
-//                } else {
-//                    distances[initialIndex][terminalIndex] = Double.POSITIVE_INFINITY;
-//                }
-//                next[initialIndex][terminalIndex] = -1; // no next vertex if same
-//            }
-//        }
-    }
-
-    private static void fillDistancesFromEdges(
-            WeightedGraph graph,
-            double[][] distances,
-            int[][] next,
-            String[] vertexIds
-    ) {
-
-        Arrays.stream(vertexIds).forEach(vertexId -> {
-            graph.getEdges(vertexId).forEach(edge -> {
-                int initialVertexIndex = getVertexIndex(vertexId, vertexIds);
-                int terminalVertexIndex = getVertexIndex(edge.getVertex2().getVertexId(), vertexIds);
-                distances[initialVertexIndex][terminalVertexIndex] = edge.getDistance();
-                next[initialVertexIndex][terminalVertexIndex] = terminalVertexIndex;
-            });
-        });
-
-//        for (String vertexId : vertexIds) {
-//            for (Edge edge : graph.getEdges(vertexId)) {
-//                int initialVertexIndex = getIndex(vertexId, vertexIds);
-//                int terminalVertexIndex = getIndex(edge.getVertex2().getVertexId(), vertexIds);
-//                distances[initialVertexIndex][terminalVertexIndex] = edge.getDistance();
-//                next[initialVertexIndex][terminalVertexIndex] = terminalVertexIndex;
-//            }
-//        }
-    }
-
-    private static void applyFloydWarshall(
-            double[][] distances,
-            int[][] next,
-            int totalVertices
-    ) {
-        for (int intermediate = 0; intermediate < totalVertices; intermediate++) {
-            for (int initialVertex = 0; initialVertex < totalVertices; initialVertex++) {
-                for (int terminalVertex = 0; terminalVertex < totalVertices; terminalVertex++) {
-                    // distance from the 'initial' vertex to the current 'intermediate' vertex
-                    double distFromInitialToInter = distances[initialVertex][intermediate];
-
-                    // distance from the 'intermediate' vertex to the 'terminal' vertex
-                    double distFromInterToTerminal = distances[intermediate][terminalVertex];
-
-                    // current shortest known distance from the 'initial' vertex to the 'terminal' vertex
-                    double currentShortestDist = distances[initialVertex][terminalVertex];
-
-                    if (
-                            distFromInitialToInter + distFromInterToTerminal < currentShortestDist
-                    ) {
-                        distances[initialVertex][terminalVertex] = distances[initialVertex][intermediate] + distances[intermediate][terminalVertex];
-                        next[initialVertex][terminalVertex] = next[initialVertex][intermediate];
-                    }
-                }
-            }
-        }
     }
 
     public static int getVertexIndex(String vertexId, String[] vertexIds) {
@@ -309,21 +177,29 @@ public class GraphUtils {
                 });
     }
 
-    public static void printShortestDistances(
-            double[][] shortestDistances,
-            String[] vertexIds
-    ) {
-        LOGGER.info("Shortest Distances Matrix:");
-        IntStream.range(0, vertexIds.length).forEach(fromIndex -> {
-            IntStream.range(0, vertexIds.length).forEach(toIndex -> {
-                String distance = shortestDistances[fromIndex][toIndex] == Double.POSITIVE_INFINITY
-                        ? "INF"
-                        : String.format("%.2f", shortestDistances[fromIndex][toIndex]);
-                LOGGER.info(vertexIds[fromIndex] + " to " + vertexIds[toIndex] + ": " + distance);
-            });
-        });
+
+    public static Integer parseIntFromVertexId(String vertexId) {
+        if (
+                vertexId != null
+                        && vertexId.startsWith(String.valueOf(StringConstants.UPPER_CASE_V_CHAR)
+                )
+        ) {
+            try {
+                return Integer.parseInt(vertexId.substring(1));
+            } catch (NumberFormatException e) {
+                throw new InvalidVertexException("Invalid format for vertex ID: " + vertexId);
+            }
+        } else {
+            throw new InvalidVertexException("Vertex ID does not start with 'V': " + vertexId);
+        }
     }
 
+    public static String createVertexIdFromLocationId(int locationId) {
+        return StringUtils.join(
+                String.valueOf(StringConstants.UPPER_CASE_V_CHAR),
+                locationId
+        );
+    }
 
     private GraphUtils() {
         ExceptionUtils.preventUtilityInstantiation();
