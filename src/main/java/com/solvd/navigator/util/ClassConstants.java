@@ -42,6 +42,7 @@ import com.solvd.navigator.math.graph.Vertex;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.math.util.GraphUtils;
 import com.solvd.navigator.math.util.JsonDataStore;
+import com.solvd.navigator.math.util.MatrixUtils;
 import com.solvd.navigator.math.util.OrderConstants;
 import com.solvd.navigator.math.util.RouteUtils;
 import org.apache.logging.log4j.LogManager;
@@ -123,6 +124,7 @@ public final class ClassConstants {
     public static final Class<GraphType> GRAPH_TYPE = GraphType.class;
     public static final Class<GraphUtils> GRAPH_UTILS = GraphUtils.class;
     public static final Class<JsonDataStore> JSON_DATA_STORE = JsonDataStore.class;
+    public static final Class<MatrixUtils> MATRIX_UTILS = MatrixUtils.class;
     public static final Class<OrderConstants> ORDER_CONSTANTS = OrderConstants.class;
     public static final Class<RouteUtils> ROUTE_UTILS = RouteUtils.class;
     public static final Class<RouteCalculator> ROUTE_CALCULATOR = RouteCalculator.class;
