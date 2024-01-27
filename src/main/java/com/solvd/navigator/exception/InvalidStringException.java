@@ -1,6 +1,7 @@
 package com.solvd.navigator.exception;
-public class InvalidStringException {
-    public static void main(String[] args) {
-        
+
+public class InvalidStringException extends RuntimeException {
+    public InvalidStringException(String message) {
+        super(message);
     }
 }

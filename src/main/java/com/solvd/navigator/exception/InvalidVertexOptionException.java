@@ -1,7 +1,7 @@
 package com.solvd.navigator.exception;
 
-public class InvalidVertexTargetException extends RuntimeException {
-    public InvalidVertexTargetException(String message) {
+public class InvalidVertexOptionException extends RuntimeException {
+    public InvalidVertexOptionException(String message) {
         super(message);
     }
 }
