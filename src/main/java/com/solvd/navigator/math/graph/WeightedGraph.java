@@ -3,12 +3,12 @@ package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.DuplicateEdgeException;
 import com.solvd.navigator.exception.EmptyAdjacencyListException;
-import com.solvd.navigator.exception.EmptyVerticesMapException;
 import com.solvd.navigator.exception.InvalidEdgeException;
 import com.solvd.navigator.exception.InvalidVertexException;
 import com.solvd.navigator.exception.VertexNotFoundException;
 import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.StringConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.commons.lang3.StringUtils;
@@ -33,20 +33,14 @@ public class WeightedGraph implements IGraph {
     }
 
     public WeightedGraph(Map<String, Vertex> vertices) {
-        if (BooleanUtils.isEmptyOrNullMap(vertices)) {
-            LOGGER.error("Vertices map cannot be null or empty.");
-            throw new EmptyVerticesMapException("Vertices map cannot be null or empty.");
-        }
+        ExceptionUtils.isValidVerticesMap(vertices);
 
         this.vertices = vertices;
         this.adjacencyList = new HashMap<>();
     }
 
     public WeightedGraph(Map<String, List<Edge>> adjacencyList, Map<String, Vertex> vertices) {
-        if (BooleanUtils.isEmptyOrNullMap(vertices)) {
-            LOGGER.error("Vertices map cannot be null or empty.");
-            throw new EmptyVerticesMapException("Vertices map cannot be null or empty.");
-        }
+        ExceptionUtils.isValidVerticesMap(vertices);
 
         if (BooleanUtils.isEmptyOrNullMap(adjacencyList)) {
             LOGGER.error("Adjacency list cannot be null or empty.");
@@ -66,13 +60,21 @@ public class WeightedGraph implements IGraph {
         }
 
         if (BooleanUtils.vertexExists(vertex.getVertexId(), this.vertices)) {
-            Vertex existingVertex = vertices.get(vertex.getVertexId());
-            LOGGER.warn("Vertex with ID '" + vertex.getVertexId() + "' already exists and will not be added again.");
+            String vertexId = vertex.getVertexId();
+
+            Vertex existingVertex = vertices.get(vertexId);
+            LOGGER.warn("Vertex with ID '{}' already exists and will not be added again.", vertexId);
 
             if (BooleanUtils.areSameCoordinates(vertex, existingVertex)) {
-                LOGGER.info("The coordinates for vertex '" + vertex.getVertexId() + "' are the same as the existing vertex.");
+                LOGGER.warn(
+                        "The coordinates for vertex '{}' are the same as the existing vertex.",
+                        vertexId
+                );
             } else {
-                LOGGER.warn("The coordinates for vertex '" + vertex.getVertexId() + "' are different from the existing vertex.");
+                LOGGER.warn(
+                        "The coordinates for vertex '{}' are different from the existing vertex.",
+                        vertexId
+                );
             }
             return; // don't add if already exists
         }
@@ -153,7 +155,6 @@ public class WeightedGraph implements IGraph {
 
         adjacencyList.get(vertexId1).add(edge);
 
-        //    LOGGER.debug("Edge between '" + vertexId1 + "' and '" + vertexId2 + "' added successfully.");
     }
 
 

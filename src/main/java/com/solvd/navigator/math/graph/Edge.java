@@ -2,10 +2,9 @@ package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidEdgeException;
 import com.solvd.navigator.exception.InvalidEdgeIdNameException;
-import com.solvd.navigator.exception.InvalidVertexException;
-import com.solvd.navigator.exception.InvalidVertexTargetException;
 import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.StringConstants;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
@@ -23,9 +22,7 @@ public class Edge {
     }
 
     public Edge(Vertex vertex1, Vertex vertex2) {
-        if (BooleanUtils.areInvalidVertices(vertex1, vertex2)) {
-            throw new InvalidEdgeException("Both vertices must be non-null and have vertexIds to create an edge.");
-        }
+        ExceptionUtils.areValidVertices(vertex1, vertex2);
 
         this.vertex1 = vertex1;
         this.vertex2 = vertex2;
@@ -34,9 +31,7 @@ public class Edge {
     }
 
     public Edge(Vertex vertex1, Vertex vertex2, double distance) {
-        if (BooleanUtils.areInvalidVertices(vertex1, vertex2)) {
-            throw new InvalidEdgeException("Both vertices must be non-null and have vertexIds to create an edge.");
-        }
+        ExceptionUtils.areValidVertices(vertex1, vertex2);
 
         this.vertex1 = vertex1;
         this.vertex2 = vertex2;
@@ -50,10 +45,12 @@ public class Edge {
     }
 
     public void setEdgeId(String edgeId) {
-        if (BooleanUtils.areInvalidVertices(vertex1, vertex2)) {
-            LOGGER.warn("Both vertices must be non-null and must have a vertexId to create an edgeId.");
-            throw new InvalidVertexException("Both vertices must be non-null and must have a vertexId to create an edgeId.");
-        }
+        ExceptionUtils.areValidVertices(
+                vertex1,
+                vertex2,
+                "Both vertices must be non-null and must have a vertexId to create an edgeId."
+        );
+
         String vertex1Id = vertex1.getVertexId();
         String vertex2Id = vertex2.getVertexId();
         String correctEdgeId = vertex1Id + StringConstants.DASH_STRING + vertex2Id;
@@ -61,8 +58,10 @@ public class Edge {
         if (BooleanUtils.areEqual(edgeId, correctEdgeId)) {
             this.edgeId = edgeId;
         } else {
-            LOGGER.warn("The edge ID must match the vertices their relationship (e.g., V1 to V2 must have an edgeId of 'V1-V2'");
-            throw new InvalidEdgeIdNameException("The edge ID must match the vertices their relationship (e.g., V1 to V2 must have an edgeId of 'V1-V2'");
+            final String INVALID_EDGE_ID_NAME_EXCEPTION_MSG =
+                    "The edge ID must match the vertices their relationship (e.g., V1 to V2 must have an edgeId of 'V1-V2'";
+            LOGGER.warn(INVALID_EDGE_ID_NAME_EXCEPTION_MSG);
+            throw new InvalidEdgeIdNameException(INVALID_EDGE_ID_NAME_EXCEPTION_MSG);
         }
     }
 
@@ -71,9 +70,7 @@ public class Edge {
     }
 
     public void setVertex1(Vertex vertex1) {
-        if (BooleanUtils.isInvalidVertex(vertex1)) {
-            throw new InvalidEdgeException("Vertex1 must be non-null.");
-        }
+        ExceptionUtils.isValidVertex(vertex1, "Vertex1 must be non-null.");
         this.vertex1 = vertex1;
     }
 
@@ -82,9 +79,7 @@ public class Edge {
     }
 
     public void setVertex2(Vertex vertex2) {
-        if (BooleanUtils.isInvalidVertex(vertex2)) {
-            throw new InvalidEdgeException("Vertex2 must be non-null.");
-        }
+        ExceptionUtils.isValidVertex(vertex2, "Vertex2 must be non-null.");
         this.vertex2 = vertex2;
     }
 
@@ -94,6 +89,9 @@ public class Edge {
 
     public void setDistance(double distance) {
         if (distance < 0) {
+            final String INVALID_EDGE_EXCEPTION_MSG =
+                    "Weight must be non-negative.";
+            LOGGER.error(INVALID_EDGE_EXCEPTION_MSG);
             throw new InvalidEdgeException("Weight must be non-negative.");
         }
         this.distance = distance;
@@ -109,8 +107,7 @@ public class Edge {
                 vertexId = vertex2.getVertexId();
                 break;
             default:
-                LOGGER.error("Invalid vertex number. Only '1' and '2' available.");
-                throw new InvalidVertexTargetException("Invalid vertex number. Only '1' and '2' available.");
+                ExceptionUtils.isValidVertexOption();
         }
 
         return vertexId;
@@ -126,8 +123,7 @@ public class Edge {
                 vertexCoordinates = vertex2.getPoint();
                 break;
             default:
-                LOGGER.error("Invalid vertex number. Only '1' and '2' available.");
-                throw new InvalidVertexTargetException("Invalid vertex number. Only '1' and '2' available.");
+                ExceptionUtils.isValidVertexOption();
         }
 
         return vertexCoordinates;
