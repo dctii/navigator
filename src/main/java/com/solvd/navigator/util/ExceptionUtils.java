@@ -1,8 +1,20 @@
 package com.solvd.navigator.util;
 
+import com.solvd.navigator.exception.EmptyVerticesMapException;
+import com.solvd.navigator.exception.InvalidAbscissaException;
+import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.exception.InvalidDateFormatException;
 import com.solvd.navigator.exception.InvalidDecimalException;
+import com.solvd.navigator.exception.InvalidEdgeException;
+import com.solvd.navigator.exception.InvalidOrdinateException;
+import com.solvd.navigator.exception.InvalidStringException;
+import com.solvd.navigator.exception.InvalidVertexException;
+import com.solvd.navigator.exception.InvalidVertexOptionException;
+import com.solvd.navigator.exception.PointTypeIsNullException;
 import com.solvd.navigator.exception.StringLengthException;
+import com.solvd.navigator.math.graph.GraphConstants;
+import com.solvd.navigator.math.graph.Point;
+import com.solvd.navigator.math.graph.Vertex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -119,7 +131,95 @@ public class ExceptionUtils {
         timestampStringsAndPatterns.forEach(ExceptionUtils::isValidTimestamp);
     }
 
+    public static void areValidCoordinates(double x, double y) {
+        if (
+                x < GraphConstants.ABSCISSA_MIN
+                        || x > GraphConstants.ABSCISSA_MAX
+                        || y < GraphConstants.ORDINATE_MIN
+                        || y > GraphConstants.ORDINATE_MAX
+        ) {
+            final String INVALID_COORDINATES_EXCEPTION_MSG =
+                    "Coordinates out of valid range.";
+            LOGGER.error(INVALID_COORDINATES_EXCEPTION_MSG);
+            throw new InvalidCoordinatesException("Coordinates out of valid range.");
+        }
+    }
+
+    public static void isValidAbscissa(double x) {
+        if (x < GraphConstants.ABSCISSA_MIN) {
+            final String INVALID_ABSCISSA_EXCEPTION_MSG =
+                    "Abscissa, 'x', out of valid range for Point.";
+            LOGGER.error(INVALID_ABSCISSA_EXCEPTION_MSG);
+            throw new InvalidAbscissaException(INVALID_ABSCISSA_EXCEPTION_MSG);
+        }
+    }
+
+    public static void isValidOrdinate(double y) {
+        if (y < GraphConstants.ORDINATE_MIN) {
+            final String INVALID_ORDINATE_EXCEPTION_MSG =
+                    "Ordinate, 'y', out of valid range for this Point.";
+            LOGGER.error(INVALID_ORDINATE_EXCEPTION_MSG);
+            throw new InvalidOrdinateException(INVALID_ORDINATE_EXCEPTION_MSG);
+        }
+    }
+
+    public static void isValidString(String pointLabel, String message) {
+        if (BooleanUtils.isBlankString(pointLabel)) {
+            LOGGER.error(message);
+            throw new InvalidStringException(message);
+        }
+    }
+
     private ExceptionUtils() {
         preventUtilityInstantiation();
+    }
+
+    public static void areValidVertices(Vertex vertex1, Vertex vertex2) {
+        final String INVALID_EDGE_EXCEPTION_MSG =
+                "Both vertices must be non-null and have vertexIds to create an edge.";
+        areValidVertices(vertex1, vertex2, INVALID_EDGE_EXCEPTION_MSG);
+    }
+
+    public static void areValidVertices(Vertex vertex1, Vertex vertex2, String message) {
+        if (BooleanUtils.areInvalidVertices(vertex1, vertex2)) {
+            LOGGER.error(message);
+            throw new InvalidEdgeException(message);
+        }
+    }
+
+    public static void isValidVertex(Vertex vertex, String message) {
+        if (BooleanUtils.isInvalidVertex(vertex)) {
+            LOGGER.error(message);
+            throw new InvalidEdgeException(message);
+        }
+    }
+
+    public static void isValidVertexOption() {
+        final String INVALID_VERTEX_TARGET_EXCEPTION_MSG =
+                "Invalid vertex number. Only '1' for this edge's vertex1 and '2' for vertex2 available.";
+        LOGGER.error(INVALID_VERTEX_TARGET_EXCEPTION_MSG);
+        throw new InvalidVertexOptionException(INVALID_VERTEX_TARGET_EXCEPTION_MSG);
+    }
+
+    public static void isValidVerticesMap(Map<String, Vertex> vertices) {
+        if (BooleanUtils.isEmptyOrNullMap(vertices)) {
+            LOGGER.error("Vertices map cannot be null or empty.");
+            throw new EmptyVerticesMapException("Vertices map cannot be null or empty.");
+        }
+    }
+
+    public static void isValidVertexId(String vertexId) {
+        if (BooleanUtils.isBlankString(vertexId)) {
+            final String INVALID_VERTEX_ID_EXCEPTION_MSG = "Vertex identifier must not be null or empty.";
+            LOGGER.error(INVALID_VERTEX_ID_EXCEPTION_MSG);
+            throw new InvalidVertexException(INVALID_VERTEX_ID_EXCEPTION_MSG);
+        }
+    }
+
+    public static void isValidPoint(Point point, String message) {
+        if (point == null) {
+            LOGGER.error(message);
+            throw new PointTypeIsNullException(message);
+        }
     }
 }

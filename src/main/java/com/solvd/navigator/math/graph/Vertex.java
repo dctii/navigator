@@ -1,10 +1,9 @@
 package com.solvd.navigator.math.graph;
 
 import com.solvd.navigator.exception.InvalidCoordinatesException;
-import com.solvd.navigator.exception.InvalidVertexException;
-import com.solvd.navigator.exception.PointTypeIsNullException;
 import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,43 +19,33 @@ public class Vertex {
     }
 
     public Vertex(String vertexId, Point point) {
-        if (BooleanUtils.isBlankString(vertexId)) {
-            throw new InvalidVertexException("Vertex identifier must not be null or empty.");
-        }
+        ExceptionUtils.isValidVertexId(vertexId);
         this.vertexId = vertexId;
         this.point = point;
     }
 
     public Vertex(String vertexId, double x, double y) {
-        if (BooleanUtils.isBlankString(vertexId)) {
-            throw new InvalidVertexException("Vertex identifier must not be null or empty.");
-        }
+        ExceptionUtils.isValidVertexId(vertexId);
         this.vertexId = vertexId;
         this.point = new Point(x, y);
     }
 
     public Vertex(String vertexId, String name, Point point) {
-        if (BooleanUtils.isBlankString(vertexId)) {
-            throw new InvalidVertexException("Vertex identifier must not be null or empty.");
-        }
+        ExceptionUtils.isValidVertexId(vertexId);
         this.vertexId = vertexId;
         this.vertexName = name;
         this.point = point;
     }
 
     public Vertex(String vertexId, String name, double x, double y) {
-        if (BooleanUtils.isBlankString(vertexId)) {
-            throw new InvalidVertexException("Vertex identifier must not be null or empty.");
-        }
+        ExceptionUtils.isValidVertexId(vertexId);
         this.vertexId = vertexId;
         this.vertexName = name;
         this.point = new Point(x, y);
     }
 
     public Vertex(String vertexId) {
-        if (BooleanUtils.isBlankString(vertexId)) {
-            throw new InvalidVertexException("Vertex identifier must not be null or empty.");
-        }
+        ExceptionUtils.isValidVertexId(vertexId);
         this.vertexId = vertexId;
     }
 
@@ -65,9 +54,7 @@ public class Vertex {
     }
 
     public void setVertexId(String vertexId) {
-        if (BooleanUtils.isBlankString(vertexId)) {
-            throw new InvalidVertexException("Vertex identifier must not be null or empty.");
-        }
+        ExceptionUtils.isValidVertexId(vertexId);
         this.vertexId = vertexId;
     }
 
@@ -88,16 +75,18 @@ public class Vertex {
     }
 
     public double getX() {
-        if (point == null) {
-            throw new PointTypeIsNullException("To get 'X' coordinate, Point cannot be null");
-        }
+        ExceptionUtils.isValidPoint(
+                this.point,
+                "To get 'X' coordinate, Point cannot be null"
+        );
         return point.getX();
     }
 
     public double getY() {
-        if (point == null) {
-            throw new PointTypeIsNullException("To get 'Y' coordinate, Point cannot be null");
-        }
+        ExceptionUtils.isValidPoint(
+                this.point,
+                "To get 'Y' coordinate, Point cannot be null"
+        );
         return point.getY();
     }
 
@@ -115,14 +104,11 @@ public class Vertex {
     }
 
     public void setCoordinates(double x, double y) {
-        if (point != null) {
-            point.setCoordinates(x, y);
-        } else {
-            final String POINT_TYPE_IS_NULL_EXCEPTION_MSG =
-                    "'Point point' field of this Vertex cannot set point 'x' and 'y' if null";
-            LOGGER.error(POINT_TYPE_IS_NULL_EXCEPTION_MSG);
-            throw new PointTypeIsNullException(POINT_TYPE_IS_NULL_EXCEPTION_MSG);
-        }
+        ExceptionUtils.isValidPoint(
+                this.point,
+                "'Point point' field of this Vertex cannot set point 'x' and 'y' if null"
+        );
+        point.setCoordinates(x, y);
     }
 
 
