@@ -1,5 +1,6 @@
 package com.solvd.navigator.util;
 
+import com.solvd.navigator.exception.PropertiesFileNotFoundException;
 import com.solvd.navigator.exception.UnableToLoadConfigPropertiesException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,7 +22,7 @@ public class ConfigLoader {
                 final String UNABLE_TO_FIND_FILE_MSG =
                         "Unable to find "
                                 + StringFormatters.nestInSingleQuotations(pathToResourceFile);
-                throw new IllegalStateException(UNABLE_TO_FIND_FILE_MSG);
+                throw new PropertiesFileNotFoundException(UNABLE_TO_FIND_FILE_MSG);
             }
             properties.load(input);
 

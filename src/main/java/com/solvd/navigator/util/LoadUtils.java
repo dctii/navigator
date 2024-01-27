@@ -179,6 +179,8 @@ public class LoadUtils {
                     Person currentPerson = new Person();
                     String firstName, lastName;
 
+                    // TODO: find a way to make this dynamic to add drivers
+
                     // set names for drivers' 'Person' first
                     if (i == 0) {
                         firstName = OrderConstants.DRIVER_ONE_FIRST_NAME;

@@ -36,6 +36,14 @@ public class StringFormatters {
         return leftBoundaryMarker + stringToWrap + rightBoundaryMarker;
     }
 
+    public static String nestInBrackets(String string) {
+        return nestInChars(
+                StringConstants.OPENING_BRACKET,
+                StringConstants.CLOSING_BRACKET,
+                string
+        );
+    }
+
     public static String nestInParentheses(String string) {
         return nestInChars(
                 StringConstants.OPENING_PARENTHESIS,

@@ -30,7 +30,7 @@ public class RouteUtils {
             ShortestPathsMatrix matrix
     ) {
         double[][] shortestDistances = matrix.getShortestDistances();
-        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationToVertexIndexMap();
+        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationIdToIndexMap();
 
         List<Location> fastRoute = new ArrayList<>();
         Set<Integer> visitedLocationIds = new HashSet<>();
@@ -91,7 +91,7 @@ public class RouteUtils {
             List<Storage> storages,
             ShortestPathsMatrix matrix
     ) {
-        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationToVertexIndexMap();
+        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationIdToIndexMap();
         double[][] shortestDistances = matrix.getShortestDistances();
 
         double minDistance = Double.POSITIVE_INFINITY;
@@ -114,7 +114,7 @@ public class RouteUtils {
 
     public static double calculateTotalDistance(List<Location> route, ShortestPathsMatrix matrix) {
         double totalDistance = 0.0;
-        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationToVertexIndexMap();
+        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationIdToIndexMap();
 
         for (int i = 0; i < route.size() - 1; i++) {
             Location current = route.get(i);
@@ -128,23 +128,47 @@ public class RouteUtils {
     }
 
     public static ShortestPathsMatrix calculateShortestPaths(WeightedGraph graph, List<Location> locations) {
-        double[][] shortestDistances = GraphUtils.executeFloydWarshall(graph);
+        double[][] shortestDistances = MatrixUtils.runFloydWarshall(graph);
 
-        // map location IDs to vertex IDs
-        Map<Integer, String> locationIdToVertexIdMap = GraphUtils.mapLocationIdsToVertexIds(locations, graph);
+        Map<Integer, Integer> locationIdToIndexMap =
+                MatrixUtils.mapLocationIdsToMatrixIndexes(locations, graph);
 
-        // create a map for vertex ID to index mapping
-        Map<Integer, Integer> locationToVertexIndexMap = GraphUtils.createLocationToVertexIndexMap(locationIdToVertexIdMap, graph);
-
-        // create a map from vertex IDs to their corresponding indices
-        Map<String, Integer> vertexIdToIndexMap = GraphUtils.createVertexIdToIndexMap(graph);
 
         // create and return the ShortestPathsMatrix using the Builder
         return new ShortestPathsMatrix.Builder()
                 .setShortestDistances(shortestDistances)
-                .setVertexIdToIndexMap(vertexIdToIndexMap)
-                .setLocationToVertexIndexMap(locationToVertexIndexMap)
+                .setLocationIdToIndexMap(locationIdToIndexMap)
                 .build();
+    }
+
+    public static double getDistanceBetweenLocations(
+            ShortestPathsMatrix matrix,
+            Location locationFrom,
+            Location locationTo
+    ) {
+        return getDistanceBetweenLocations(
+                matrix,
+                locationFrom.getLocationId(),
+                locationTo.getLocationId()
+        );
+    }
+
+    public static double getDistanceBetweenLocations(
+            ShortestPathsMatrix matrix,
+            int fromLocationId,
+            int toLocationId
+    ) {
+        Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationIdToIndexMap();
+        double[][] shortestDistances = matrix.getShortestDistances();
+
+        int fromLocationIndex = locationToVertexIndexMap.getOrDefault(fromLocationId, -1);
+        int toLocationIndex = locationToVertexIndexMap.getOrDefault(toLocationId, -1);
+
+        if (fromLocationIndex == -1 || toLocationIndex == -1) {
+            throw new IllegalArgumentException("One or both location IDs not found in the shortest path matrix");
+        }
+
+        return shortestDistances[fromLocationIndex][toLocationIndex];
     }
 
     public static void printRoute(List<Location> route) {

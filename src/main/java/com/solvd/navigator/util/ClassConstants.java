@@ -42,6 +42,7 @@ import com.solvd.navigator.math.graph.Vertex;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.math.util.GraphUtils;
 import com.solvd.navigator.math.util.JsonDataStore;
+import com.solvd.navigator.math.util.MatrixUtils;
 import com.solvd.navigator.math.util.OrderConstants;
 import com.solvd.navigator.math.util.RouteUtils;
 import org.apache.logging.log4j.LogManager;
@@ -123,6 +124,7 @@ public final class ClassConstants {
     public static final Class<GraphType> GRAPH_TYPE = GraphType.class;
     public static final Class<GraphUtils> GRAPH_UTILS = GraphUtils.class;
     public static final Class<JsonDataStore> JSON_DATA_STORE = JsonDataStore.class;
+    public static final Class<MatrixUtils> MATRIX_UTILS = MatrixUtils.class;
     public static final Class<OrderConstants> ORDER_CONSTANTS = OrderConstants.class;
     public static final Class<RouteUtils> ROUTE_UTILS = RouteUtils.class;
     public static final Class<RouteCalculator> ROUTE_CALCULATOR = RouteCalculator.class;
@@ -145,12 +147,10 @@ public final class ClassConstants {
     public static final Class<FilepathConstants> FILEPATH_CONSTANTS = FilepathConstants.class;
     public static final Class<JacksonUtils> JACKSON_UTILS = JacksonUtils.class;
     public static final Class<LoadUtils> LOAD_UTILS = LoadUtils.class;
-    public static final Class<MyBatisUtils> MYBATIS_UTILS = MyBatisUtils.class;
     public static final Class<NumberUtils> NUMBER_UTILS = NumberUtils.class;
     public static final Class<ReflectionUtils> REFLECTION_UTILS = ReflectionUtils.class;
     public static final Class<RegExpConstants> REG_EXP_CONSTANTS = RegExpConstants.class;
     public static final Class<ScannerUtils> SCANNER_UTILS = ScannerUtils.class;
-    public static final Class<SQLConstants> SQL_CONSTANTS = SQLConstants.class;
     public static final Class<SQLUtils> SQL_UTILS = SQLUtils.class;
     public static final Class<StringConstants> STRING_CONSTANTS = StringConstants.class;
     public static final Class<StringFormatters> STRING_FORMATTERS = StringFormatters.class;
