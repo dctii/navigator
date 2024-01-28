@@ -6,12 +6,14 @@ import org.apache.logging.log4j.Logger;
 public final class StringConstants {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.STRING_CONSTANTS);
     public static final char LOWER_CASE_M_CHAR = 'm';
+    public static final char UPPER_CASE_V_CHAR = 'V';
     public static final String EMPTY_STRING = "";
     public static final String SINGLE_WHITESPACE = " ";
     public static final String DOUBLE_WHITESPACE = SINGLE_WHITESPACE + SINGLE_WHITESPACE;
     public static final String SINGLE_QUOTATION = "'";
     public static final String FULL_STOP = ".";
     public static final String OPENING_BRACKET = "[";
+    public static final String CLOSING_BRACKET = "]";
     public static final String OPENING_CURLY_BRACE = "{";
     public static final String CLOSING_CURLY_BRACE = "}";
     public static final String OPENING_PARENTHESIS = "(";
@@ -39,6 +41,8 @@ public final class StringConstants {
     public static final String DASH_STRING = "-";
     public static final String AT_SIGN = "@";
     public static final String QUESTION_MARK = "?";
+    public static final String INF = "INF";
+    public static final String DECIMAL_FORMAT_OF_SCALE_2 = "%.2f";
     public static final String YEAR_FIRST_DATE_PATTERN = "yyyy-MM-dd";
     public static final String TIMESTAMP_PATTERN = YEAR_FIRST_DATE_PATTERN + SINGLE_WHITESPACE + "HH:mm:ss";
 

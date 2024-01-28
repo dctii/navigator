@@ -1,10 +1,8 @@
 package com.solvd.navigator.math.graph;
 
-import com.solvd.navigator.exception.InvalidAbscissaException;
 import com.solvd.navigator.exception.InvalidCoordinatesException;
-import com.solvd.navigator.exception.InvalidOrdinateException;
-import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,10 +23,7 @@ public class Point extends Coordinate {
     public Point(double x, double y, String pointLabel) {
         super(x, y);
 
-        if (BooleanUtils.isBlankString(pointLabel)) {
-            LOGGER.error("String for 'pointLabel' cannot be empty or null to set");
-            throw new IllegalArgumentException("String for 'pointLabel' cannot be empty or null to set");
-        }
+        ExceptionUtils.isValidString(pointLabel, "String for 'pointLabel' cannot be empty or null to set");
 
         this.pointLabel = pointLabel;
     }
@@ -40,10 +35,7 @@ public class Point extends Coordinate {
     public Point(int x, int y, String pointLabel) {
         super(x, y);
 
-        if (BooleanUtils.isBlankString(pointLabel)) {
-            LOGGER.error("String for 'pointLabel' cannot be empty or null to set");
-            throw new IllegalArgumentException("String for 'pointLabel' cannot be empty or null to set");
-        }
+        ExceptionUtils.isValidString(pointLabel, "String for 'pointLabel' cannot be empty or null to set");
 
         this.pointLabel = pointLabel;
     }
@@ -55,27 +47,22 @@ public class Point extends Coordinate {
     public Point(String xString, String yString, String pointLabel) {
         super(xString, yString);
 
-        if (BooleanUtils.isBlankString(pointLabel)) {
-            LOGGER.error("String for 'pointLabel' cannot be empty or null to set");
-            throw new IllegalArgumentException("String for 'pointLabel' cannot be empty or null to set");
-        }
+        ExceptionUtils.isValidString(pointLabel, "String for 'pointLabel' cannot be empty or null to set");
+
 
         this.pointLabel = pointLabel;
     }
 
     @Override
     public void setX(double x) {
-        if (x < 0) {
-            throw new InvalidAbscissaException("Abscissa, 'x', out of valid range for Point.");
-        }
+        ExceptionUtils.isValidAbscissa(x);
         super.setX(x);
     }
 
+
     @Override
     public void setY(double y) {
-        if (y < 0) {
-            throw new InvalidOrdinateException("Ordinate, 'y', out of valid range for this Point.");
-        }
+        ExceptionUtils.isValidOrdinate(y);
 
         super.setY(y);
     }
@@ -83,18 +70,14 @@ public class Point extends Coordinate {
     @Override
     public void setCoordinates(double x, double y) {
         // integers for 'x' and 'y' kept unsigned for the purposes of this project
-        if (x < 0 || y < 0) {
-            throw new InvalidCoordinatesException("Coordinates out of valid range.");
-        }
+        ExceptionUtils.areValidCoordinates(x, y);
 
         super.setCoordinates(x, y);
     }
 
     @Override
     public void setCoordinates(int x, int y) {
-        if (x < 0 || y < 0) {
-            throw new InvalidCoordinatesException("Coordinates out of valid range.");
-        }
+        ExceptionUtils.areValidCoordinates(x, y);
 
         super.setCoordinates(x, y);
     }
@@ -105,14 +88,15 @@ public class Point extends Coordinate {
             double x = Double.parseDouble(xString);
             double y = Double.parseDouble(yString);
 
-            if (x < 0 || y < 0) {
-                throw new InvalidCoordinatesException("Coordinates out of valid range.");
-            }
+            ExceptionUtils.areValidCoordinates(x, y);
 
             super.setCoordinates(x, y);
 
         } catch (NumberFormatException e) {
-            throw new InvalidCoordinatesException("Invalid format for coordinates.");
+            final String INVALID_NUMBER_FORMAT_FOR_COORDINATES_EXCEPTION_MSG =
+                    "Invalid format for coordinates.";
+            LOGGER.error(INVALID_NUMBER_FORMAT_FOR_COORDINATES_EXCEPTION_MSG);
+            throw new InvalidCoordinatesException(INVALID_NUMBER_FORMAT_FOR_COORDINATES_EXCEPTION_MSG);
         }
     }
 
