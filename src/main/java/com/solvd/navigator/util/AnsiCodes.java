@@ -9,6 +9,7 @@ public final class AnsiCodes {
 
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ANSI_CODES);
     public static final String RED = toAnsiString(AnsiEscape.RED);
+    public static final String MAGENTA = toAnsiString(AnsiEscape.MAGENTA);
     public static final String YELLOW = toAnsiString(AnsiEscape.YELLOW);
     public static final String GREEN = toAnsiString(AnsiEscape.GREEN);
     public static final String BLUE = toAnsiString(AnsiEscape.BLUE);
