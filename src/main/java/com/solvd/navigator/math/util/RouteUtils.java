@@ -31,7 +31,7 @@ public class RouteUtils {
     ) {
         double[][] shortestDistances = matrix.getShortestDistances();
         Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationIdToIndexMap();
-        
+
         List<Location> fastRoute = new ArrayList<>();
         Set<Integer> visitedLocationIds = new HashSet<>();
 
@@ -128,7 +128,7 @@ public class RouteUtils {
     }
 
     public static ShortestPathsMatrix calculateShortestPaths(WeightedGraph graph, List<Location> locations) {
-        double[][] shortestDistances = MatrixUtils.runFloydWarshall(graph);
+        MatrixUtils.FloydWarshallResult result = MatrixUtils.runFloydWarshall(graph);
 
         Map<Integer, Integer> locationIdToIndexMap =
                 MatrixUtils.mapLocationIdsToMatrixIndexes(locations, graph);
@@ -136,7 +136,8 @@ public class RouteUtils {
 
         // create and return the ShortestPathsMatrix using the Builder
         return new ShortestPathsMatrix.Builder()
-                .setShortestDistances(shortestDistances)
+                .setShortestDistances(result.getShortestDistances())
+                .setNextLocations(result.getNextLocations())
                 .setLocationIdToIndexMap(locationIdToIndexMap)
                 .build();
     }

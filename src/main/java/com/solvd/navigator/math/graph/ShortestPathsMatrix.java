@@ -8,20 +8,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ShortestPathsMatrix {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.SHORTEST_PATHS_MATRIX);
     private double[][] shortestDistances;
+    private int[][] nextLocations;
     private Map<Integer, Integer> locationIdToIndexMap; // mapping from vertex ID to index in the matrix
 
     private ShortestPathsMatrix(Builder builder) {
         this.shortestDistances = builder.shortestDistances;
+        this.nextLocations = builder.nextLocations;
         this.locationIdToIndexMap = builder.locationIdToIndexMap;
     }
 
     public static class Builder {
         private double[][] shortestDistances;
+        private int[][] nextLocations;
         private Map<Integer, Integer> locationIdToIndexMap;
 
         public Builder() {
@@ -30,6 +34,11 @@ public class ShortestPathsMatrix {
 
         public Builder setShortestDistances(double[][] shortestDistances) {
             this.shortestDistances = shortestDistances;
+            return this;
+        }
+
+        public Builder setNextLocations(int[][] nextLocations) {
+            this.nextLocations = nextLocations;
             return this;
         }
 
@@ -52,6 +61,18 @@ public class ShortestPathsMatrix {
         this.shortestDistances = shortestDistances;
     }
 
+    public int getNextLocationIndex(int fromIndex, int toIndex) {
+        return nextLocations[fromIndex][toIndex];
+    }
+
+    public int[][] getNextLocations() {
+        return nextLocations;
+    }
+
+    public void setNextLocations(int[][] nextLocations) {
+        this.nextLocations = nextLocations;
+    }
+
     public Map<Integer, Integer> getLocationIdToIndexMap() {
         return locationIdToIndexMap;
     }
@@ -60,6 +81,12 @@ public class ShortestPathsMatrix {
         this.locationIdToIndexMap = locationIdToIndexMap;
     }
 
+    public int getLocationIdByMatrixIndex(int matrixIndexNumber) {
+        return MatrixUtils.getLocationIdByMatrixIndex(
+                matrixIndexNumber,
+                this.locationIdToIndexMap
+        );
+    }
 
     public int getMatrixIndexByLocationId(int locationId) {
         return MatrixUtils.getMatrixIndexByLocationId(
@@ -73,6 +100,10 @@ public class ShortestPathsMatrix {
                 vertexId,
                 this.locationIdToIndexMap
         );
+    }
+
+    public List<Integer> getPath(int fromLocationId, int toLocationId) {
+        return MatrixUtils.getPath(this, fromLocationId, toLocationId);
     }
 
     /*
