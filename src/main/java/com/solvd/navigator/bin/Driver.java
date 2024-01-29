@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Driver {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER);
@@ -109,6 +110,19 @@ public class Driver {
             throw new IllegalStateException("Route plan cannot be null for removal");
         }
         routePlans.remove(newRoutePlan);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Driver driver = (Driver) obj;
+        return driverId == driver.driverId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(driverId);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.solvd.navigator.bin;
 
+import java.util.Objects;
+
 public class OrderRecipient {
     private int orderRecipientId;
     private int personId;
@@ -36,6 +38,19 @@ public class OrderRecipient {
 
     public void setLocationId(int locationId) {
         this.locationId = locationId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        OrderRecipient orderRecipient = (OrderRecipient) obj;
+        return orderRecipientId == orderRecipient.orderRecipientId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderRecipientId);
     }
 
     @Override

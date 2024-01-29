@@ -46,7 +46,7 @@ public class BooleanUtils {
     }
 
     public static boolean isNotEmptyOrNullCollection(Collection<?> collection) {
-        return isEmptyOrNullCollection(collection);
+        return !isEmptyOrNullCollection(collection);
     }
 
     public static <T> boolean anyMatchInArray(T[] array, Predicate<T> predicate) {
