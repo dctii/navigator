@@ -3,6 +3,7 @@ package com.solvd.navigator.math.util;
 import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.exception.InvalidMatrixIndexException;
 import com.solvd.navigator.exception.InvalidVertexException;
+import com.solvd.navigator.math.graph.ShortestPathsMatrix;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.ExceptionUtils;
@@ -11,6 +12,7 @@ import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,18 @@ public class MatrixUtils {
                         ) // val: matrix index
                 ));
     }
+
+    public static int getLocationIdByMatrixIndex(int indexNumber, Map<Integer, Integer> idToIndexMap) {
+        for (Map.Entry<Integer, Integer> entry : idToIndexMap.entrySet()) {
+            if (Objects.equals(entry.getValue(), indexNumber)) {
+                return entry.getKey();
+            }
+        }
+        final String INVALID_MATRIX_EXCEPTION_MSG = "Matrix index " + indexNumber + " not found in the idToIndexMap.";
+        LOGGER.error(INVALID_MATRIX_EXCEPTION_MSG);
+        throw new InvalidMatrixIndexException(INVALID_MATRIX_EXCEPTION_MSG);
+    }
+
 
     public static int getMatrixIndexByLocationId(int locationId, Map<Integer, Integer> idToIndexMap) {
         Integer index = idToIndexMap.get(locationId);
@@ -127,17 +141,36 @@ public class MatrixUtils {
             Floyd-Warshall Algorithm
             https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
         */
-    public static double[][] runFloydWarshall(WeightedGraph graph) {
+
+    public static class FloydWarshallResult {
+        private final double[][] shortestDistances;
+        private final int[][] nextLocations;
+
+        public FloydWarshallResult(double[][] shortestDistances, int[][] nextLocations) {
+            this.shortestDistances = shortestDistances;
+            this.nextLocations = nextLocations;
+        }
+
+        double[][] getShortestDistances() {
+            return shortestDistances;
+        }
+
+        int[][] getNextLocations() {
+            return nextLocations;
+        }
+    }
+
+    public static FloydWarshallResult runFloydWarshall(WeightedGraph graph) {
         int totalVertices = graph.getVertexIdsForGraph().size();
         double[][] shortestDistances = new double[totalVertices][totalVertices];
-        int[][] nextVertex = new int[totalVertices][totalVertices];
+        int[][] nextLocations = new int[totalVertices][totalVertices];
         String[] vertexIds = graph.getVertexIdsForGraph().toArray(new String[0]);
 
-        initializeDistancesAndPaths(shortestDistances, nextVertex, totalVertices);
-        fillDistancesFromEdges(graph, shortestDistances, nextVertex, vertexIds);
-        applyFloydWarshall(shortestDistances, nextVertex, totalVertices);
+        initializeDistancesAndPaths(shortestDistances, nextLocations, totalVertices);
+        fillDistancesFromEdges(graph, shortestDistances, nextLocations, vertexIds);
+        applyFloydWarshall(shortestDistances, nextLocations, totalVertices);
 
-        return shortestDistances;
+        return new FloydWarshallResult(shortestDistances, nextLocations);
     }
 
     private static void initializeDistancesAndPaths(double[][] distances, int[][] next, int totalVertices) {
@@ -219,6 +252,33 @@ public class MatrixUtils {
             }
         }
     }
+    public static List<Integer> getPath(ShortestPathsMatrix matrix, int fromLocationId, int toLocationId) {
+
+        // get corresponding matrix index for locationId
+        int fromIndex = matrix.getMatrixIndexByLocationId(fromLocationId);
+        int toIndex = matrix.getMatrixIndexByLocationId(toLocationId);
+        Map<Integer, Integer> idToIndexMap = matrix.getLocationIdToIndexMap();
+
+        int[][] nextLocations = matrix.getNextLocations();
+
+        if (nextLocations[fromIndex][toIndex] == -1) {
+            LOGGER.warn("No path exists from location ID {} to location ID {}", fromLocationId, toLocationId);
+            return new ArrayList<>(); // no path exists
+        }
+
+        List<Integer> path = new ArrayList<>();
+
+        while (fromIndex != toIndex) {
+            int locationId = MatrixUtils.getLocationIdByMatrixIndex(fromIndex, idToIndexMap);
+            path.add(locationId);
+            fromIndex = nextLocations[fromIndex][toIndex];
+        }
+        int destinationLocationId = MatrixUtils.getLocationIdByMatrixIndex(toIndex, idToIndexMap);
+        path.add(destinationLocationId); // add the destination to the path
+
+        return path;
+    }
+
 
     private MatrixUtils() {
         ExceptionUtils.preventUtilityInstantiation();
