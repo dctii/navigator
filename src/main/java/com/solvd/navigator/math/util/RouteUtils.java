@@ -31,7 +31,7 @@ public class RouteUtils {
     ) {
         double[][] shortestDistances = matrix.getShortestDistances();
         Map<Integer, Integer> locationToVertexIndexMap = matrix.getLocationIdToIndexMap();
-
+        
         List<Location> fastRoute = new ArrayList<>();
         Set<Integer> visitedLocationIds = new HashSet<>();
 

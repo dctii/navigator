@@ -5,6 +5,7 @@ import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.math.graph.ShortestPathsMatrix;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.math.util.RouteUtils;
+import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringFormatters;
 
@@ -28,7 +29,7 @@ public class RouteCalculatorImpl implements RouteCalculator {
         private List<Location> locations = new ArrayList<>();
 
         public Builder setStorages(List<Storage> storages) {
-            if (storages != null && !storages.isEmpty()) {
+            if (BooleanUtils.isNotEmptyOrNullCollection(storages)) {
                 this.storages = storages;
             } else {
                 throw new IllegalStateException(
@@ -39,7 +40,7 @@ public class RouteCalculatorImpl implements RouteCalculator {
         }
 
         public Builder setLocations(List<Location> locations) {
-            if (locations != null && !locations.isEmpty()) {
+            if (BooleanUtils.isNotEmptyOrNullCollection(locations)) {
                 this.locations = locations;
             } else {
                 throw new IllegalStateException(
@@ -49,8 +50,9 @@ public class RouteCalculatorImpl implements RouteCalculator {
             return this;
         }
 
+
         public Builder buildShortestPathsMatrix(WeightedGraph graph) {
-            if (this.locations != null && graph != null) {
+            if (BooleanUtils.isNotEmptyOrNullCollection(this.locations) && graph != null) {
                 this.shortestPathsMatrix = RouteUtils.calculateShortestPaths(graph, this.locations);
             } else {
                 throw new IllegalStateException(
@@ -61,7 +63,7 @@ public class RouteCalculatorImpl implements RouteCalculator {
         }
 
         public Builder buildShortestPathsMatrix(WeightedGraph graph, List<Location> locations) {
-            if (locations != null && !locations.isEmpty() && graph != null) {
+            if (BooleanUtils.isNotEmptyOrNullCollection(locations) && graph != null) {
                 this.shortestPathsMatrix = RouteUtils.calculateShortestPaths(graph, locations);
             } else {
                 throw new IllegalStateException(
