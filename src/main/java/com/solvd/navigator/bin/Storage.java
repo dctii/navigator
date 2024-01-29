@@ -1,9 +1,12 @@
 package com.solvd.navigator.bin;
 
+import java.util.Objects;
+
 public class Storage {
     private int storageId;
     private String name;
     private int locationId;
+
     public Storage() {
 
     }
@@ -39,12 +42,25 @@ public class Storage {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Storage storage = (Storage) obj;
+        return storageId == storage.storageId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storageId);
+    }
+
+    @Override
     public String toString() {
         return "Storages{" +
-               "storageId=" + storageId +
-               ", name='" + name + '\'' +
-               ", locationId=" + locationId +
-               '}';
+                "storageId=" + storageId +
+                ", name='" + name + '\'' +
+                ", locationId=" + locationId +
+                '}';
     }
 
 }
