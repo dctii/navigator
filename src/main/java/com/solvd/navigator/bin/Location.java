@@ -1,5 +1,7 @@
 package com.solvd.navigator.bin;
 
+import java.util.Objects;
+
 public class Location {
     private int locationId;
     private float coordinateX;
@@ -44,12 +46,27 @@ public class Location {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Location location = (Location) obj;
+        return locationId == location.locationId &&
+                Float.compare(location.coordinateX, coordinateX) == 0 &&
+                Float.compare(location.coordinateY, coordinateY) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(locationId, coordinateX, coordinateY);
+    }
+
+    @Override
     public String toString() {
         return "Locations{" +
-               "locationId=" + locationId +
-               ", coordinateX=" + coordinateX +
-               ", coordinateY=" + coordinateY +
-               '}';
+                "locationId=" + locationId +
+                ", coordinateX=" + coordinateX +
+                ", coordinateY=" + coordinateY +
+                '}';
     }
 }
 

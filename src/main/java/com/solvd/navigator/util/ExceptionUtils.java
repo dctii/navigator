@@ -1,11 +1,13 @@
 package com.solvd.navigator.util;
 
+import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.exception.EmptyVerticesMapException;
 import com.solvd.navigator.exception.InvalidAbscissaException;
 import com.solvd.navigator.exception.InvalidCoordinatesException;
 import com.solvd.navigator.exception.InvalidDateFormatException;
 import com.solvd.navigator.exception.InvalidDecimalException;
 import com.solvd.navigator.exception.InvalidEdgeException;
+import com.solvd.navigator.exception.InvalidLocationException;
 import com.solvd.navigator.exception.InvalidOrdinateException;
 import com.solvd.navigator.exception.InvalidStringException;
 import com.solvd.navigator.exception.InvalidVertexException;
@@ -170,17 +172,13 @@ public class ExceptionUtils {
         }
     }
 
-    private ExceptionUtils() {
-        preventUtilityInstantiation();
-    }
-
-    public static void areValidVertices(Vertex vertex1, Vertex vertex2) {
+    public static void areInvalidVertices(Vertex vertex1, Vertex vertex2) {
         final String INVALID_EDGE_EXCEPTION_MSG =
                 "Both vertices must be non-null and have vertexIds to create an edge.";
-        areValidVertices(vertex1, vertex2, INVALID_EDGE_EXCEPTION_MSG);
+        areInvalidVertices(vertex1, vertex2, INVALID_EDGE_EXCEPTION_MSG);
     }
 
-    public static void areValidVertices(Vertex vertex1, Vertex vertex2, String message) {
+    public static void areInvalidVertices(Vertex vertex1, Vertex vertex2, String message) {
         if (BooleanUtils.areInvalidVertices(vertex1, vertex2)) {
             LOGGER.error(message);
             throw new InvalidEdgeException(message);
@@ -222,4 +220,16 @@ public class ExceptionUtils {
             throw new PointTypeIsNullException(message);
         }
     }
+
+    public static void isValidLocation(Location originLocation, String message) {
+        if (originLocation == null || originLocation.getLocationId() < 1) {
+            LOGGER.error(message);
+            throw new InvalidLocationException(message);
+        }
+    }
+
+    private ExceptionUtils() {
+        preventUtilityInstantiation();
+    }
+
 }

@@ -5,7 +5,9 @@ import com.solvd.navigator.exception.InvalidRouteCalculator;
 import com.solvd.navigator.exception.RouteNeedsLocationsException;
 import com.solvd.navigator.math.util.OrderConstants;
 import com.solvd.navigator.math.util.RouteUtils;
+import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.ExceptionUtils;
 import com.solvd.navigator.util.StringFormatters;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,28 +49,26 @@ public class RoutePlan {
         private double totalRouteMinutes;
 
         public Builder setOriginLocation(Location originLocation) {
-            if (originLocation != null) {
-                this.originLocation = originLocation;
-            } else {
-                final String ROUTE_NEEDS_LOCATION_EXCEPTION_MSG =
-                        "The starting point of the route cannot be empty or null";
-                LOGGER.error(ROUTE_NEEDS_LOCATION_EXCEPTION_MSG);
-                throw new RouteNeedsLocationsException(ROUTE_NEEDS_LOCATION_EXCEPTION_MSG);
-            }
+            ExceptionUtils.isValidLocation(
+                    originLocation,
+                    "The starting point of the route cannot be empty or null"
+            );
+            this.originLocation = originLocation;
+
             return this;
         }
 
         public Builder setDeliveryLocations(List<Location> deliveryLocations) {
-            if (deliveryLocations != null
-                    && !deliveryLocations.isEmpty()) {
+            if (BooleanUtils.isNotEmptyOrNullCollection(deliveryLocations)) {
                 this.deliveryLocations = deliveryLocations;
+                return this;
+
             } else {
-                final String ROUTE_NEEDS_LOCATIONS_EXCEPTION_MSG =
-                        "The delivery locations cannot be empty or null null";
-                LOGGER.error(ROUTE_NEEDS_LOCATIONS_EXCEPTION_MSG);
-                throw new RouteNeedsLocationsException(ROUTE_NEEDS_LOCATIONS_EXCEPTION_MSG);
+                final String INVALID_DELIVERY_LOCATION_LIST_EXCEPTION_MSG =
+                        "The delivery locations list cannot be empty or null to set";
+                LOGGER.error(INVALID_DELIVERY_LOCATION_LIST_EXCEPTION_MSG);
+                throw new RouteNeedsLocationsException(INVALID_DELIVERY_LOCATION_LIST_EXCEPTION_MSG);
             }
-            return this;
         }
 
         public Builder calculateRouteDetails(RouteCalculator calculator) {
@@ -80,8 +80,7 @@ public class RoutePlan {
             }
 
             if (this.originLocation != null
-                    && this.deliveryLocations != null
-                    && !this.deliveryLocations.isEmpty()
+                    && BooleanUtils.isNotEmptyOrNullCollection(this.deliveryLocations)
             ) {
                 this.route = calculator.findFastestRoute(this.originLocation, this.deliveryLocations);
                 this.terminalLocation = this.route.get(this.route.size() - 1);
@@ -131,6 +130,11 @@ public class RoutePlan {
     }
 
     public void setOriginLocation(Location originLocation) {
+        ExceptionUtils.isValidLocation(
+                originLocation,
+                "The starting point of the route cannot be empty or null"
+        );
+
         this.originLocation = originLocation;
     }
 
@@ -139,7 +143,15 @@ public class RoutePlan {
     }
 
     public void setDeliveryLocations(List<Location> deliveryLocations) {
-        this.deliveryLocations = deliveryLocations;
+        if (BooleanUtils.isNotEmptyOrNullCollection(deliveryLocations)) {
+            this.deliveryLocations = deliveryLocations;
+
+        } else {
+            final String INVALID_DELIVERY_LOCATION_LIST_EXCEPTION_MSG =
+                    "The delivery locations list cannot be empty or null to set";
+            LOGGER.error(INVALID_DELIVERY_LOCATION_LIST_EXCEPTION_MSG);
+            throw new RouteNeedsLocationsException(INVALID_DELIVERY_LOCATION_LIST_EXCEPTION_MSG);
+        }
     }
 
     public Location getTerminalLocation() {
@@ -147,6 +159,10 @@ public class RoutePlan {
     }
 
     public void setTerminalLocation(Location terminalLocation) {
+        ExceptionUtils.isValidLocation(
+                terminalLocation,
+                "Location cannot be null to set."
+        );
         this.terminalLocation = terminalLocation;
     }
 
@@ -155,6 +171,11 @@ public class RoutePlan {
     }
 
     public void setRoute(List<Location> route) {
+        if (BooleanUtils.isEmptyOrNullCollection(route)) {
+            final String INVALID_ROUTE_LIST_EXCEPTION_MSG = "The route list cannot be empty or null to set";
+            LOGGER.error(INVALID_ROUTE_LIST_EXCEPTION_MSG);
+            throw new RouteNeedsLocationsException(INVALID_ROUTE_LIST_EXCEPTION_MSG);
+        }
         this.route = route;
     }
 

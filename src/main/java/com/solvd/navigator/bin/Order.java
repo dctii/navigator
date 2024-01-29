@@ -1,5 +1,7 @@
 package com.solvd.navigator.bin;
 import java.sql.Timestamp;
+import java.util.Objects;
+
 public class Order {
     private int orderId;
     private String orderNumber;
@@ -87,6 +89,19 @@ public class Order {
 
     public void setDriverId(int driverId) {
         this.driverId = driverId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Order order = (Order) obj;
+        return orderId == order.orderId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(orderId);
     }
 
     @Override
