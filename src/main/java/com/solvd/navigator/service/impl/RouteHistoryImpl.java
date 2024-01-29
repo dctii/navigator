@@ -36,60 +36,48 @@ public class RouteHistoryImpl implements RouteService {
     }
 
     @Override
-    public List<RoutePlan> getRouteHistory() {
-        return routePlan.getRoutePlan();
+    public List<RoutePlan> getRoutePlan() {
+        return RoutePlan.getRoutePlan();
     }
 
-
-    public DriverStatistics getDriverStatistics(int driverId) {
-        List<RoutePlan> routesForDriver = routePlan.getRoutePlan().stream()
+    public DriverStatistic getDriverStatistics(int driverId) {
+        List<RoutePlan> routesForDriver = RoutePlan.getRoutePlan().stream()
                 .filter(plan -> plan.getDriverId() == driverId)
                 .collect(Collectors.toList());
 
         double totalDistance = routesForDriver.stream().mapToDouble(RoutePlan::getTotalDistance).sum();
-
         double totalDeliveryTime = routesForDriver.stream().mapToDouble(RoutePlan::getTotalRouteMinutes).sum();
 
-        return new DriverStatistics(driverId, totalDistance, totalDeliveryTime);
+        return new DriverStatistic(driverId, totalDistance, totalDeliveryTime);
     }
 
     public void processRoutes() {
         List<Storage> allStorages = storageDAO.getAll();
 
-        for (RoutePlan routePlan : routePlan.getRoutePlan()) {
+        for (RoutePlan routePlan : RoutePlan.getRoutePlan()) {
             int terminalLocationId = routePlan.getTerminalLocation().getLocationId();
             Storage nextStorage = storageDAO.getStorageByLocationId(terminalLocationId);
 
             List<Order> newOrdersFromNextStorage = orderDAO.getLimitedAwaitingOrdersByStorageId(nextStorage.getStorageId(), 8);
 
-
             for (Order order : newOrdersFromNextStorage) {
-
                 LOGGER.info("Picking up order {} from storage {}", order.getOrderId(), nextStorage.getStorageId());
-
-
                 order.setOrderStatus(OrderConstants.ORDER_STATUS_IN_TRANSIT);
                 orderDAO.update(order);
 
-
                 LOGGER.info("Delivering order {} to location {}", order.getOrderId(), order.getDeliveryLocation().toString());
-
-
                 order.setOrderStatus(OrderConstants.ORDER_STATUS_DELIVERED);
                 orderDAO.update(order);
             }
-
         }
     }
 
     public void processNewOrdersAndMoveToNextStorage(Storage originStorage, RouteCalculator routeCalculator) {
-
-
         int driverId = 1; // Assuming driverId=1 for this example
         double totalMinutesDelivering = 0.0;
 
         do {
-            //  Get orders from the current storage
+            // Get orders from the current storage
             List<Order> awaitingOrders = orderDAO.getLimitedAwaitingOrdersByStorageId(originStorage.getStorageId(), OrderConstants.DRIVER_ORDER_LIMIT);
 
             if (awaitingOrders.isEmpty()) {
@@ -109,12 +97,16 @@ public class RouteHistoryImpl implements RouteService {
             // Build route plan for the current set of orders
             List<Location> orderLocations = awaitingOrders.stream().map(order -> locationDAO.getById(orderRecipientDAO.getById(order.getOrderRecipientId()).getLocationId())).collect(Collectors.toList());
 
-            RoutePlan routePlan = new RoutePlan.Builder().setOriginLocation(locationDAO.getById(originStorage.getLocationId())).setDeliveryLocations(orderLocations).calculateRouteDetails(routeCalculator).build();
+            RoutePlan newRoutePlan = new RoutePlan.Builder()
+                    .setOriginLocation(locationDAO.getById(originStorage.getLocationId()))
+                    .setDeliveryLocations(orderLocations)
+                    .calculateRouteDetails(routeCalculator)
+                    .build();
 
             LOGGER.info("Route plan built successfully");
-            routePlan.printRoute();
+            newRoutePlan.printRoute();
 
-            //  Update order statuses to "Delivered"
+            // Update order statuses to "Delivered"
             LOGGER.info("Updating order statuses in DB from '{}' to '{}'", OrderConstants.ORDER_STATUS_IN_TRANSIT, OrderConstants.ORDER_STATUS_DELIVERED);
 
             awaitingOrders.forEach(order -> {
@@ -127,7 +119,10 @@ public class RouteHistoryImpl implements RouteService {
             Storage nearestStorage = null;
 
             for (Storage storage : storageDAO.getAll()) {
-                double distance = routeCalculator.calculateDistance(originStorage.getLocation(), storage.getLocation());
+                int storageLocationId = storage.getLocationId();
+                double distance = routeCalculator.calculateTotalDistance(
+                        Arrays.asList(originStorage.getLocation().getLocationId(), storageLocationId)
+                );
                 if (distance < minDistance) {
                     minDistance = distance;
                     nearestStorage = storage;
@@ -141,9 +136,10 @@ public class RouteHistoryImpl implements RouteService {
             LOGGER.info("Moving to the nearest storage: {}", originStorage.toString());
 
             // Add to how many minutes it has been delivering
-            totalMinutesDelivering += routePlan.getTotalRouteMinutes();
+            totalMinutesDelivering += newRoutePlan.getTotalRouteMinutes();
 
         } while (totalMinutesDelivering <= OrderConstants.MAX_WORK_HOURS_IN_MINUTES);
 
         LOGGER.info("Total minutes spent delivering: {} minutes", totalMinutesDelivering);
-    }}
+    }
+}
