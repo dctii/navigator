@@ -9,7 +9,7 @@ import com.solvd.navigator.dao.LocationDAO;
 import com.solvd.navigator.dao.OrderDAO;
 import com.solvd.navigator.dao.OrderRecipientDAO;
 import com.solvd.navigator.dao.StorageDAO;
-import com.solvd.navigator.math.util.OrderConstants;
+import com.solvd.navigator.util.OrderConstants;
 import com.solvd.navigator.servicetwo.OrderListener;
 import com.solvd.navigator.servicetwo.OrderService;
 import com.solvd.navigator.util.ClassConstants;
