@@ -14,6 +14,10 @@ public final class AnsiCodes {
     public static final String GREEN = toAnsiString(AnsiEscape.GREEN);
     public static final String BLUE = toAnsiString(AnsiEscape.BLUE);
     public static final String BOLD = toAnsiString(AnsiEscape.BOLD);
+    public static final String BG_RED = toAnsiString(AnsiEscape.BG_RED);
+    public static final String BG_BLUE = toAnsiString(AnsiEscape.BG_BLUE);
+    public static final String BG_YELLOW = toAnsiString(AnsiEscape.BG_YELLOW);
+    public static final String BG_GREEN = toAnsiString(AnsiEscape.BG_GREEN);
     public static final String RESET_ALL = toAnsiString(AnsiEscape.NORMAL);
 
     private static String toAnsiString(AnsiEscape STYLE) {

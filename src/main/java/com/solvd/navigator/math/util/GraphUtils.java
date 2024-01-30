@@ -141,7 +141,7 @@ public class GraphUtils {
                         graph.addEdge(
                                 vertexId,
                                 neighborId,
-                                0.15 // set distance to 0.15km for all
+                                GraphConstants.POINT_ADJACENT_DISTANCE // set distance to 0.15km for all
                         )
                 );
     }

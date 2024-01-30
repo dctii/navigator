@@ -4,6 +4,7 @@ package com.solvd.navigator;
 import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.math.util.JsonDataStore;
 import com.solvd.navigator.util.AnsiCodes;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.LoadUtils;
 import com.solvd.navigator.util.StringConstants;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BaseDataLoader {
-    private static final Logger LOGGER = LogManager.getLogger(BaseDataLoader.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.BASE_DATA_LOADER_ENTRYPOINT);
 
     public static void main(String[] args) {
 

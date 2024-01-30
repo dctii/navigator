@@ -62,6 +62,8 @@ public class StorageJDBCImpl implements StorageDAO {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } finally {
+            connectionPool.releaseConnection(dbConnection);
         }
 
         return storage;

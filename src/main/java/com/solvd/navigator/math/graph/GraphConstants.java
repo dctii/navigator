@@ -11,12 +11,14 @@ import java.util.stream.Stream;
 
 public final class GraphConstants {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.GRAPH_CONSTANTS);
+
     public static final int COORDINATE_MIN = 0;
     public static final int ABSCISSA_MIN = COORDINATE_MIN;
     public static final int ORDINATE_MIN = COORDINATE_MIN;
     public static final int COORDINATE_MAX = 9; // determines `n`, so if '9', then graph will be a 10x10 table
     public static final int ABSCISSA_MAX = COORDINATE_MAX;
     public static final int ORDINATE_MAX = COORDINATE_MAX;
+    public static final double POINT_ADJACENT_DISTANCE = 0.3;
     public static final Set<Point> RIVER = Set.of(
             new Point(0, 3), new Point(1, 3), new Point(2, 3), new Point(3, 3),
             // a "bridge" is to be at coordinates (4, 3)

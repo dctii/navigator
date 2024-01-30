@@ -24,7 +24,7 @@ public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
     private static final String UPDATE_RECIPIENT_SQL = "UPDATE order_recipients SET person_id = ?, location_id = ? WHERE order_recipient_id = ?";
     private static final String DELETE_RECIPIENT_SQL = "DELETE FROM order_recipients WHERE order_recipient_id = ?";
 
-    DBConnectionPool connectionPool = DBConnectionPool.getInstance();
+    private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     @Override
     public int create(OrderRecipient orderRecipient) {
