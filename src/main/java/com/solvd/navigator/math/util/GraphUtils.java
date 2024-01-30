@@ -106,8 +106,6 @@ public class GraphUtils {
             Determines the range of coordinates:
                 - constrained as a perfect square between (0, 0) and (maxX, maxY)
                     - e.g., if `maxX = maxY = 9`, then between (0, 0) and (9, 9), making for 100 points
-
-        TODO: move this to `generateFixedPositionGraph()`, have this take in a `Double[] coordinatesRange` as a param
         */
         double minX, minY, maxX, maxY;
         minX = minY = 0.0;

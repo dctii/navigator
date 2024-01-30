@@ -184,19 +184,6 @@ public class MatrixUtils {
                 next[initialIndex][terminalIndex] = -1; // no next vertex if same
             });
         });
-
-
-//        for (int initialIndex = 0; initialIndex < totalVertices; initialIndex++) {
-//            for (int terminalIndex = 0; terminalIndex < totalVertices; terminalIndex++) {
-//                // no path at the start, do this
-//                if (initialIndex == terminalIndex) {
-//                    distances[initialIndex][terminalIndex] = 0;
-//                } else {
-//                    distances[initialIndex][terminalIndex] = Double.POSITIVE_INFINITY;
-//                }
-//                next[initialIndex][terminalIndex] = -1; // no next vertex if same
-//            }
-//        }
     }
 
     private static void fillDistancesFromEdges(
@@ -214,15 +201,6 @@ public class MatrixUtils {
                 next[initialVertexIndex][terminalVertexIndex] = terminalVertexIndex;
             });
         });
-
-//        for (String vertexId : vertexIds) {
-//            for (Edge edge : graph.getEdges(vertexId)) {
-//                int initialVertexIndex = getIndex(vertexId, vertexIds);
-//                int terminalVertexIndex = getIndex(edge.getVertex2().getVertexId(), vertexIds);
-//                distances[initialVertexIndex][terminalVertexIndex] = edge.getDistance();
-//                next[initialVertexIndex][terminalVertexIndex] = terminalVertexIndex;
-//            }
-//        }
     }
 
     private static void applyFloydWarshall(
