@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 public class DBConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DB_CONNECTION_POOL);
     private static DBConnectionPool dbConnectionPool = null;
-    private static final int MAX_CONNECTIONS = 301;
+    private static final int MAX_CONNECTIONS = 100;
 
     private final Queue<java.sql.Connection> dbConnections = new LinkedList<>();
 
