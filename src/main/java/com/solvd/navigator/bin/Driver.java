@@ -13,7 +13,6 @@ import java.util.Objects;
 
 public class Driver {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER);
-
     private int driverId;
     private int employeeId;
     private int vehicleId;
@@ -127,7 +126,7 @@ public class Driver {
 
     @Override
     public String toString() {
-        Class<?> currClass = Driver.class;
+        Class<?> currClass = ClassConstants.DRIVER;
         String[] fieldNames = {
                 "driverId",
                 "employeeId",

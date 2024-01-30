@@ -1,8 +1,14 @@
 package com.solvd.navigator.bin;
 
+import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.StringFormatters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Objects;
 
 public class Location {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.LOCATION);
     private int locationId;
     private float coordinateX;
     private float coordinateY;
@@ -62,11 +68,17 @@ public class Location {
 
     @Override
     public String toString() {
-        return "Locations{" +
-                "locationId=" + locationId +
-                ", coordinateX=" + coordinateX +
-                ", coordinateY=" + coordinateY +
-                '}';
+        Class<?> currClass = ClassConstants.LOCATION;
+        String[] fieldNames = {
+                "locationId",
+                "coordinateX",
+                "coordinateY"
+        };
+
+        String fieldsString =
+                StringFormatters.buildFieldsString(this, fieldNames);
+
+        return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
 

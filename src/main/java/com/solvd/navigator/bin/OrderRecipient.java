@@ -1,8 +1,14 @@
 package com.solvd.navigator.bin;
 
+import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.StringFormatters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Objects;
 
 public class OrderRecipient {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ORDER_RECIPIENT);
     private int orderRecipientId;
     private int personId;
     private int locationId;
@@ -55,11 +61,17 @@ public class OrderRecipient {
 
     @Override
     public String toString() {
-        return "OrderRecipients{" +
-               "orderRecipientId=" + orderRecipientId +
-               ", personId=" + personId +
-               ", locationId=" + locationId +
-               '}';
+        Class<?> currClass = ClassConstants.ORDER_RECIPIENT;
+        String[] fieldNames = {
+                "orderRecipientId",
+                "personId",
+                "locationId"
+        };
+
+        String fieldsString =
+                StringFormatters.buildFieldsString(this, fieldNames);
+
+        return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 
 }

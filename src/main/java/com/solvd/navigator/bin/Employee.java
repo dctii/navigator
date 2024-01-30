@@ -1,6 +1,14 @@
 package com.solvd.navigator.bin;
 
+import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.StringFormatters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
+
 public class Employee {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.EMPLOYEE);
     private int employeeId;
     private String role;
     private int personId;
@@ -41,12 +49,31 @@ public class Employee {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Employee employee = (Employee) obj;
+        return employeeId == employee.employeeId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId);
+    }
+
+    @Override
     public String toString() {
-        return "Employees{" +
-               "employeeId=" + employeeId +
-               ", role='" + role + '\'' +
-               ", personId=" + personId +
-               '}';
+        Class<?> currClass = ClassConstants.EMPLOYEE;
+        String[] fieldNames = {
+                "employeeId",
+                "role",
+                "personId"
+        };
+
+        String fieldsString =
+                StringFormatters.buildFieldsString(this, fieldNames);
+
+        return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 }
 

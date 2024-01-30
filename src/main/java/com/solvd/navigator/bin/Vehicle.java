@@ -1,12 +1,21 @@
 package com.solvd.navigator.bin;
 
+import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.StringFormatters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.Objects;
+
 public class Vehicle {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.VEHICLE);
     private int vehicleId;
     private int year;
     private String make;
     private String model;
     private String trimLevel;
     private String licensePlateNumber;
+
     public Vehicle() {
 
     }
@@ -69,15 +78,34 @@ public class Vehicle {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Vehicle vehicle = (Vehicle) obj;
+        return vehicleId == vehicle.vehicleId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(vehicleId);
+    }
+
+    @Override
     public String toString() {
-        return "Vehicles{" +
-               "vehicleId=" + vehicleId +
-               ", year=" + year +
-               ", make='" + make + '\'' +
-               ", model='" + model + '\'' +
-               ", trimLevel='" + trimLevel + '\'' +
-               ", licensePlateNumber='" + licensePlateNumber + '\'' +
-               '}';
+        Class<?> currClass = ClassConstants.VEHICLE;
+        String[] fieldNames = {
+                "vehicleId",
+                "year",
+                "make",
+                "model",
+                "trimLevel",
+                "licensePlateNumber"
+        };
+
+        String fieldsString =
+                StringFormatters.buildFieldsString(this, fieldNames);
+
+        return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 
 }

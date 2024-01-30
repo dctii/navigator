@@ -1,8 +1,14 @@
 package com.solvd.navigator.bin;
 
+import com.solvd.navigator.util.ClassConstants;
+import com.solvd.navigator.util.StringFormatters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Objects;
 
 public class Storage {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.STORAGE);
     private int storageId;
     private String name;
     private int locationId;
@@ -56,11 +62,17 @@ public class Storage {
 
     @Override
     public String toString() {
-        return "Storages{" +
-                "storageId=" + storageId +
-                ", name='" + name + '\'' +
-                ", locationId=" + locationId +
-                '}';
+        Class<?> currClass = ClassConstants.STORAGE;
+        String[] fieldNames = {
+                "storageId",
+                "name",
+                "locationId"
+        };
+
+        String fieldsString =
+                StringFormatters.buildFieldsString(this, fieldNames);
+
+        return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
     }
 
 }
