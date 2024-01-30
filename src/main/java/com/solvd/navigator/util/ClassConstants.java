@@ -58,7 +58,6 @@ public final class ClassConstants {
 
     // com.solvd.navigator
     public static final Class<com.solvd.navigator.BaseDataLoader> BASE_DATA_LOADER_ENTRYPOINT = com.solvd.navigator.BaseDataLoader.class;
-    public static final Class<com.solvd.navigator.GraphTester> GRAPH_TESTER_ENTRYPOINT = com.solvd.navigator.GraphTester.class;
     public static final Class<com.solvd.navigator.Main> MAIN_ENTRYPOINT = com.solvd.navigator.Main.class;
 
     // com.solvd.navigator.bin

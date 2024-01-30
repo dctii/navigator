@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 public class DBConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DB_CONNECTION_POOL);
     private static DBConnectionPool dbConnectionPool = null;
-    private static final int MAX_CONNECTIONS = 30;
+    private static final int MAX_CONNECTIONS = 301;
 
     private final Queue<java.sql.Connection> dbConnections = new LinkedList<>();
 
@@ -47,6 +47,37 @@ public class DBConnectionPool {
     public synchronized void releaseConnection(java.sql.Connection dbConnection) {
         dbConnections.offer(dbConnection);
         notifyAll();
+    }
+
+    public synchronized int getActiveConnectionCount() {
+        return MAX_CONNECTIONS - dbConnections.size();
+    }
+
+    public synchronized void flushPool() {
+        // Close all existing connections
+        LOGGER.info(
+                "{}Flushing DBConnectionPool, wait a moment...{}",
+                AnsiCodes.BG_BLUE + AnsiCodes.BOLD,
+                AnsiCodes.RESET_ALL
+        );
+        dbConnections.forEach(dbConnection -> {
+            try {
+                if (dbConnection != null && !dbConnection.isClosed()) {
+                    dbConnection.close();
+                }
+            } catch (SQLException e) {
+                LOGGER.error("Error closing connection during flush", e);
+            }
+        });
+
+        // Clear the queue
+        dbConnections.clear();
+
+        // Reinitialize the pool
+        IntStream.range(0, MAX_CONNECTIONS).forEach(i -> {
+            java.sql.Connection dbConnection = new AuthConnection().getConnection();
+            dbConnections.add(dbConnection);
+        });
     }
 
 
