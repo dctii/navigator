@@ -157,35 +157,6 @@
             </build>
         </profile>
 
-        <profile>
-            <id>graph-tester</id>
-            <build>
-                <plugins>
-
-                    <!-- https://www.mojohaus.org/exec-maven-plugin/ -->
-                    <plugin>
-                        <groupId>${exec-maven-plugin.groupId}</groupId>
-                        <artifactId>${exec-maven-plugin.artifactId}</artifactId>
-                        <version>${exec-maven-plugin.version}</version>
-                        <configuration>
-                            <mainClass>${graphTesterEntrypoint}</mainClass>
-                            <systemProperties>
-                                <systemProperty>
-                                    <key>${jooq.groupId}.no-tips</key>
-                                    <value>true</value>
-                                </systemProperty>
-                                <systemProperty>
-                                    <key>${jooq.groupId}.no-logo</key>
-                                    <value>true</value>
-                                </systemProperty>
-                            </systemProperties>
-                        </configuration>
-                    </plugin>
-
-                </plugins>
-            </build>
-        </profile>
-
     </profiles>
 
     <dependencies>
