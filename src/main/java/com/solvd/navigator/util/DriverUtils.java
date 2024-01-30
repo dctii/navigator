@@ -5,7 +5,6 @@ import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.bin.Order;
 import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.math.RoutePlan;
-import com.solvd.navigator.math.util.OrderConstants;
 import com.solvd.navigator.servicetwo.DriverService;
 import com.solvd.navigator.servicetwo.LocationService;
 import com.solvd.navigator.servicetwo.OrderService;

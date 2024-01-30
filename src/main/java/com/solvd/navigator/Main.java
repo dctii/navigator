@@ -1,6 +1,6 @@
 package com.solvd.navigator;
 
-import com.solvd.navigator.math.util.JsonDataStore;
+import com.solvd.navigator.util.JsonDataStore;
 import com.solvd.navigator.servicetwo.LocationService;
 import com.solvd.navigator.servicetwo.StorageService;
 import com.solvd.navigator.servicetwo.impl.LocationServiceImpl;

@@ -1,8 +1,5 @@
-package com.solvd.navigator.math.util;
+package com.solvd.navigator.util;
 
-import com.solvd.navigator.util.ClassConstants;
-import com.solvd.navigator.util.ExceptionUtils;
-import com.solvd.navigator.util.NumberUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

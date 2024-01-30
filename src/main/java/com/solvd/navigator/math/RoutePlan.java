@@ -3,7 +3,7 @@ package com.solvd.navigator.math;
 import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.exception.InvalidRouteCalculator;
 import com.solvd.navigator.exception.RouteNeedsLocationsException;
-import com.solvd.navigator.math.util.OrderConstants;
+import com.solvd.navigator.util.OrderConstants;
 import com.solvd.navigator.math.util.RouteUtils;
 import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
