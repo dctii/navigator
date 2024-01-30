@@ -1,4 +1,4 @@
-package com.solvd.navigator.math.util;
+package com.solvd.navigator.util;
 
 import com.solvd.navigator.bin.Driver;
 import com.solvd.navigator.bin.Employee;
@@ -9,10 +9,6 @@ import com.solvd.navigator.bin.Person;
 import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.bin.Vehicle;
 import com.solvd.navigator.math.graph.GraphConstants;
-import com.solvd.navigator.util.ClassConstants;
-import com.solvd.navigator.util.ExceptionUtils;
-import com.solvd.navigator.util.FilepathConstants;
-import com.solvd.navigator.util.JacksonUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

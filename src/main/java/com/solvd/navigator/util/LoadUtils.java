@@ -18,7 +18,6 @@ import com.solvd.navigator.dao.PersonDAO;
 import com.solvd.navigator.dao.StorageDAO;
 import com.solvd.navigator.dao.VehicleDAO;
 import com.solvd.navigator.exception.NoMoreAssignableLocationsException;
-import com.solvd.navigator.math.util.OrderConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
