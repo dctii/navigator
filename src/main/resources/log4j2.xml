@@ -19,7 +19,19 @@
         <Logger name="com.solvd.navigator.BaseDataLoader" level="info" additivity="false">
             <AppenderRef ref="SimpleStdOut"/>
         </Logger>
-        <Logger name="com.solvd.navigator.GraphTester" level="info" additivity="false">
+        <Logger name="com.solvd.navigator.servicetwo.impl.OrderListenerImpl" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.navigator.servicetwo.impl.DriverServiceImpl" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.navigator.util.DriverUtils" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.navigator.util.DriverThreadRunnable" level="info" additivity="false">
+            <AppenderRef ref="SimpleStdOut"/>
+        </Logger>
+        <Logger name="com.solvd.navigator.util.DriverConnectionPool" level="info" additivity="false">
             <AppenderRef ref="SimpleStdOut"/>
         </Logger>
         <Logger name="com.solvd.navigator.math.util.RouteUtils" level="info" additivity="false">
