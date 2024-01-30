@@ -39,11 +39,6 @@
         <mysql.affix>mysql</mysql.affix>
         <mysql-connector-j.version>8.2.0</mysql-connector-j.version>
 
-        <!--   MyBatis Properties     -->
-        <mybatis.affix>mybatis</mybatis.affix>
-        <mybatis.version>3.5.15</mybatis.version>
-
-
         <!--   Jackson Properties     -->
         <jackson.affix>jackson</jackson.affix>
         <jackson-core.groupId>com.fasterxml.${jackson.affix}.core</jackson-core.groupId>
@@ -54,7 +49,6 @@
         <javafaker.affix>javafaker</javafaker.affix>
         <javafaker.groupId>com.github.${javafaker.affix}</javafaker.groupId>
         <javafaker.version>1.0.2</javafaker.version>
-
 
         <!--   maven Compiler Plugin Properties     -->
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
@@ -179,14 +173,6 @@
             <artifactId>${mysql.affix}-connector-j</artifactId>
             <version>${mysql-connector-j.version}</version>
         </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <dependency>
-            <groupId>org.${mybatis.affix}</groupId>
-            <artifactId>${mybatis.affix}</artifactId>
-            <version>${mybatis.version}</version>
-        </dependency>
-
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
