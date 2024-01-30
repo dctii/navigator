@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Queue;
 
 public class DriverConnectionPool {
-    private static final Logger LOGGER = LogManager.getLogger(DriverConnectionPool.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER_CONNECTION_POOL);
     private static DriverConnectionPool driverConnectionPool = null;
     private final Queue<DriverConnection> driverConnections = new LinkedList<>();
 
@@ -66,10 +66,7 @@ public class DriverConnectionPool {
 
     public synchronized void releaseConnection(DriverConnection connection) {
         driverConnections.offer(connection);
-
-        String currentThreadName = StringFormatters.nestInSingleQuotations(
-                Thread.currentThread().getName()
-        );
+        
         String connectionName = StringFormatters.nestInSingleQuotations(
                 connection.getDriverName()
         );
@@ -78,7 +75,7 @@ public class DriverConnectionPool {
                 "{}{} released from the {}{}",
                 AnsiCodes.BG_RED + AnsiCodes.BOLD,
                 connectionName,
-                DriverConnectionPool.class.getSimpleName(),
+                ClassConstants.DRIVER_CONNECTION_POOL.getSimpleName(),
                 AnsiCodes.RESET_ALL
         );
 
@@ -87,7 +84,7 @@ public class DriverConnectionPool {
 
 
     public String toString() {
-        Class<?> currClass = DriverConnectionPool.class;
+        Class<?> currClass = ClassConstants.DRIVER_CONNECTION_POOL;
         String[] fieldNames = {
                 "driverConnectionPool",
                 "driverConnections"

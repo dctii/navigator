@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 public class DriverThreadManager {
-    private static final Logger LOGGER = LogManager.getLogger(DriverThreadManager.class);
-    private final DriverConnectionPool pool;
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER_THREAD_MANAGER);
+    private final DriverConnectionPool driverConnectionPool;
     private final LocationService locationService;
     private final StorageService storageService;
-    private final List<Thread> threads = new ArrayList<>();
+    private final List<Thread> driverThreads = new ArrayList<>();
 
-    public DriverThreadManager(DriverConnectionPool pool, LocationService locationService, StorageService storageService) {
-        this.pool = pool;
+    public DriverThreadManager(DriverConnectionPool driverConnectionPool, LocationService locationService, StorageService storageService) {
+        this.driverConnectionPool = driverConnectionPool;
         this.locationService = locationService;
         this.storageService = storageService;
     }
@@ -38,15 +38,15 @@ public class DriverThreadManager {
 
         IntStream.range(0, numberOfDrivers).forEach(i -> {
             Driver driver = drivers.get(i);
-            Runnable task = new DriverThreadRunnable(pool, locationService, storageService, driver);
+            Runnable task = new DriverThreadRunnable(driverConnectionPool, locationService, storageService, driver);
             Thread thread = new Thread(task, "Driver " + driver.getDriverId());
-            threads.add(thread);
+            driverThreads.add(thread);
             thread.start();
         });
     }
 
     public void waitForThreadsToComplete() throws InterruptedException {
-        threads.forEach(thread -> {
+        driverThreads.forEach(thread -> {
             try {
                 thread.join(); // pauses the execution of the thread
             } catch (InterruptedException e) {
@@ -54,4 +54,21 @@ public class DriverThreadManager {
             }
         });
     }
+
+    public String toString() {
+        Class<?> currClass = ClassConstants.DRIVER_THREAD_MANAGER;
+        String[] fieldNames = {
+                "driverConnectionPool",
+                "locationService",
+                "storageService",
+                "driverThreads"
+        };
+
+        String fieldsString =
+                StringFormatters.buildFieldsString(this, fieldNames);
+
+        return StringFormatters.buildToString(currClass, fieldNames, fieldsString);
+    }
+
+
 }

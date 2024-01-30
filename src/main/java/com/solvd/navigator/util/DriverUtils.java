@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class DriverUtils {
-    private static final Logger LOGGER = LogManager.getLogger(DriverUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER_UTILS);
 
     public static void announceDriverCheckIn(DriverConnection connection) {
         LOGGER.info(

@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class MenuUtils {
-    private static final Logger LOGGER = LogManager.getLogger(MenuUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.MENU_UTILS);
 
     public static int parseIntOption(String input) {
         int parsedOption = -1;

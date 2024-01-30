@@ -17,9 +17,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DriverThreadRunnable implements Runnable {
-    private static final Logger LOGGER = LogManager.getLogger(DriverThreadRunnable.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER_THREAD_RUNNABLE);
     private DriverConnectionPool driverConnectionPool;
     private LocationService locationService;
     private StorageService storageService;
@@ -176,8 +177,21 @@ public class DriverThreadRunnable implements Runnable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        DriverThreadRunnable driverThreadRunnable = (DriverThreadRunnable) obj;
+        return driver.equals(driverThreadRunnable.driver);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(driver);
+    }
+
+    @Override
     public String toString() {
-        Class<?> currClass = DriverThreadRunnable.class;
+        Class<?> currClass = ClassConstants.DRIVER_THREAD_RUNNABLE;
         String[] fieldNames = {
                 "driverConnectionPool",
                 "locationService",
