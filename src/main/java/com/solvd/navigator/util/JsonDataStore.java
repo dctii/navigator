@@ -18,35 +18,35 @@ import java.util.stream.Collectors;
 public class JsonDataStore {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.JSON_DATA_STORE);
     public static List<Driver> allDrivers =
-            JacksonUtils.extractItems(FilepathConstants.DRIVERS_JSON, Driver.class);
+            JacksonUtils.extractItems(FilepathConstants.DRIVERS_JSON, ClassConstants.DRIVER);
 
     public static List<Employee> allEmployees =
-            JacksonUtils.extractItems(FilepathConstants.EMPLOYEES_JSON, Employee.class);
+            JacksonUtils.extractItems(FilepathConstants.EMPLOYEES_JSON, ClassConstants.EMPLOYEE);
     public static List<Item> allItems =
-            JacksonUtils.extractItems(FilepathConstants.ITEMS_JSON, Item.class);
+            JacksonUtils.extractItems(FilepathConstants.ITEMS_JSON, ClassConstants.ITEM);
     public static List<Location> allLocations =
-            JacksonUtils.extractItems(FilepathConstants.LOCATIONS_JSON, Location.class);
+            JacksonUtils.extractItems(FilepathConstants.LOCATIONS_JSON, ClassConstants.LOCATION);
 
     public static List<Location> allAvailableLocations = allLocations.stream()
             .filter(location -> !GraphConstants.EXCLUDED_LOCATION_IDS.contains(location.getLocationId()))
             .collect(Collectors.toList());
     public static List<OrderRecipient> allOrderRecipients =
-            JacksonUtils.extractItems(FilepathConstants.ORDER_RECIPIENTS_JSON, OrderRecipient.class);
+            JacksonUtils.extractItems(FilepathConstants.ORDER_RECIPIENTS_JSON, ClassConstants.ORDER_RECIPIENT);
     public static List<Person> allPersons =
-            JacksonUtils.extractItems(FilepathConstants.PERSONS_JSON, Person.class);
+            JacksonUtils.extractItems(FilepathConstants.PERSONS_JSON, ClassConstants.PERSON);
     public static List<Storage> allStorages =
-            JacksonUtils.extractItems(FilepathConstants.STORAGES_JSON, Storage.class);
+            JacksonUtils.extractItems(FilepathConstants.STORAGES_JSON, ClassConstants.STORAGE);
 
     public static List<Vehicle> allVehicles =
-            JacksonUtils.extractItems(FilepathConstants.VEHICLES_JSON, Vehicle.class);
+            JacksonUtils.extractItems(FilepathConstants.VEHICLES_JSON, ClassConstants.VEHICLE);
 
 
     /*
         public static List<Order> allOrders =
-            JacksonUtils.extractItems(FilepathConstants.ORDERS_JSON, Order.class);
+            JacksonUtils.extractItems(FilepathConstants.ORDERS_JSON, ClassConstants.ORDER);
 
         public static List<OrderItem> allOrderItems =
-            JacksonUtils.extractItems(FilepathConstants.ORDER_ITEMS_JSON, OrderItem.class);
+            JacksonUtils.extractItems(FilepathConstants.ORDER_ITEMS_JSON, ClassConstants.ORDER_ITEM);
 
      */
 
