@@ -43,6 +43,16 @@ import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.math.util.GraphUtils;
 import com.solvd.navigator.math.util.MatrixUtils;
 import com.solvd.navigator.math.util.RouteUtils;
+import com.solvd.navigator.servicetwo.DriverService;
+import com.solvd.navigator.servicetwo.LocationService;
+import com.solvd.navigator.servicetwo.OrderListener;
+import com.solvd.navigator.servicetwo.OrderService;
+import com.solvd.navigator.servicetwo.StorageService;
+import com.solvd.navigator.servicetwo.impl.DriverServiceImpl;
+import com.solvd.navigator.servicetwo.impl.LocationServiceImpl;
+import com.solvd.navigator.servicetwo.impl.OrderListenerImpl;
+import com.solvd.navigator.servicetwo.impl.OrderServiceImpl;
+import com.solvd.navigator.servicetwo.impl.StorageServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -120,13 +130,27 @@ public final class ClassConstants {
 
     public static final Class<GraphType> GRAPH_TYPE = GraphType.class;
     public static final Class<GraphUtils> GRAPH_UTILS = GraphUtils.class;
-    public static final Class<JsonDataStore> JSON_DATA_STORE = JsonDataStore.class;
     public static final Class<MatrixUtils> MATRIX_UTILS = MatrixUtils.class;
-    public static final Class<OrderConstants> ORDER_CONSTANTS = OrderConstants.class;
     public static final Class<RouteUtils> ROUTE_UTILS = RouteUtils.class;
     public static final Class<RouteCalculator> ROUTE_CALCULATOR = RouteCalculator.class;
     public static final Class<RouteCalculatorImpl> ROUTE_CALCULATOR_IMPL = RouteCalculatorImpl.class;
     public static final Class<RoutePlan> ROUTE_PLAN = RoutePlan.class;
+
+    // com.solvd.navigator.dao.servicetwo
+
+    public static final Class<DriverService> DRIVER_SERVICE = DriverService.class;
+    public static final Class<LocationService> LOCATION_SERVICE = LocationService.class;
+    public static final Class<OrderService> ORDER_SERVICE = OrderService.class;
+    public static final Class<StorageService> STORAGE_SERVICE = StorageService.class;
+    public static final Class<OrderListener> ORDER_LISTENER = OrderListener.class;
+
+    // com.solvd.navigator.dao.servicetwo.impl
+    public static final Class<DriverServiceImpl> DRIVER_SERVICE_IMPL = DriverServiceImpl.class;
+    public static final Class<LocationServiceImpl> LOCATION_SERVICE_IMPL = LocationServiceImpl.class;
+    public static final Class<OrderServiceImpl> ORDER_SERVICE_IMPL = OrderServiceImpl.class;
+    public static final Class<StorageServiceImpl> STORAGE_SERVICE_IMPL = StorageServiceImpl.class;
+    public static final Class<OrderListenerImpl> ORDER_LISTENER_IMPL = OrderListenerImpl.class;
+
 
     // com.solvd.navigator.util
     public static final Class<AnsiCodes> ANSI_CODES = AnsiCodes.class;
@@ -141,10 +165,18 @@ public final class ClassConstants {
     public static final Class<ExceptionUtils> EXCEPTION_UTILS = ExceptionUtils.class;
     public static final Class<DAOFactory> DAO_FACTORY = DAOFactory.class;
     public static final Class<DBConnectionPool> DB_CONNECTION_POOL = DBConnectionPool.class;
+    public static final Class<DriverConnection> DRIVER_CONNECTION = DriverConnection.class;
+    public static final Class<DriverConnectionPool> DRIVER_CONNECTION_POOL = DriverConnectionPool.class;
+    public static final Class<DriverThreadManager> DRIVER_THREAD_MANAGER = DriverThreadManager.class;
+    public static final Class<DriverThreadRunnable> DRIVER_THREAD_RUNNABLE = DriverThreadRunnable.class;
+    public static final Class<DriverUtils> DRIVER_UTILS = DriverUtils.class;
+    public static final Class<JsonDataStore> JSON_DATA_STORE = JsonDataStore.class;
     public static final Class<FilepathConstants> FILEPATH_CONSTANTS = FilepathConstants.class;
     public static final Class<JacksonUtils> JACKSON_UTILS = JacksonUtils.class;
     public static final Class<LoadUtils> LOAD_UTILS = LoadUtils.class;
+    public static final Class<MenuUtils> MENU_UTILS = MenuUtils.class;
     public static final Class<NumberUtils> NUMBER_UTILS = NumberUtils.class;
+    public static final Class<OrderConstants> ORDER_CONSTANTS = OrderConstants.class;
     public static final Class<ReflectionUtils> REFLECTION_UTILS = ReflectionUtils.class;
     public static final Class<RegExpConstants> REG_EXP_CONSTANTS = RegExpConstants.class;
     public static final Class<ScannerUtils> SCANNER_UTILS = ScannerUtils.class;
