@@ -14,6 +14,8 @@ import com.solvd.navigator.servicetwo.OrderListener;
 import com.solvd.navigator.servicetwo.OrderService;
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DAOFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OrderServiceImpl implements OrderService {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ORDER_SERVICE_IMPL);
     private final OrderDAO orderDAO =
             DAOFactory.createDAO(ClassConstants.ORDER_DAO);
     private final OrderRecipientDAO orderRecipientDAO =

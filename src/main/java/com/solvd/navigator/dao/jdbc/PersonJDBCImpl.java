@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Person;
 import com.solvd.navigator.dao.PersonDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class PersonJDBCImpl implements PersonDAO {
-    private static final Logger LOGGER = LogManager.getLogger(PersonJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.PERSON_JDBC_IMPL);
 
     private static final String CREATE_PERSON = "INSERT INTO persons (first_name, last_name)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM persons WHERE person_id = ?";

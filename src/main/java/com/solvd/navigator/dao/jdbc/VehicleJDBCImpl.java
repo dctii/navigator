@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Vehicle;
 import com.solvd.navigator.dao.VehicleDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +16,7 @@ import java.sql.Statement;
 
 public class VehicleJDBCImpl implements VehicleDAO {
 
-    private static final Logger LOGGER = LogManager.getLogger(VehicleJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.VEHICLE_JDBC_IMPL);
 
     private static final String CREATE_VEHICLE_SQL = "INSERT INTO vehicles(year,make,model,trim_level,license_plate_number) VALUES (?,?,?,?,?)";
     private static final String SELECT_VEHICLE_SQL = "SELECT * FROM vehicles WHERE vehicle_id = ?";

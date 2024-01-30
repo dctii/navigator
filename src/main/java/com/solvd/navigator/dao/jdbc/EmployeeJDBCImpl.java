@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Employee;
 import com.solvd.navigator.dao.EmployeeDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmployeeJDBCImpl implements EmployeeDAO {
-    private static final Logger LOGGER = LogManager.getLogger(EmployeeJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.EMPLOYEE_JDBC_IMPL);
 
     private static final String CREATE_EMPLOYEE = "INSERT INTO employees (role, person_id)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM employees WHERE employee_id = ?";

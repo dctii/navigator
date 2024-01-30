@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Driver;
 import com.solvd.navigator.dao.DriverDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +18,7 @@ import java.util.List;
 
 
 public class DriverJDBCImpl implements DriverDAO {
-    private static final Logger LOGGER = LogManager.getLogger(DriverJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER_JDBC_IMPL);
     private static final String CREATE_DRIVER = "INSERT INTO drivers (employee_id,vehicle_id)" + "VALUES (?,?)";
     private static final String GET_BY_ID  = "SELECT * From drivers Where driver_id = ?";
     private static final String GET_ALL_QUERY= "SELECT * From drivers";

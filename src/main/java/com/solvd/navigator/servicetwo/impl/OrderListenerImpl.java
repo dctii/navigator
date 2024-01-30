@@ -4,11 +4,12 @@ import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.bin.Order;
 import com.solvd.navigator.servicetwo.OrderListener;
 import com.solvd.navigator.util.AnsiCodes;
+import com.solvd.navigator.util.ClassConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class OrderListenerImpl implements OrderListener {
-    private static final Logger LOGGER = LogManager.getLogger(OrderListenerImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ORDER_LISTENER_IMPL);
 
     @Override
     public void onOrderPickedUp(Order order, int driverId) {

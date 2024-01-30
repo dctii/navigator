@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DriverServiceImpl implements DriverService {
-    private static final Logger LOGGER = LogManager.getLogger(DriverServiceImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.DRIVER_SERVICE_IMPL);
     private final DriverDAO driverDAO = DAOFactory.createDAO(ClassConstants.DRIVER_DAO);
     private final LocationDAO locationDAO = DAOFactory.createDAO(ClassConstants.LOCATION_DAO);
     private final StorageDAO storageDAO = DAOFactory.createDAO(ClassConstants.STORAGE_DAO);

@@ -8,10 +8,13 @@ import com.solvd.navigator.servicetwo.StorageService;
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.CollectionUtils;
 import com.solvd.navigator.util.DAOFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class StorageServiceImpl implements StorageService {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.STORAGE_SERVICE_IMPL);
     private final StorageDAO storageDAO = DAOFactory.createDAO(ClassConstants.STORAGE_DAO);
     private final LocationDAO locationDAO = DAOFactory.createDAO(ClassConstants.LOCATION_DAO);
 

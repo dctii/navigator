@@ -8,11 +8,14 @@ import com.solvd.navigator.math.util.RouteUtils;
 import com.solvd.navigator.util.BooleanUtils;
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.StringFormatters;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RouteCalculatorImpl implements RouteCalculator {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ROUTE_CALCULATOR_IMPL);
     private ShortestPathsMatrix shortestPathsMatrix;
     private List<Storage> storages;
     private List<Location> locations;

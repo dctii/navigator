@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Location;
 import com.solvd.navigator.dao.LocationDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class LocationJDBCImpl implements LocationDAO {
-    private static final Logger LOGGER = LogManager.getLogger(DriverJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.LOCATION_JDBC_IMPL);
     private static final String CREATE_LOCATION = "INSERT INTO locations (coordinate_x, coordinate_y)" + "VALUES (?,?)";
     private static final String GET_BY_ID_QUERY = "SELECT * FROM locations WHERE location_id = ?";
     private static final String UPDATE_QUERY = "UPDATE locations SET coordinate_x=?, coordinate_y=? WHERE location_id=?";

@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.OrderRecipient;
 import com.solvd.navigator.dao.OrderRecipientDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class OrderRecipientJDBCImpl implements OrderRecipientDAO {
 
-    private static final Logger LOGGER = LogManager.getLogger(OrderRecipientJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ORDER_RECIPIENT_JDBC_IMPL);
     private static final String CREATE_RECIPIENT_SQL= "INSERT INTO order_recipients(person_id,location_id) VALUES (?,?)";
     private static final String SELECT_RECIPIENT_SQL = "SELECT * FROM order_recipients WHERE order_recipient_id = ?";
     private static final String GET_ALL_QUERY = "SELECT * FROM order_recipients";

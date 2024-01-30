@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Storage;
 import com.solvd.navigator.dao.StorageDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class StorageJDBCImpl implements StorageDAO {
 
-    private static final Logger LOGGER = LogManager.getLogger(StorageJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.STORAGE_JDBC_IMPL);
     private static final String CREATE_STORAGE_SQL = "INSERT INTO storages(name,location_id) VALUES (?,?)";
     private static final String SELECT_STORAGE_SQL = "SELECT * FROM storages WHERE storage_id = ?";
     private static final String GET_ALL_QUERY = "SELECT * FROM storages";

@@ -2,6 +2,7 @@ package com.solvd.navigator.dao.jdbc;
 
 import com.solvd.navigator.bin.Order;
 import com.solvd.navigator.dao.OrderDAO;
+import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DBConnectionPool;
 import com.solvd.navigator.util.SQLUtils;
 import org.apache.logging.log4j.LogManager;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class OrderJDBCImpl implements OrderDAO {
-    private static final Logger LOGGER = LogManager.getLogger(OrderJDBCImpl.class);
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.ORDER_JDBC_IMPL);
     private static final String CREATE_ORDER_SQL = "INSERT INTO orders (order_number,order_status,order_date,delivery_date,storage_id,order_recipient_id,driver_id) VALUES (?,?,?,?,?,?,?)";
     private static final String SELECT_ORDER_SQL = "SELECT * FROM orders WHERE order_id = ?";
     private static final String AWAITING_DELIVERY_QUERY = "SELECT * FROM orders WHERE storage_id = ? AND order_status = 'Awaiting Delivery'";

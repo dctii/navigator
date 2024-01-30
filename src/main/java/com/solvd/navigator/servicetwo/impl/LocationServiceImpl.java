@@ -9,12 +9,15 @@ import com.solvd.navigator.servicetwo.LocationService;
 import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DAOFactory;
 import com.solvd.navigator.util.JacksonUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class LocationServiceImpl implements LocationService {
+    private static final Logger LOGGER = LogManager.getLogger(ClassConstants.LOCATION_SERVICE_IMPL);
     private final LocationDAO locationDAO = DAOFactory.createDAO(ClassConstants.LOCATION_DAO);
 
     @Override
