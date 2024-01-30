@@ -41,9 +41,7 @@ import com.solvd.navigator.math.graph.ShortestPathsMatrix;
 import com.solvd.navigator.math.graph.Vertex;
 import com.solvd.navigator.math.graph.WeightedGraph;
 import com.solvd.navigator.math.util.GraphUtils;
-import com.solvd.navigator.math.util.JsonDataStore;
 import com.solvd.navigator.math.util.MatrixUtils;
-import com.solvd.navigator.math.util.OrderConstants;
 import com.solvd.navigator.math.util.RouteUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,7 +56,6 @@ public final class ClassConstants {
 
     // com.solvd.navigator
     public static final Class<com.solvd.navigator.BaseDataLoader> BASE_DATA_LOADER_ENTRYPOINT = com.solvd.navigator.BaseDataLoader.class;
-    public static final Class<com.solvd.navigator.GraphTester> GRAPH_TESTER_ENTRYPOINT = com.solvd.navigator.GraphTester.class;
     public static final Class<com.solvd.navigator.Main> MAIN_ENTRYPOINT = com.solvd.navigator.Main.class;
 
     // com.solvd.navigator.bin

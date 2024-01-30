@@ -23,7 +23,7 @@ public class OrderJDBCImpl implements OrderDAO {
     private static final String LIMIT_AWAITING_DELIVERY_QUERY = "SELECT * FROM orders WHERE storage_id = ? AND order_status = 'Awaiting Delivery' LIMIT ?";
     private static final String UPDATE_ORDER_SQL = "UPDATE orders SET order_number = ?, order_status = ?, order_date = ?, delivery_date = ?, storage_id = ?, order_recipient_id = ?, driver_id = ? WHERE order_id = ?";
     private static final String DELETE_ORDER_SQL = "DELETE FROM orders WHERE order_id = ?";
-    DBConnectionPool connectionPool = DBConnectionPool.getInstance();
+    private final DBConnectionPool connectionPool = DBConnectionPool.getInstance();
 
     public int create(Order order) {
         Connection dbConnection = connectionPool.getConnection();
@@ -168,7 +168,6 @@ public class OrderJDBCImpl implements OrderDAO {
             SQLUtils.setIntOrNull(preparedStatement,7,order.getDriverId() == 0 ? null : order.getDriverId());
             SQLUtils.setIntOrNull(preparedStatement,8, order.getOrderId());
             preparedStatement.executeUpdate();
-            LOGGER.info("ROW UPDATED IN DB");
         } catch (SQLException e) {
             throw new RuntimeException("Error updating order",e);
         } finally {
