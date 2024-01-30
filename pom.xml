@@ -34,10 +34,6 @@
         <!--   Apache Commons-IO Properties     -->
         <apache-commons-io.version>2.15.0</apache-commons-io.version>
 
-        <!--   JOOQ Properties     -->
-        <jooq.affix>jooq</jooq.affix>
-        <jooq.groupId>org.${jooq.affix}</jooq.groupId>
-        <jooq.version>3.15.12</jooq.version>
 
         <!--   MySQL Connector J Properties     -->
         <mysql.affix>mysql</mysql.affix>
@@ -47,11 +43,6 @@
         <mybatis.affix>mybatis</mybatis.affix>
         <mybatis.version>3.5.15</mybatis.version>
 
-        <!--   JAXB Properties     -->
-        <jaxb.affix>jaxb</jaxb.affix>
-        <jaxb.groupId>org.glassfish.${jaxb.affix}</jaxb.groupId>
-        <jaxb-core.version>4.0.4</jaxb-core.version>
-        <jaxb-runtime.version>4.0.4</jaxb-runtime.version>
 
         <!--   Jackson Properties     -->
         <jackson.affix>jackson</jackson.affix>
@@ -140,16 +131,6 @@
                         <version>${exec-maven-plugin.version}</version>
                         <configuration>
                             <mainClass>${baseDataLoaderEntrypoint}</mainClass>
-                            <systemProperties>
-                                <systemProperty>
-                                    <key>${jooq.groupId}.no-tips</key>
-                                    <value>true</value>
-                                </systemProperty>
-                                <systemProperty>
-                                    <key>${jooq.groupId}.no-logo</key>
-                                    <value>true</value>
-                                </systemProperty>
-                            </systemProperties>
                         </configuration>
                     </plugin>
 
@@ -192,13 +173,6 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/org.jooq/jooq -->
-        <dependency>
-            <groupId>${jooq.groupId}</groupId>
-            <artifactId>${jooq.affix}</artifactId>
-            <version>${jooq.version}</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.${mysql.affix}</groupId>
@@ -213,19 +187,6 @@
             <version>${mybatis.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-core -->
-        <dependency>
-            <groupId>${jaxb.groupId}</groupId>
-            <artifactId>${jaxb.affix}-core</artifactId>
-            <version>${jaxb-core.version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.glassfish.jaxb/jaxb-runtime -->
-        <dependency>
-            <groupId>${jaxb.groupId}</groupId>
-            <artifactId>${jaxb.affix}-runtime</artifactId>
-            <version>${jaxb-runtime.version}</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>

@@ -9,6 +9,7 @@ import com.solvd.navigator.util.ClassConstants;
 import com.solvd.navigator.util.DriverConnectionPool;
 import com.solvd.navigator.util.DriverThreadManager;
 import com.solvd.navigator.util.MenuUtils;
+import com.solvd.navigator.util.OrderConstants;
 import com.solvd.navigator.util.ScannerUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final Logger LOGGER = LogManager.getLogger(ClassConstants.MAIN_ENTRYPOINT);
-    private static final int NUMBER_OF_DRIVERS = 2;
+    private static final int NUMBER_OF_DRIVERS = OrderConstants.TOTAL_NUMBER_OF_DRIVERS;
 
     public static void main(String[] args) {
 
